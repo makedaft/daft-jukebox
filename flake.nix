@@ -16,12 +16,15 @@
           clang-tools
           just
           glibc
-          # clang
+          unixtools.xxd
         ];
         multiPkgs = pkgs: (with pkgs; [ udev ]);
 
         runScript = "zsh";
-        profile = "export DIRENV_DISABLE_HOOK=1;";
+        profile = ''
+          export DIRENV_DISABLE_HOOK=1;
+          export WITH_NIX_PREFIX="fhs";
+        '';
       };
     in flake-utils.lib.eachDefaultSystem
     (system:
