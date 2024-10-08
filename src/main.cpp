@@ -1,15 +1,21 @@
 // #include "esp32-hal-gpio.h"
-#include "AudioTools.h"
 #include <Arduino.h>
+#include <AudioTools.h>
+#include <AudioTools/AudioCodecs/CodecMP3Helix.h>
+#include <FS.h>
+#include <SD.h>
+#include <SPI.h>
+#include <esp32-hal-dac.h>
+#include <esp32-hal-gpio.h>
 
-#include "esp32-hal-dac.h"
-#include "esp32-hal-gpio.h"
-#include "example.h"
+// #include "example.h"
 
-MemoryStream music(example_wav, example_wav_len);
+// MemoryStream music(example_wav, example_wav_len);
 I2SStream i2s;
 VolumeStream volume(i2s);
-StreamCopy copier(volume, music);
+EncodedAudioStream decoder(&volume, new MP3DecoderHelix());
+StreamCopy copier;
+File audioFile;
 
 #define PIN_DAC_L_BLCK 14
 #define PIN_DAC_L_LRC 15
@@ -17,44 +23,44 @@ StreamCopy copier(volume, music);
 #define PIN_DAC_GAIN 25
 #define PIN_VOLUME_UP 21
 #define PIN_VOLUME_DOWN 34
-// #define PIN_DAC_L_BLCK 27
-// #define PIN_DAC_L_LRC 26
-// #define PIN_DAC_L_DATA 25
 
-// Arduino Setup
 void setup(void) {
-  // Open Serial
   Serial.begin(BAUD_RATE);
-
   pinMode(PIN_VOLUME_UP, INPUT);
   pinMode(PIN_VOLUME_DOWN, INPUT);
 
-  I2SConfig config = i2s.defaultConfig(TX_MODE);
+  if (!SD.begin(5)) {
+    Serial.println("SD Card Mount Failed");
+    return;
+  }
+  Serial.println("SD Card mounted");
+  audioFile = SD.open("/day-goes-on.mp3", FILE_READ);
 
-  config.sample_rate = 44100;
-  config.channels = 1;
-  config.bits_per_sample = 16;
+  I2SConfig config = i2s.defaultConfig(TX_MODE);
 
   config.pin_bck = PIN_DAC_L_BLCK;
   config.pin_ws = PIN_DAC_L_LRC;
   config.pin_data = PIN_DAC_L_DATA;
 
   i2s.begin(config);
-
   volume.begin(config);
 
-  music.setLoop(true);
-  music.begin();
+  decoder.begin();
+
+  copier.begin(decoder, audioFile);
 }
 
 void set_volume(float v) {
+  bool done = false;
   if (v <= 1.0)
-    volume.setVolume(v);
+    done = volume.setVolume(v);
 
-  Serial.printf("volume = %f\n", v);
+  if (done)
+    Serial.printf("volume = %f\n", v);
+  else
+    Serial.printf("unable to update volume. volume = %f\n", volume.volume());
 }
 
-// Arduino loop - copy sound to i2s
 void loop() {
   copier.copy();
 
