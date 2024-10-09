@@ -5,6 +5,8 @@
 #include <SPI.h>
 #include <muMatrix8ptRegular.h>
 
+#include "music_loader.cpp"
+
 #define TFT_CS 4    // CS
 #define TFT_DC 12   // AO
 #define TFT_RST 13  // RESET
@@ -27,8 +29,9 @@ static bool setup() {
   tft.setTextColor(0xDDDD);
   tft.setTextSize(2);
 
-  tft.setCursor(10, HEIGHT * 2 / 3);
+  tft.setCursor(10, 20);
   tft.print("Owyn");
+
   return true;
 }
 

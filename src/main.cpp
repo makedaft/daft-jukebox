@@ -1,38 +1,41 @@
 #include <Arduino.h>
 #include <FS.h>
 #include <SD.h>
+#include <cstdlib>
 
 #include "audio.cpp"
+#include "controls.cpp"
 #include "display.cpp"
 #include "log.cpp"
-
-#define PIN_VOLUME_UP 21
-#define PIN_VOLUME_DOWN 34
+#include "music_loader.cpp"
+#include "utils.cpp"
 
 void setup(void) {
   logger::setup();
+  logger::debug("init.start");
 
-  pinMode(PIN_VOLUME_UP, INPUT);
-  pinMode(PIN_VOLUME_DOWN, INPUT);
+  GUARD(music_loader::setup());
+  logger::debug("init.music_loader");
 
-  if (!audio::setup())
-    return;
+  utils::printDirectory(SD.open("/"), 1);
 
-  audio::playMp3("/day-goes-on.mp3");
+  GUARD(audio::setup());
+  logger::debug("init.audio");
 
-  if (!display::setup())
-    return;
+  audio::playMp3("/ladedadedadeda.mp3");
+
+  delay(500);
+  GUARD(display::setup());
+  logger::debug("init.display");
+
+  logger::debug("init.end");
 }
 
 void loop() {
+  if (utils::skipLoop())
+    return;
+
   audio::loop();
-
-  auto volume = audio::getVolume();
-  if (digitalRead(PIN_VOLUME_UP) > 0) {
-    audio::setVolume(volume + 0.01);
-  } else if (digitalRead(PIN_VOLUME_DOWN) > 0) {
-    audio::setVolume(volume - 0.01);
-  }
-
+  controls::loop();
   display::loop();
 }

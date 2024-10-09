@@ -6,8 +6,17 @@
 
 #include "log.cpp"
 
+#define GUARD(expr)                                                            \
+  if (!expr) {                                                                 \
+    utils::preventLooping = true;                                              \
+    return;                                                                    \
+  }
+
 namespace utils {
-void printDirectory(File dir, int numTabs) {
+static bool preventLooping = false;
+static bool skipLoop() { return preventLooping; }
+
+static void printDirectory(File dir, int numTabs) {
   while (true) {
     File entry = dir.openNextFile();
 
@@ -31,5 +40,7 @@ void printDirectory(File dir, int numTabs) {
 
     entry.close();
   }
+
+  logger::printf("\n");
 }
 } // namespace utils
