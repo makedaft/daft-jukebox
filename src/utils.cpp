@@ -4,6 +4,9 @@
 #include <SD.h>
 #include <SPI.h>
 
+#include "log.cpp"
+
+namespace utils {
 void printDirectory(File dir, int numTabs) {
   while (true) {
     File entry = dir.openNextFile();
@@ -13,20 +16,20 @@ void printDirectory(File dir, int numTabs) {
     }
 
     for (uint8_t i = 0; i < numTabs; i++) {
-      Serial.print('\t');
+      logger::printf("\t");
     }
 
-    Serial.print(entry.name());
+    logger::printf(entry.name());
 
     if (entry.isDirectory()) {
-      Serial.println("/");
+      logger::printf("/\n");
       printDirectory(entry, numTabs + 1);
     } else {
       // files have sizes, directories do not
-      Serial.print("\t\t");
-      Serial.println(entry.size(), DEC);
+      logger::printf("\t\t%d", entry.size());
     }
 
     entry.close();
   }
 }
+} // namespace utils
