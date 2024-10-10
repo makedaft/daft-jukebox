@@ -6,7 +6,7 @@
 #include "audio.cpp"
 #include "controls.cpp"
 #include "display.cpp"
-#include "log.cpp"
+#include "logger.cpp"
 #include "music_loader.cpp"
 #include "utils.cpp"
 
@@ -17,12 +17,13 @@ void setup(void) {
   GUARD(music_loader::setup());
   logger::debug("init.music_loader");
 
-  utils::printDirectory(SD.open("/"), 1);
-
   GUARD(audio::setup());
   logger::debug("init.audio");
 
   audio::playMp3("/ladedadedadeda.mp3");
+
+  controls::setup();
+  logger::debug("init.controls");
 
   delay(500);
   GUARD(display::setup());

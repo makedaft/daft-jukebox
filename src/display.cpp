@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <muMatrix8ptRegular.h>
+#include <vector>
 
 #include "music_loader.cpp"
 
@@ -26,11 +27,21 @@ static bool setup() {
 
   tft.fillScreen(0x0000);
   tft.setFont(&FONT);
-  tft.setTextColor(0xDDDD);
+  tft.setTextColor(0xFFFF);
   tft.setTextSize(2);
 
   tft.setCursor(10, 20);
   tft.print("Owyn");
+
+  std::vector<music_loader::BasicSongInfo> songs = music_loader::listSongs("/");
+
+  int i = 0;
+  for (auto &song : songs) {
+    tft.setTextSize(1);
+    tft.setCursor(10, 40 + i * 20);
+    tft.print(song.path);
+    i++;
+  }
 
   return true;
 }

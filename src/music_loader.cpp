@@ -4,7 +4,8 @@
 #include <SD.h>
 #include <vector>
 
-#include "log.cpp"
+#include "logger.cpp"
+#include "utils.cpp"
 
 #define PIN_SD_CS 5 // chip select
 #define PIN_SD_MOSI 23
@@ -14,7 +15,6 @@
 namespace music_loader {
 struct Song {
   bool isAvailable;
-  String filePath;
   File file;
 };
 
@@ -39,6 +39,8 @@ static bool setup() {
     logger::error("SD Card Mount Failed");
   }
 
+  utils::printDirectory(SD.open("/"), 1);
+
   return isReady;
 }
 
@@ -49,10 +51,37 @@ static void loadSong(const char *filePath) {
   }
 
   _currentSong.file = SD.open(filePath, FILE_READ, false);
-  _currentSong.filePath = filePath;
   _currentSong.isAvailable = true;
 }
 
 static Song &currentSong() { return _currentSong; }
+
+struct BasicSongInfo {
+  String name;
+  String path;
+  bool isDir;
+};
+
+static std::vector<BasicSongInfo> listSongs(const char *path) {
+  std::vector<BasicSongInfo> list;
+
+  File root = SD.open(path);
+  if (!root.isDirectory()) {
+    logger::error("Not a directory");
+    return list;
+  }
+
+  while (true) {
+    boolean isDir;
+    String filePath = root.getNextFileName(&isDir);
+
+    if (filePath.isEmpty())
+      break;
+
+    list.push_back({.name = filePath, .path = filePath, .isDir = isDir});
+  }
+
+  return list;
+}
 
 } // namespace music_loader

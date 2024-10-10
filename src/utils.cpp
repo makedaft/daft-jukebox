@@ -4,7 +4,7 @@
 #include <SD.h>
 #include <SPI.h>
 
-#include "log.cpp"
+#include "logger.cpp"
 
 #define GUARD(expr)                                                            \
   if (!expr) {                                                                 \
@@ -34,8 +34,7 @@ static void printDirectory(File dir, int numTabs) {
       logger::printf("/\n");
       printDirectory(entry, numTabs + 1);
     } else {
-      // files have sizes, directories do not
-      logger::printf("\t\t%d", entry.size());
+      logger::printf("\t\t%d\n", entry.size());
     }
 
     entry.close();

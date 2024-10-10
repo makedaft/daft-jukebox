@@ -5,7 +5,7 @@
 #include <FS.h>
 #include <SD.h>
 
-#include "log.cpp"
+#include "logger.cpp"
 #include "music_loader.cpp"
 
 #define PIN_DAC_L_BLCK 14
@@ -42,8 +42,6 @@ static inline void loop() {
   }
 }
 
-static File fuck;
-
 static void playMp3(const char *filePath) {
   copier.end();
   music_loader::loadSong(filePath);
@@ -55,7 +53,7 @@ static float getVolume() { return volume.volume(); }
 
 static void setVolume(float v) {
   bool done = false;
-  if (v <= 1.0)
+  if (v > 0 && v <= 1.0)
     done = volume.setVolume(v);
 
   if (done)
