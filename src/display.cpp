@@ -33,10 +33,11 @@ static bool setup() {
   tft.setCursor(10, 20);
   tft.print("Owyn");
 
-  std::vector<music_loader::BasicSongInfo> songs = music_loader::listSongs("/");
+  std::vector<struct music_loader::FileInfo> songFiles =
+      music_loader::listSongFiles("/");
 
   int i = 0;
-  for (auto &song : songs) {
+  for (auto &song : songFiles) {
     tft.setTextSize(1);
     tft.setCursor(10, 40 + i * 20);
     tft.print(song.path + (song.isDir ? "/" : ""));

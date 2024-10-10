@@ -24,11 +24,11 @@ static inline void loop() {
   } else if (digitalRead(PIN_CONTROL_DOWN) == 0) {
     audio::setVolume(volume - 0.02);
   } else if (digitalRead(PIN_CONTROL_LEFT) == 0) {
-    String path = music_loader::previousSong();
-    audio::playMp3(path.c_str());
+    music_loader::previousSong();
+    audio::playMp3(music_loader::getSongPath().c_str());
   } else if (digitalRead(PIN_CONTROL_RIGHT) == 0) {
-    String path = music_loader::nextSong();
-    audio::playMp3(path.c_str());
+    music_loader::nextSong();
+    audio::playMp3(music_loader::getSongPath().c_str());
   }
 }
 

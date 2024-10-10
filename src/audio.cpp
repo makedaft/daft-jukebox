@@ -33,10 +33,14 @@ static bool setup(void) {
   if (!mp3Decoder.begin())
     return false;
 
+  volume.setVolume(0.7); // TODO: what todo
+
   return true;
 }
 
 static void playMp3(const char *filePath) {
+  logger::printf("Playing %s\n", filePath);
+
   copier.end();
   music_loader::loadSong(filePath);
 
@@ -49,8 +53,8 @@ static inline void loop() {
       copier.copy();
     } else {
       logger::debug("end of song");
-      String path = music_loader::nextSong();
-      audio::playMp3(path.c_str());
+      music_loader::nextSong();
+      playMp3(music_loader::getSongPath().c_str());
     }
   }
 }

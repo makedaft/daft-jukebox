@@ -20,7 +20,9 @@ void setup(void) {
   GUARD(audio::setup());
   logger::debug("init.audio");
 
-  audio::playMp3("/ladedadedadeda.mp3");
+  music_loader::loadSongWithQueue("/tool/hooker.mp3");
+  music_loader::loadSongWithQueue("/ladedadedadeda.mp3");
+  audio::playMp3(music_loader::getSongPath().c_str());
 
   controls::setup();
   logger::debug("init.controls");

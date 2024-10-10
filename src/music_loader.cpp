@@ -4,6 +4,7 @@
 #include <SD.h>
 #include <vector>
 
+#include "lib/SongQueue.cpp"
 #include "logger.cpp"
 #include "utils.cpp"
 
@@ -18,7 +19,15 @@ struct Song {
   File file;
 };
 
+struct FileInfo {
+  String name;
+  String path;
+  bool isDir;
+};
+
 static Song _currentSong = {.isAvailable = false};
+
+static SongQueue _currentQueue;
 
 static bool setup() {
   // NOTE: This is relevant to display as well
@@ -55,32 +64,24 @@ static void loadSong(const char *filePath) {
   _currentSong.isAvailable = true;
 }
 
-static String nextSong() {
-  // TODO: Implement
-  if (_currentSong.isAvailable) {
-    return _currentSong.file.path();
-  }
-  return "/ladedadedadeda.mp3";
-}
+static String getSongPath() { return _currentQueue.current(); }
 
-static String previousSong() {
-  // TODO: Implement
-  if (_currentSong.isAvailable) {
-    return _currentSong.file.path();
-  }
-  return "/ladedadedadeda.mp3";
-}
+static void nextSong() { _currentQueue.next(); }
+
+static void previousSong() { _currentQueue.previous(); }
 
 static Song &currentSong() { return _currentSong; }
 
-struct BasicSongInfo {
-  String name;
-  String path;
-  bool isDir;
-};
+static void loadSongWithQueue(String filePath, boolean append = false) {
+  auto parentIndex = filePath.lastIndexOf('/');
+  auto dirPath = filePath.substring(0, parentIndex);
+  dirPath = dirPath.isEmpty() ? "/" : dirPath;
+  _currentQueue.loadFromDir(SD, dirPath.c_str(), append);
+  _currentQueue.setCurrentAs(filePath.c_str());
+}
 
-static std::vector<BasicSongInfo> listSongs(const char *path) {
-  std::vector<BasicSongInfo> list;
+static std::vector<struct FileInfo> listSongFiles(const char *path) {
+  std::vector<struct FileInfo> list;
 
   File root = SD.open(path);
   if (!root.isDirectory()) {
