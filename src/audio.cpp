@@ -36,17 +36,23 @@ static bool setup(void) {
   return true;
 }
 
-static inline void loop() {
-  if (copier.available() > 0) {
-    copier.copy();
-  }
-}
-
 static void playMp3(const char *filePath) {
   copier.end();
   music_loader::loadSong(filePath);
 
   copier.begin(mp3Decoder, music_loader::currentSong().file);
+}
+
+static inline void loop() {
+  if (copier.isActive()) {
+    if (copier.available() > 0) {
+      copier.copy();
+    } else {
+      logger::debug("end of song");
+      String path = music_loader::nextSong();
+      audio::playMp3(path.c_str());
+    }
+  }
 }
 
 static float getVolume() { return volume.volume(); }

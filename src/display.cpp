@@ -39,7 +39,7 @@ static bool setup() {
   for (auto &song : songs) {
     tft.setTextSize(1);
     tft.setCursor(10, 40 + i * 20);
-    tft.print(song.path);
+    tft.print(song.path + (song.isDir ? "/" : ""));
     i++;
   }
 

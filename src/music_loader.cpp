@@ -39,6 +39,7 @@ static bool setup() {
     logger::error("SD Card Mount Failed");
   }
 
+  // For debugging
   utils::printDirectory(SD.open("/"), 1);
 
   return isReady;
@@ -52,6 +53,22 @@ static void loadSong(const char *filePath) {
 
   _currentSong.file = SD.open(filePath, FILE_READ, false);
   _currentSong.isAvailable = true;
+}
+
+static String nextSong() {
+  // TODO: Implement
+  if (_currentSong.isAvailable) {
+    return _currentSong.file.path();
+  }
+  return "/ladedadedadeda.mp3";
+}
+
+static String previousSong() {
+  // TODO: Implement
+  if (_currentSong.isAvailable) {
+    return _currentSong.file.path();
+  }
+  return "/ladedadedadeda.mp3";
 }
 
 static Song &currentSong() { return _currentSong; }
