@@ -5,7 +5,7 @@
 #include <SD.h>
 #include <vector>
 
-#include "logger.cpp"
+#include "lib/logger.cpp"
 
 struct QueueItem {
   String path;
@@ -16,8 +16,7 @@ class SongQueue {
   int currentIndex = 0;
 
 public:
-  void append(const char *path) { this->queue.push_back({.path = path}); }
-
+  // void append(const char *path) { this->queue.push_back({.path = path}); }
   // void remove(int index) { this->queue.erase(this->queue.begin() + index); }
 
   String current() { return this->queue[currentIndex].path; }

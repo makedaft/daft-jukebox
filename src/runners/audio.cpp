@@ -5,8 +5,8 @@
 #include <FS.h>
 #include <SD.h>
 
-#include "logger.cpp"
-#include "music_loader.cpp"
+#include "lib/logger.cpp"
+#include "runners/music_loader.cpp"
 
 #define PIN_DAC_L_BLCK 14
 #define PIN_DAC_L_LRC 15
@@ -14,12 +14,14 @@
 #define PIN_DAC_GAIN 25
 
 namespace audio {
+namespace {
 static I2SStream i2s;
 static VolumeStream volume(i2s);
-static EncodedAudioStream mp3Decoder(&volume, new MP3DecoderHelix());
+static EncodedAudioStream mp3AudioStream(&volume, new MP3DecoderHelix());
 static StreamCopy copier;
 
 static I2SConfig config = i2s.defaultConfig(TX_MODE);
+} // namespace
 
 static bool setup(void) {
   config.pin_bck = PIN_DAC_L_BLCK;
@@ -30,7 +32,7 @@ static bool setup(void) {
     return false;
   if (!volume.begin(config))
     return false;
-  if (!mp3Decoder.begin())
+  if (!mp3AudioStream.begin())
     return false;
 
   volume.setVolume(0.7); // TODO: what todo
@@ -44,7 +46,11 @@ static void playMp3(const char *filePath) {
   copier.end();
   music_loader::loadSong(filePath);
 
-  copier.begin(mp3Decoder, music_loader::currentSong().file);
+  copier.begin(mp3AudioStream, music_loader::currentSong().file);
+}
+
+static void startPlaying() {
+  audio::playMp3(music_loader::getSongPath().c_str());
 }
 
 static inline void loop() {
@@ -54,7 +60,7 @@ static inline void loop() {
     } else {
       logger::debug("end of song");
       music_loader::nextSong();
-      playMp3(music_loader::getSongPath().c_str());
+      startPlaying();
     }
   }
 }

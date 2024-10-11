@@ -5,16 +5,15 @@
 #include <vector>
 
 #include "lib/SongQueue.cpp"
-#include "logger.cpp"
-#include "utils.cpp"
+#include "lib/logger.cpp"
+#include "lib/utils.cpp"
 
 #define PIN_SD_CS 5 // chip select
 #define PIN_SD_MOSI 23
 #define PIN_SD_MISO 19
 #define PIN_SD_SCLK 18
 
-namespace music_loader {
-struct Song {
+struct SongInfo {
   bool isAvailable;
   File file;
 };
@@ -25,15 +24,17 @@ struct FileInfo {
   bool isDir;
 };
 
-static Song _currentSong = {.isAvailable = false};
-
-static SongQueue _currentQueue;
+namespace music_loader {
+namespace {
+static SongInfo currentSongInfo = {.isAvailable = false};
+static SongQueue currentQueue;
+} // namespace
 
 static bool setup() {
   // NOTE: This is relevant to display as well
   SPI.begin(PIN_SD_SCLK, PIN_SD_MISO, PIN_SD_MOSI, PIN_SD_CS);
   SPI.setDataMode(SPI_MODE0);
-  delay(500);
+  delay(200);
 
   bool isReady = false;
   for (int i = 0; i < 5; i++) {
@@ -41,7 +42,7 @@ static bool setup() {
       isReady = true;
       break;
     }
-    delay(400);
+    delay(200);
   }
 
   if (!isReady) {
@@ -54,33 +55,39 @@ static bool setup() {
   return isReady;
 }
 
+static inline void loop() {}
+
 static void loadSong(const char *filePath) {
-  if (_currentSong.isAvailable) {
-    _currentSong.isAvailable = false;
-    _currentSong.file.close();
+  if (currentSongInfo.isAvailable) {
+    currentSongInfo.isAvailable = false;
+    currentSongInfo.file.close();
   }
 
-  _currentSong.file = SD.open(filePath, FILE_READ, false);
-  _currentSong.isAvailable = true;
+  currentSongInfo.file = SD.open(filePath, FILE_READ, false);
+  currentSongInfo.isAvailable = true;
 }
 
-static String getSongPath() { return _currentQueue.current(); }
+static String getSongPath() { return currentQueue.current(); }
 
-static void nextSong() { _currentQueue.next(); }
+static void nextSong() { currentQueue.next(); }
 
-static void previousSong() { _currentQueue.previous(); }
+static void previousSong() { currentQueue.previous(); }
 
-static Song &currentSong() { return _currentSong; }
+static SongInfo &currentSong() { return currentSongInfo; }
 
-static void loadSongWithQueue(String filePath, boolean append = false) {
+static void loadDirIntoQueue(String dirPath, boolean append = false) {
+  dirPath = dirPath.isEmpty() ? "/" : dirPath;
+  currentQueue.loadFromDir(SD, dirPath.c_str(), append);
+}
+
+static void loadSongDirIntoQueue(String filePath, boolean append = false) {
   auto parentIndex = filePath.lastIndexOf('/');
   auto dirPath = filePath.substring(0, parentIndex);
-  dirPath = dirPath.isEmpty() ? "/" : dirPath;
-  _currentQueue.loadFromDir(SD, dirPath.c_str(), append);
-  _currentQueue.setCurrentAs(filePath.c_str());
+  loadDirIntoQueue(dirPath, append);
+  currentQueue.setCurrentAs(filePath.c_str());
 }
 
-static std::vector<struct FileInfo> listSongFiles(const char *path) {
+static std::vector<struct FileInfo> listDirectory(const char *path) {
   std::vector<struct FileInfo> list;
 
   File root = SD.open(path);

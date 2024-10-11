@@ -6,7 +6,7 @@
 #include <muMatrix8ptRegular.h>
 #include <vector>
 
-#include "music_loader.cpp"
+#include "runners/music_loader.cpp"
 
 #define TFT_CS 4    // CS
 #define TFT_DC 12   // AO
@@ -15,6 +15,7 @@
 #define TFT_SCLK 18 // SCK
 
 #define FONT muMatrix8ptRegular
+#define FONT_BASELINE 7
 
 namespace display {
 static Adafruit_ST7735 tft(TFT_CS, TFT_DC, TFT_RST);
@@ -33,8 +34,7 @@ static bool setup() {
   tft.setCursor(10, 20);
   tft.print("Owyn");
 
-  std::vector<struct music_loader::FileInfo> songFiles =
-      music_loader::listSongFiles("/");
+  auto songFiles = music_loader::listDirectory("/");
 
   int i = 0;
   for (auto &song : songFiles) {
@@ -47,6 +47,6 @@ static bool setup() {
   return true;
 }
 
-static void loop() {}
+static inline void loop() {}
 
 } // namespace display

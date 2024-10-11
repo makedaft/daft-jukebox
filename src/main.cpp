@@ -3,15 +3,15 @@
 #include <SD.h>
 #include <cstdlib>
 
-#include "audio.cpp"
-#include "controls.cpp"
-#include "display.cpp"
-#include "logger.cpp"
-#include "music_loader.cpp"
-#include "utils.cpp"
+#include "lib/logger.cpp"
+#include "lib/utils.cpp"
+#include "runners/audio.cpp"
+#include "runners/controls.cpp"
+#include "runners/display.cpp"
+#include "runners/music_loader.cpp"
 
 void setup(void) {
-  logger::setup();
+  Serial.begin(BAUD_RATE);
   logger::debug("init.start");
 
   GUARD(music_loader::setup());
@@ -20,14 +20,13 @@ void setup(void) {
   GUARD(audio::setup());
   logger::debug("init.audio");
 
-  music_loader::loadSongWithQueue("/tool/hooker.mp3");
-  music_loader::loadSongWithQueue("/ladedadedadeda.mp3");
-  audio::playMp3(music_loader::getSongPath().c_str());
+  music_loader::loadDirIntoQueue("/tool", true);
+  music_loader::loadSongDirIntoQueue("/ladedadedadeda.mp3", true);
+  audio::startPlaying();
 
-  controls::setup();
+  GUARD(controls::setup());
   logger::debug("init.controls");
 
-  delay(500);
   GUARD(display::setup());
   logger::debug("init.display");
 
@@ -38,6 +37,7 @@ void loop() {
   if (utils::skipLoop())
     return;
 
+  music_loader::loop();
   audio::loop();
   controls::loop();
   display::loop();
