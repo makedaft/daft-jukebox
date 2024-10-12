@@ -2,7 +2,7 @@
 #include <esp32-hal-gpio.h>
 #include <esp32-hal.h>
 
-#include "runners/audio.cpp"
+#include "lib/Button.cpp"
 #include "runners/screen_manager.cpp"
 
 #define PIN_CONTROL_UP 21
@@ -12,52 +12,33 @@
 
 namespace controls {
 namespace {
-static const int THROTTLE_INTERVAL = 80;
-static unsigned long lastCheckTime = millis();
+static Button btnUp(PIN_CONTROL_UP);
+static Button btnDown(PIN_CONTROL_DOWN);
+static Button btnLeft(PIN_CONTROL_LEFT);
+static Button btnRight(PIN_CONTROL_RIGHT);
 } // namespace
 
 static bool setup() {
-  pinMode(PIN_CONTROL_UP, INPUT_PULLUP);
-  pinMode(PIN_CONTROL_DOWN, INPUT_PULLUP);
-  pinMode(PIN_CONTROL_LEFT, INPUT_PULLUP);
-  pinMode(PIN_CONTROL_RIGHT, INPUT_PULLUP);
+  btnUp.setup();
+  btnDown.setup();
+  btnLeft.setup();
+  btnRight.setup();
   return true;
 }
 
 static inline void loop() {
-  // TODO: Better throttling
-  if (millis() - lastCheckTime <= THROTTLE_INTERVAL)
-    return;
-
-  lastCheckTime = millis();
-
   auto control = screen_manager::controlScheme();
 
-  if (digitalRead(PIN_CONTROL_UP) == 0) {
-    control.up();
-    // audio::setVolume(audio::getVolume() + 0.02);
-    return;
-  }
+  if (btnUp.isPressed())
+    return control.up();
 
-  if (digitalRead(PIN_CONTROL_DOWN) == 0) {
-    control.down();
-    // audio::setVolume(audio::getVolume() - 0.02);
-    return;
-  }
+  if (btnDown.isPressed())
+    return control.down();
 
-  if (digitalRead(PIN_CONTROL_LEFT) == 0) {
-    control.left();
-    // music_loader::previousSong();
-    // audio::startPlaying();
-    return;
-  }
+  if (btnLeft.isPressed())
+    return control.left();
 
-  if (digitalRead(PIN_CONTROL_RIGHT) == 0) {
-    control.right();
-    // music_loader::nextSong();
-    // audio::startPlaying();
-    return;
-  }
+  if (btnRight.isPressed())
+    return control.right();
 }
-
 } // namespace controls

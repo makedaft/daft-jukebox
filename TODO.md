@@ -1,5 +1,5 @@
 # Current
-- [ ] Song list
+- [x] Song list
 - [ ] Options menus
 - [ ] Pause/Resume
 
