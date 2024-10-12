@@ -13,7 +13,7 @@
 #define PIN_SD_MISO 19
 #define PIN_SD_SCLK 18
 
-struct SongInfo {
+struct CurrentSongInfo {
   bool isAvailable;
   File file;
 };
@@ -26,7 +26,7 @@ struct FileInfo {
 
 namespace music_loader {
 namespace {
-static SongInfo currentSongInfo = {.isAvailable = false};
+static CurrentSongInfo currentSongInfo = {.isAvailable = false};
 static SongQueue currentQueue;
 } // namespace
 
@@ -73,7 +73,7 @@ static void nextSong() { currentQueue.next(); }
 
 static void previousSong() { currentQueue.previous(); }
 
-static SongInfo &currentSong() { return currentSongInfo; }
+static CurrentSongInfo &currentSong() { return currentSongInfo; }
 
 static void loadDirIntoQueue(String dirPath, boolean append = false) {
   dirPath = dirPath.isEmpty() ? "/" : dirPath;

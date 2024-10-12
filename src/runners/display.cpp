@@ -3,10 +3,15 @@
 #include <Adafruit_ST7735.h>
 #include <Arduino.h>
 #include <SPI.h>
+// #include <muHeavy8ptBold.h>
+#include <memory>
 #include <muMatrix8ptRegular.h>
 #include <vector>
 
-#include "runners/music_loader.cpp"
+#include "lib/logger.cpp"
+#include "runners/screen_manager.cpp"
+#include "ui/SongListScreen.cpp"
+#include "ui/_screen.cpp"
 
 #define TFT_CS 4    // CS
 #define TFT_DC 12   // AO
@@ -15,7 +20,7 @@
 #define TFT_SCLK 18 // SCK
 
 #define FONT muMatrix8ptRegular
-#define FONT_BASELINE 7
+#define FONT_HEIGHT 8
 
 namespace display {
 static Adafruit_ST7735 tft(TFT_CS, TFT_DC, TFT_RST);
@@ -34,19 +39,11 @@ static bool setup() {
   tft.setCursor(10, 20);
   tft.print("Owyn");
 
-  auto songFiles = music_loader::listDirectory("/");
-
-  int i = 0;
-  for (auto &song : songFiles) {
-    tft.setTextSize(1);
-    tft.setCursor(10, 40 + i * 20);
-    tft.print(song.path + (song.isDir ? "/" : ""));
-    i++;
-  }
+  screen_manager::openScreen(new ui::SongListScreen(tft, "/"));
 
   return true;
 }
 
-static inline void loop() {}
+static inline void loop() { screen_manager::render(); }
 
 } // namespace display

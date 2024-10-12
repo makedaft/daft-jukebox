@@ -35,7 +35,7 @@ static bool setup(void) {
   if (!mp3AudioStream.begin())
     return false;
 
-  volume.setVolume(0.7); // TODO: what todo
+  volume.setVolume(1.0);
 
   return true;
 }
@@ -51,6 +51,7 @@ static void playMp3(const char *filePath) {
 
 static void startPlaying() {
   audio::playMp3(music_loader::getSongPath().c_str());
+  delay(200); // TODO: Maybe?
 }
 
 static inline void loop() {
