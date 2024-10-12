@@ -6,11 +6,14 @@
 #include <functional>
 #include <vector>
 
+#include "lib/logger.cpp"
 #include "ui/_screen.cpp"
 
 #define FONT_HEIGHT 8
 namespace ui {
 template <typename OptionType> class OptionsMenu {
+  Adafruit_SPITFT *drawCtx;
+
 public:
   unsigned int highlightedIndex = 0;
   unsigned int prevHighlightedIndex = 1;
@@ -18,13 +21,14 @@ public:
   ControlScheme controlScheme;
 
   virtual void onSelectOption(OptionType option) = 0;
+  virtual void onGoBack() = 0;
   virtual String getOptionText(OptionType option) = 0;
 
-  OptionsMenu() {
+  OptionsMenu(Adafruit_SPITFT &drawCtx) {
+    this->drawCtx = &drawCtx;
     this->controlScheme.up = std::bind(&OptionsMenu::highlightPrevious, this);
     this->controlScheme.down = std::bind(&OptionsMenu::highlightNext, this);
-    this->controlScheme.left =
-        std::bind(&OptionsMenu::selectHighlightedOption, this);
+    this->controlScheme.left = std::bind(&OptionsMenu::goBack, this);
     this->controlScheme.right =
         std::bind(&OptionsMenu::selectHighlightedOption, this);
   }
@@ -33,7 +37,7 @@ public:
     return this->highlightedIndex != this->prevHighlightedIndex;
   }
 
-  void render(Adafruit_SPITFT *drawCtx) {
+  void render() {
     this->prevHighlightedIndex = this->highlightedIndex;
 
     int padx = 6;
@@ -44,18 +48,19 @@ public:
     auto size = options.size();
     unsigned int y = 30;
 
-    drawCtx->setTextSize(1);
-    drawCtx->setTextWrap(false);
+    this->drawCtx->setTextSize(1);
+    this->drawCtx->setTextWrap(false);
     for (int i = selectedIndex - 2; i < selectedIndex + 3; i++) {
       int index = i < 0 ? size + i : i % size;
       auto option = options[index];
+      auto highlighted = selectedIndex == i;
 
-      drawCtx->fillRect(0, y, drawCtx->width(), y + option_height,
-                        selectedIndex == index ? 0xFFFF : 0x0000);
-      drawCtx->setTextColor(selectedIndex == index ? 0x0000 : 0xFFFF);
+      this->drawCtx->fillRect(0, y, this->drawCtx->width(), y + option_height,
+                              highlighted ? 0xFFFF : 0x0000);
+      this->drawCtx->setTextColor(highlighted ? 0x0000 : 0xFFFF);
 
-      drawCtx->setCursor(padx, y + (option_height + FONT_HEIGHT) / 2);
-      drawCtx->print(this->getOptionText(option));
+      this->drawCtx->setCursor(padx, y + (option_height + FONT_HEIGHT) / 2);
+      this->drawCtx->print(this->getOptionText(option));
       y += option_height;
     }
   }
@@ -63,6 +68,8 @@ public:
   void selectHighlightedOption() {
     this->onSelectOption(this->getHighlightedOption());
   }
+
+  void goBack() { this->onGoBack(); }
 
   void highlightNext() {
     this->highlightedIndex =

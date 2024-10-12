@@ -13,12 +13,7 @@ struct ControlScheme {
 class Screen {
 private:
   virtual void renderScreen() = 0;
-  virtual boolean shouldRender() = 0;
-
-protected:
-  Adafruit_SPITFT *drawCtx;
-
-  Screen(Adafruit_SPITFT &drawCtx) { this->drawCtx = &drawCtx; }
+  virtual bool shouldRender() = 0;
 
 public:
   virtual ControlScheme controlScheme() = 0;
