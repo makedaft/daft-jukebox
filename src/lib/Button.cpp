@@ -1,6 +1,8 @@
 #pragma once
 #include "esp32-hal-gpio.h"
 
+#include "lib/logger.cpp"
+
 #define THROTTLE_INTERVAL 100
 
 class Button {

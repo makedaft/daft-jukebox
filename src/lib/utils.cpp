@@ -16,7 +16,9 @@ namespace utils {
 static bool preventLooping = false;
 static bool skipLoop() { return preventLooping; }
 
-static void printDirectory(File dir, int numTabs) {
+static void noop() {}
+
+static void printDirectory(File dir, int numTabs = 2) {
   while (true) {
     File entry = dir.openNextFile();
 
@@ -25,13 +27,13 @@ static void printDirectory(File dir, int numTabs) {
     }
 
     for (uint8_t i = 0; i < numTabs; i++) {
-      logger::printf("\t");
+      logger::printf(" ");
     }
 
-    logger::printf(entry.name());
+    logger::printf("/%s", entry.name());
 
     if (entry.isDirectory()) {
-      logger::printf("/\n");
+      logger::msg("/");
       printDirectory(entry, numTabs + 1);
     } else {
       logger::printf("\t\t%d\n", entry.size());
@@ -39,7 +41,5 @@ static void printDirectory(File dir, int numTabs) {
 
     entry.close();
   }
-
-  logger::printf("\n");
 }
 } // namespace utils

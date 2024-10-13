@@ -5,10 +5,10 @@
 
 #include "lib/logger.cpp"
 #include "lib/utils.cpp"
-#include "runners/audio.cpp"
-#include "runners/controls.cpp"
-#include "runners/display.cpp"
-#include "runners/music_loader.cpp"
+#include "runners/audio.h"
+#include "runners/controls.h"
+#include "runners/display.h"
+#include "runners/music_loader.h"
 
 void setup(void) {
   Serial.begin(BAUD_RATE);
@@ -37,7 +37,6 @@ void loop() {
   if (utils::skipLoop())
     return;
 
-  music_loader::loop();
   audio::loop();
   controls::loop();
   display::loop();
