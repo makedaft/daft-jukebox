@@ -7,6 +7,7 @@
 #include "lib/display.h"
 #include "lib/logger.cpp"
 #include "runners/music_loader.h"
+#include "ui/_screen.h"
 #include "ui/components/OptionsMenu.h"
 
 namespace ui {
@@ -25,8 +26,8 @@ OptionsMenu<OptionType>::OptionsMenu(Adafruit_SPITFT &drawCtx) {
 }
 
 template <typename OptionType> long OptionsMenu<OptionType>::dependencies() {
-  // TODO: Include header text in dependencies
-  return this->highlightedIndex;
+  auto header = this->getHeaderText(this->getHighlightedOption());
+  return STRING_HASH(header.c_str()) * 100 + this->highlightedIndex;
 }
 
 template <typename OptionType> void OptionsMenu<OptionType>::render() {

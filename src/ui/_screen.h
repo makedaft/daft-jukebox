@@ -5,6 +5,8 @@
 
 #include "lib/utils.cpp"
 
+#define STRING_HASH(str) std::hash<std::string>{}(std::string(str))
+
 namespace ui {
 struct ControlScheme {
   std::function<void()> up = &utils::noop;

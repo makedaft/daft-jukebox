@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include <cstdint>
 #include <functional>
+#include <string>
 
 #include "lib/display.h"
 #include "lib/logger.cpp"
@@ -27,6 +28,8 @@ void HomeScreen::renderScreen() {
   int16_t w = display::tft.width();
   int16_t h = display::tft.height();
 
+  display::tft.fillScreen(0x0000);
+
   auto songPath = music_loader::getSongPath();
   display::tft.setTextColor(0xFFFF);
   display::tft.setTextSize(1);
@@ -45,7 +48,11 @@ void HomeScreen::renderScreen() {
                             0x0000);
 }
 
-long HomeScreen::dependencies() { return this->firstRender; }
+long HomeScreen::dependencies() {
+  // TODO: Memoize hashed value
+  return STRING_HASH(music_loader::getSongPath().c_str()) * 10 +
+         this->firstRender;
+}
 
 void HomeScreen::listFiles() {
   screen_manager::openScreen(new SongListScreen("/"));
