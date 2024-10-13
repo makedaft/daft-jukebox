@@ -1,4 +1,3 @@
-#pragma once
 #include <Adafruit_GFX.h>
 #include <Adafruit_SPITFT.h>
 #include <Adafruit_ST7735.h>
@@ -25,13 +24,11 @@ OptionsMenu<OptionType>::OptionsMenu(Adafruit_SPITFT &drawCtx) {
       std::bind(&OptionsMenu::selectHighlightedOption, this);
 }
 
-template <typename OptionType> bool OptionsMenu<OptionType>::shouldRender() {
-  return this->highlightedIndex != this->prevHighlightedIndex;
+template <typename OptionType> long OptionsMenu<OptionType>::dependencies() {
+  return this->highlightedIndex;
 }
 
 template <typename OptionType> void OptionsMenu<OptionType>::render() {
-  this->prevHighlightedIndex = this->highlightedIndex;
-
   int padx = 6;
   int option_height = 20;
 

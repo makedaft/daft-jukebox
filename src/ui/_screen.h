@@ -1,5 +1,6 @@
 #pragma once
 #include <Adafruit_SPITFT.h>
+#include <climits>
 #include <functional>
 
 #include "lib/utils.cpp"
@@ -16,9 +17,13 @@ struct ControlScheme {
 class Screen {
 private:
   Adafruit_SPITFT *ctx;
+  long previousDependency = LONG_MIN;
 
   virtual void renderScreen() = 0;
-  virtual bool shouldRender() = 0;
+  virtual long dependencies() = 0;
+
+protected:
+  bool firstRender = true;
 
 public:
   virtual ControlScheme controlScheme() = 0;

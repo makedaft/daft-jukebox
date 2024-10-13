@@ -7,12 +7,10 @@
 
 namespace ui {
 class HomeScreen : public ui::Screen {
-  bool _rendered = false;
-
   void renderScreen();
-  bool shouldRender();
-  void listFiles();
+  long dependencies();
 
+  void listFiles();
   void nextSong();
   void previousSong();
 

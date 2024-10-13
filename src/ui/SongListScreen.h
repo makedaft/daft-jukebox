@@ -9,7 +9,7 @@ class SongListScreen : public ui::Screen {
   ui::component::SongList *optionsMenu;
 
   void renderScreen();
-  bool shouldRender();
+  long dependencies();
 
 public:
   SongListScreen(const char *dir);

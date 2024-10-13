@@ -1,14 +1,11 @@
-#pragma once
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7735.h>
 #include <Arduino.h>
 #include <cstdint>
 #include <functional>
-#include <vector>
 
 #include "lib/display.h"
 #include "lib/logger.cpp"
-#include "lib/utils.cpp"
 #include "runners/audio.h"
 #include "runners/music_loader.h"
 #include "runners/screen_manager.h"
@@ -27,8 +24,6 @@ HomeScreen::HomeScreen() {
 }
 
 void HomeScreen::renderScreen() {
-  this->_rendered = true;
-
   int16_t w = display::tft.width();
   int16_t h = display::tft.height();
 
@@ -50,7 +45,7 @@ void HomeScreen::renderScreen() {
                             0x0000);
 }
 
-bool HomeScreen::shouldRender() { return !this->_rendered; }
+long HomeScreen::dependencies() { return this->firstRender; }
 
 void HomeScreen::listFiles() {
   screen_manager::openScreen(new SongListScreen("/"));

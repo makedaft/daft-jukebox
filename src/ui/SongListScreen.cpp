@@ -1,4 +1,3 @@
-#pragma once
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7735.h>
 #include <Arduino.h>
@@ -15,8 +14,8 @@
 namespace ui {
 void SongListScreen::renderScreen() { this->optionsMenu->render(); }
 
-bool SongListScreen::shouldRender() {
-  return this->optionsMenu->shouldRender();
+long SongListScreen::dependencies() {
+  return this->optionsMenu->dependencies();
 }
 
 SongListScreen::SongListScreen(const char *dir) {

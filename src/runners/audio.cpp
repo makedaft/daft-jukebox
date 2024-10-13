@@ -1,4 +1,3 @@
-#pragma once
 #include <Arduino.h>
 #include <AudioTools.h>
 #include <AudioTools/AudioCodecs/CodecMP3Helix.h>

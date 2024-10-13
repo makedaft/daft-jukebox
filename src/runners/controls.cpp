@@ -1,4 +1,3 @@
-#pragma once
 #include <esp32-hal-gpio.h>
 #include <esp32-hal.h>
 

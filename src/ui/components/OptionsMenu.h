@@ -3,7 +3,6 @@
 #include <Adafruit_SPITFT.h>
 #include <Adafruit_ST7735.h>
 #include <Arduino.h>
-#include <vector>
 
 #include "ui/_screen.h"
 
@@ -14,7 +13,6 @@ template <typename OptionType> class OptionsMenu {
 
 public:
   unsigned int highlightedIndex = 0;
-  unsigned int prevHighlightedIndex = 1;
   std::vector<OptionType> currentOptions;
   ControlScheme controlScheme;
 
@@ -25,7 +23,7 @@ public:
 
   OptionsMenu(Adafruit_SPITFT &drawCtx);
 
-  bool shouldRender();
+  long dependencies();
   void render();
   void selectHighlightedOption();
   void goBack();
