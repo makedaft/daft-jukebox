@@ -49,7 +49,10 @@ void SongList::onGoBack() {
 }
 
 String SongList::getOptionText(OptionType option) {
-  return option.path + (option.isDir ? "/" : "");
+  auto filename = new String(option.path);
+  filename->replace(this->dir, "");
+  filename->replace("/", "");
+  return (option.isDir ? "> " : "") + *filename;
 }
 
 String SongList::getHeaderText(OptionType option) { return this->dir; }

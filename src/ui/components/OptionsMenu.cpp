@@ -25,6 +25,7 @@ OptionsMenu<OptionType>::OptionsMenu(Adafruit_SPITFT &drawCtx) {
 }
 
 template <typename OptionType> long OptionsMenu<OptionType>::dependencies() {
+  // TODO: Include header text in dependencies
   return this->highlightedIndex;
 }
 
