@@ -13,11 +13,7 @@
 #include "ui/SongListScreen.h"
 
 namespace ui {
-void SongListScreen::renderScreen() {
-  display::tft.setCursor(50, 50);
-  display::tft.print("Yaho");
-  this->optionsMenu->render();
-}
+void SongListScreen::renderScreen() { this->optionsMenu->render(); }
 
 bool SongListScreen::shouldRender() {
   return this->optionsMenu->shouldRender();

@@ -21,6 +21,7 @@ public:
   virtual void onSelectOption(OptionType option) = 0;
   virtual void onGoBack() = 0;
   virtual String getOptionText(OptionType option) = 0;
+  virtual String getHeaderText(OptionType option) = 0;
 
   OptionsMenu(Adafruit_SPITFT &drawCtx);
 

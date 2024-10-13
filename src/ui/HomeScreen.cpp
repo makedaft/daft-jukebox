@@ -31,18 +31,23 @@ void HomeScreen::renderScreen() {
 
   int16_t w = display::tft.width();
   int16_t h = display::tft.height();
-  display::tft.fillScreen(0x0000);
 
-  display::tft.fillCircle(w / 2, h / 2, 50, 0xFFFF);
-  int x = w / 2;
-  int y = h / 2;
-  display::tft.fillTriangle(x + 20, y, x - 20, y - 20, x - 20, y + 20, 0x0000);
-
+  auto songPath = music_loader::getSongPath();
   display::tft.setTextColor(0xFFFF);
-  display::tft.setTextSize(2);
+  display::tft.setTextSize(1);
   display::tft.setTextWrap(true);
-  display::tft.setCursor(10, 20);
-  display::tft.print("Owyn home");
+  display::tft.setCursor(6, FONT_HEIGHT + 10);
+  display::tft.print(songPath);
+
+  int sc = 24;
+  int st = sc * 95 / 100;
+  int x = w / 2;
+  int y = h / 2 - 20;
+  int xt = x - st / 3 - 2;
+  int yt = y;
+  display::tft.fillCircle(x, y, sc, 0xFFFF);
+  display::tft.fillTriangle(xt + st, yt, xt, yt - st / 2, xt, yt + st / 2,
+                            0x0000);
 }
 
 bool HomeScreen::shouldRender() { return !this->_rendered; }

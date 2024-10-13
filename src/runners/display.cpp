@@ -6,6 +6,7 @@
 
 #include "lib/display.h"
 #include "runners/screen_manager.h"
+#include "ui/HomeScreen.h"
 #include "ui/SongListScreen.h"
 
 #include "runners/display.h"
@@ -18,10 +19,7 @@ bool setup() {
   display::tft.setTextColor(0xFFFF);
   display::tft.setTextSize(1);
 
-  display::tft.setCursor(8, FONT_HEIGHT + 5);
-  display::tft.print("Owyn");
-
-  screen_manager::openScreen(new ui::SongListScreen("/"));
+  screen_manager::openScreen(new ui::HomeScreen());
 
   return true;
 }

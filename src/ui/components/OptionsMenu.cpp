@@ -40,20 +40,32 @@ template <typename OptionType> void OptionsMenu<OptionType>::render() {
   auto size = options.size();
   unsigned int y = 20;
 
+  uint16_t w = this->drawCtx->width();
+
+  // Header
+  this->drawCtx->setTextColor(0x5aeb);
+  this->drawCtx->setCursor(6, FONT_HEIGHT + 6);
+  this->drawCtx->print(this->getHeaderText(options[selectedIndex]));
+  this->drawCtx->drawFastHLine(0, y - 1, w, 0xb596);
+
   this->drawCtx->setTextSize(1);
   this->drawCtx->setTextWrap(false);
 
-  for (int i = selectedIndex - 2; i < selectedIndex + 4; i++) {
+  for (int i = selectedIndex - 2; i < selectedIndex + 6; i++) {
     int index = i < 0 ? size + i : i % size;
     auto option = options[index];
     auto highlighted = selectedIndex == i;
 
-    this->drawCtx->fillRect(0, y, this->drawCtx->width(), y + option_height,
+    this->drawCtx->fillRect(0, y, w, y + option_height,
                             highlighted ? 0xFFFF : 0x0000);
     this->drawCtx->setTextColor(highlighted ? 0x0000 : 0xFFFF);
 
     this->drawCtx->setCursor(padx, y + (option_height + FONT_HEIGHT) / 2);
     this->drawCtx->print(this->getOptionText(option));
+
+    if (index == 0) {
+      this->drawCtx->drawFastHLine(0, y, w, 0x5aeb);
+    }
 
     y += option_height;
   }

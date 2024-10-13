@@ -45,12 +45,14 @@ void SongList::onGoBack() {
     auto parentIndex = dir.lastIndexOf('/');
     auto dirPath = dir.substring(0, parentIndex);
     dirPath = dirPath.isEmpty() ? "/" : dirPath;
-    // screen_manager::openScreen(new SongListScreen(dirPath.c_str()));
+    screen_manager::openScreen(new SongListScreen(dirPath.c_str()));
   }
 }
 
 String SongList::getOptionText(OptionType option) {
   return option.path + (option.isDir ? "/" : "");
 }
+
+String SongList::getHeaderText(OptionType option) { return this->dir; }
 } // namespace component
 } // namespace ui

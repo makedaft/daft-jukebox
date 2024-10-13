@@ -1,5 +1,6 @@
 # Current
 - [x] Song list
+- [x] Home screen
 - [ ] Options menus
 - [ ] Pause/Resume
 

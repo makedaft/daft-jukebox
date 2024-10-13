@@ -21,6 +21,7 @@ public:
   void onSelectOption(OptionType option);
   void onGoBack();
   String getOptionText(OptionType option);
+  String getHeaderText(OptionType option);
 };
 } // namespace component
 } // namespace ui

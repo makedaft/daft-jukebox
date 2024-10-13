@@ -4,7 +4,8 @@
 
 #include <ui/_screen.h>
 
-#include "screen_manager.h"
+#include "lib/display.h"
+#include "runners/screen_manager.h"
 #include "ui/HomeScreen.h"
 #include "ui/SongListScreen.h"
 
@@ -14,6 +15,7 @@ static std::unique_ptr<ui::Screen> currentScreen;
 }
 
 void openScreen(ui::Screen *t) {
+  display::tft.fillScreen(0x0000);
   auto p = std::unique_ptr<ui::Screen>(t);
   currentScreen = std::move(p);
 }
