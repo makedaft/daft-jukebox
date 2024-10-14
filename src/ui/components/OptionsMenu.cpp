@@ -6,6 +6,7 @@
 
 #include "lib/display.h"
 #include "lib/logger.cpp"
+#include "lib/utils.h"
 #include "runners/music_loader.h"
 #include "ui/_screen.h"
 #include "ui/components/OptionsMenu.h"
@@ -27,7 +28,7 @@ OptionsMenu<OptionType>::OptionsMenu(Adafruit_SPITFT &drawCtx) {
 
 template <typename OptionType> long OptionsMenu<OptionType>::dependencies() {
   auto header = this->getHeaderText(this->getHighlightedOption());
-  return STRING_HASH(header.c_str()) * 100 + this->highlightedIndex;
+  return utils::stringHash(header.c_str()) * 100 + this->highlightedIndex;
 }
 
 template <typename OptionType> void OptionsMenu<OptionType>::render() {

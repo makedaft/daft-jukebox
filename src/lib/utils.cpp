@@ -1,24 +1,22 @@
-#pragma once
 #include <Arduino.h>
 #include <FS.h>
 #include <SD.h>
 #include <SPI.h>
+#include <functional>
+#include <string>
 
 #include "lib/logger.cpp"
 
-#define GUARD(expr)                                                            \
-  if (!expr) {                                                                 \
-    utils::preventLooping = true;                                              \
-    return;                                                                    \
-  }
+#include "lib/utils.h"
 
 namespace utils {
-static bool preventLooping = false;
-static bool skipLoop() { return preventLooping; }
+bool preventLooping = false;
 
-static void noop() {}
+bool skipLoop() { return preventLooping; }
 
-static void printDirectory(File dir, int numTabs = 2) {
+void noop() {}
+
+void printDirectory(File dir, int numTabs) {
   while (true) {
     File entry = dir.openNextFile();
 
@@ -41,5 +39,9 @@ static void printDirectory(File dir, int numTabs = 2) {
 
     entry.close();
   }
+}
+
+long stringHash(const char *str) {
+  return std::hash<std::string>{}(std::string(str));
 }
 } // namespace utils

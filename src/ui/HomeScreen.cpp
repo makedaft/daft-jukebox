@@ -3,10 +3,10 @@
 #include <Arduino.h>
 #include <cstdint>
 #include <functional>
-#include <string>
 
 #include "lib/display.h"
 #include "lib/logger.cpp"
+#include "lib/utils.h"
 #include "runners/audio.h"
 #include "runners/music_loader.h"
 #include "runners/screen_manager.h"
@@ -50,7 +50,7 @@ void HomeScreen::renderScreen() {
 
 long HomeScreen::dependencies() {
   // TODO: Memoize hashed value
-  return STRING_HASH(music_loader::getSongPath().c_str()) * 10 +
+  return utils::stringHash(music_loader::getSongPath().c_str()) * 10 +
          this->firstRender;
 }
 

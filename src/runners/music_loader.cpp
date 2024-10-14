@@ -5,7 +5,7 @@
 
 #include "lib/SongQueue.cpp"
 #include "lib/logger.cpp"
-#include "lib/utils.cpp"
+#include "lib/utils.h"
 
 #include "runners/music_loader.h"
 

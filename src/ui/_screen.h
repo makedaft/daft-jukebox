@@ -3,9 +3,7 @@
 #include <climits>
 #include <functional>
 
-#include "lib/utils.cpp"
-
-#define STRING_HASH(str) std::hash<std::string>{}(std::string(str))
+#include "lib/utils.h"
 
 namespace ui {
 struct ControlScheme {

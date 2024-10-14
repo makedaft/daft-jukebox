@@ -4,7 +4,7 @@
 #include <cstdlib>
 
 #include "lib/logger.cpp"
-#include "lib/utils.cpp"
+#include "lib/utils.h"
 #include "runners/audio.h"
 #include "runners/controls.h"
 #include "runners/display.h"
