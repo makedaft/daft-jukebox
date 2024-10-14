@@ -29,23 +29,46 @@ void HomeScreen::renderScreen() {
   int16_t h = display::tft.height();
 
   display::tft.fillScreen(0x0000);
-
-  auto songPath = music_loader::getSongPath();
-  display::tft.setTextColor(0xFFFF);
   display::tft.setTextSize(1);
-  display::tft.setTextWrap(true);
-  display::tft.setCursor(6, FONT_HEIGHT + 10);
-  display::tft.print(songPath);
+  display::tft.setTextWrap(false);
 
-  int sc = 24;
+  auto songPath = new String(music_loader::getSongPath());
+  auto lastSlashI = songPath->lastIndexOf('/');
+  auto dirName = songPath->substring(0, lastSlashI) + "/";
+  auto songName = songPath->substring(lastSlashI + 1);
+  // Dir name
+  display::tft.setTextColor(0x49d4);
+  display::tft.setCursor(4, FONT_HEIGHT + 8);
+  display::tft.print(dirName);
+  // Name
+  display::tft.setTextColor(0xFFFF);
+  display::tft.setCursor(4, FONT_HEIGHT + 8 + FONT_HEIGHT + 4);
+  display::tft.print(songName);
+
+  int sc = 18;
   int st = sc * 95 / 100;
-  int x = w / 2;
-  int y = h / 2 - 20;
-  int xt = x - st / 3 - 2;
-  int yt = y;
-  display::tft.fillCircle(x, y, sc, 0xFFFF);
+  int xc = w / 2;
+  int yc = 53;
+  int xt = xc - st / 3 - 2;
+  int yt = yc;
+  display::tft.fillCircle(xc, yc, sc, 0xFFFF);
   display::tft.fillTriangle(xt + st, yt, xt, yt - st / 2, xt, yt + st / 2,
                             0x0000);
+  // display::tft.fillCircle(w / 4, yc, sc / 2, 0xDDDD);
+  // display::tft.drawLine(w / 4 + st / 2, yt, w / 4, yt - st / 4, 0x0000);
+  // display::tft.drawLine(w / 4 + st / 2, yt, w / 4, yt + st / 4, 0x0000);
+  // display::tft.fillCircle(w * 3 / 4, yc, sc / 2, 0xDDDD);
+  // display::tft.drawLine(w * 3 / 4 + st / 2, yt, w * 3 / 4, yt - st / 4,
+  // 0x0000);
+  // display::tft.drawLine(w * 3 / 4 + st / 2, yt, w * 3 / 4, yt + st /
+  // 4, 0x0000);
+
+  int bar_y = h / 2;
+  int bar_lines = 4;
+  int padx = 2;
+  display::tft.fillRect(padx + 1, bar_y + 1, (w * 6 / 10) - 2 * padx - 1,
+                        bar_lines, 0x49d4);
+  display::tft.drawRect(padx, bar_y, w - 2 * padx, bar_lines + 2, 0x2947);
 }
 
 long HomeScreen::dependencies() {

@@ -3,6 +3,7 @@
 #include <Adafruit_SPITFT.h>
 #include <Adafruit_ST7735.h>
 #include <Arduino.h>
+#include <cstdint>
 
 #include "ui/_screen.h"
 
@@ -19,6 +20,7 @@ public:
   virtual void onSelectOption(OptionType option) = 0;
   virtual void onGoBack() = 0;
   virtual String getOptionText(OptionType option) = 0;
+  virtual uint16_t getOptionColor(OptionType option, bool isHighlighted) = 0;
   virtual String getHeaderText(OptionType option) = 0;
 
   OptionsMenu(Adafruit_SPITFT &drawCtx);

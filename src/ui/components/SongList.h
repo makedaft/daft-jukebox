@@ -22,6 +22,7 @@ public:
   void onGoBack();
   String getOptionText(OptionType option);
   String getHeaderText(OptionType option);
+  uint16_t getOptionColor(OptionType option, bool highlighted);
 };
 } // namespace component
 } // namespace ui

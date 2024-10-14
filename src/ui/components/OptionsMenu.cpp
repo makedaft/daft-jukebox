@@ -43,7 +43,7 @@ template <typename OptionType> void OptionsMenu<OptionType>::render() {
   uint16_t w = this->drawCtx->width();
 
   // Header
-  this->drawCtx->setTextColor(0x5aeb);
+  this->drawCtx->setTextColor(0x2947);
   this->drawCtx->setCursor(6, FONT_HEIGHT + 6);
   this->drawCtx->print(this->getHeaderText(options[selectedIndex]));
   this->drawCtx->drawFastHLine(0, y - 1, w, 0xb596);
@@ -58,13 +58,13 @@ template <typename OptionType> void OptionsMenu<OptionType>::render() {
 
     this->drawCtx->fillRect(0, y, w, y + option_height,
                             highlighted ? 0xFFFF : 0x0000);
-    this->drawCtx->setTextColor(highlighted ? 0x0000 : 0xFFFF);
+    this->drawCtx->setTextColor(this->getOptionColor(option, highlighted));
 
     this->drawCtx->setCursor(padx, y + (option_height + FONT_HEIGHT) / 2);
     this->drawCtx->print(this->getOptionText(option));
 
     if (index == 0) {
-      this->drawCtx->drawFastHLine(0, y, w, 0x5aeb);
+      this->drawCtx->drawFastHLine(0, y, w, 0x2947);
     }
 
     y += option_height;

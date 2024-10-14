@@ -22,10 +22,7 @@ ui::component::SongList::SongList(Adafruit_SPITFT &drawCtx)
   this->controlScheme.action1 = std::bind(&SongList::openOptions, this);
 }
 
-void SongList::openOptions() {
-  logger::msg("Opening options menu");
-  // screen_manager::openScreen(new SongOptionsScreen(this->dir));
-}
+void SongList::openOptions() { logger::debug("TODO: Opening options menu"); }
 
 void SongList::onSelectOption(OptionType option) {
   if (option.isDir) {
@@ -37,7 +34,7 @@ void SongList::onSelectOption(OptionType option) {
 }
 
 void SongList::onGoBack() {
-  logger::msg("go back");
+  logger::debug("go back");
   if (dir == "/") {
     screen_manager::openScreen(new HomeScreen());
   } else {
@@ -52,7 +49,15 @@ String SongList::getOptionText(OptionType option) {
   auto filename = new String(option.path);
   filename->replace(this->dir, "");
   filename->replace("/", "");
-  return (option.isDir ? "> " : "") + *filename;
+  return (option.isDir ? ">  " : "") + *filename;
+}
+
+uint16_t SongList::getOptionColor(OptionType option, bool highlighted) {
+  if (option.isDir) {
+    return 0x49d4;
+  }
+
+  return highlighted ? 0x0000 : 0xFFFF;
 }
 
 String SongList::getHeaderText(OptionType option) { return this->dir; }
