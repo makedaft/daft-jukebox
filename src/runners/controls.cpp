@@ -6,19 +6,13 @@
 
 #include "controls.h"
 
-#define PIN_CONTROL_UP 21
-#define PIN_CONTROL_DOWN 27
-#define PIN_CONTROL_LEFT 32
-#define PIN_CONTROL_RIGHT 33
-#define PIN_CONTROL_ACTION1 35
-
 namespace controls {
 namespace {
 static Button btnUp(PIN_CONTROL_UP);
 static Button btnDown(PIN_CONTROL_DOWN);
 static Button btnLeft(PIN_CONTROL_LEFT);
 static Button btnRight(PIN_CONTROL_RIGHT);
-// static Button btnAction1(PIN_CONTROL_ACTION1);
+static Button btnAction1(PIN_CONTROL_ACTION1);
 } // namespace
 
 bool setup() {
@@ -26,7 +20,7 @@ bool setup() {
   btnDown.setup();
   btnLeft.setup();
   btnRight.setup();
-  // btnAction1.setup();
+  btnAction1.setup();
   return true;
 }
 
@@ -43,7 +37,7 @@ void loop() {
   if (btnRight.isPressed())
     return screen_manager::controlScheme().right();
 
-  // if (btnAction1.isPressed())
-  //   return screen_manager::controlScheme().action1();
+  if (btnAction1.isPressed())
+    return screen_manager::controlScheme().action1();
 }
 } // namespace controls

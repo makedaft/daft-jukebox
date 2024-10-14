@@ -17,11 +17,11 @@
 
 namespace ui {
 HomeScreen::HomeScreen() {
-  this->control.up = std::bind(&HomeScreen::listFiles, this);
+  this->control.up = std::bind(&HomeScreen::playPause, this);
   this->control.down = std::bind(&HomeScreen::listFiles, this);
   this->control.left = std::bind(&HomeScreen::previousSong, this);
   this->control.right = std::bind(&HomeScreen::nextSong, this);
-  this->control.action1 = std::bind(&HomeScreen::listFiles, this);
+  this->control.action1 = std::bind(&HomeScreen::playPause, this);
 }
 
 void HomeScreen::renderScreen() {
@@ -89,6 +89,8 @@ void HomeScreen::previousSong() {
   music_loader::previousSong();
   audio::startPlaying();
 }
+
+void HomeScreen::playPause() { audio::pauseToggle(); }
 
 ui::ControlScheme HomeScreen::controlScheme() { return this->control; }
 } // namespace ui

@@ -11,6 +11,7 @@ extern void loop();
 
 extern void playMp3(const char *filePath);
 extern void startPlaying();
+extern void pauseToggle();
 
 extern float getVolume();
 extern void setVolume(float v);

@@ -13,6 +13,7 @@ namespace audio {
 namespace {
 static I2SStream i2s;
 static VolumeStream volume(i2s);
+// static LogarithmicVolumeControl lvc(0.1);
 static EncodedAudioStream mp3AudioStream(&volume, new MP3DecoderHelix());
 static StreamCopy copier;
 
@@ -32,6 +33,7 @@ bool setup(void) {
     return false;
 
   volume.setVolume(1.0);
+  // volume.setVolumeControl(lvc);
 
   return true;
 }
@@ -55,9 +57,15 @@ void playMp3(const char *filePath) {
   music_loader::loadSong(filePath);
 
   copier.begin(mp3AudioStream, music_loader::currentSong().file);
+  copier.setActive(true);
 }
 
 void startPlaying() { audio::playMp3(music_loader::getSongPath().c_str()); }
+
+void pauseToggle() {
+  logger::debug(copier.isActive() ? "Pausing" : "Resuming");
+  copier.setActive(!copier.isActive());
+}
 
 float getVolume() { return volume.volume(); }
 

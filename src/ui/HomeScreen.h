@@ -13,6 +13,7 @@ class HomeScreen : public ui::Screen {
   void listFiles();
   void nextSong();
   void previousSong();
+  void playPause();
 
 public:
   ControlScheme control;
