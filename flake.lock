@@ -18,6 +18,22 @@
         "type": "github"
       }
     },
+    "gfx-font-converter-source": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1728434574,
+        "narHash": "sha256-v4IiXoGPO+dmqqczOH0DP3dVQLZMx8eQFv0ty5NXJcA=",
+        "owner": "adafruit",
+        "repo": "Adafruit-GFX-Library",
+        "rev": "d4720987895bc49bdb38beb9d3e288de8bd59078",
+        "type": "github"
+      },
+      "original": {
+        "owner": "adafruit",
+        "repo": "Adafruit-GFX-Library",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1727634051,
@@ -37,6 +53,7 @@
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
+        "gfx-font-converter-source": "gfx-font-converter-source",
         "nixpkgs": "nixpkgs"
       }
     },
