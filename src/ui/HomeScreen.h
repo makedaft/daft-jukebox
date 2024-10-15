@@ -7,7 +7,7 @@
 
 namespace ui {
 class HomeScreen : public ui::Screen {
-  void renderScreen();
+  void render();
   long dependencies();
 
   void listFiles();

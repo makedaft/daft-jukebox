@@ -19,7 +19,7 @@ void openScreen(ui::Screen *t) {
   currentScreen = std::move(p);
 }
 
-void render() { currentScreen->render(); }
+void loop() { currentScreen->run(); }
 
 ui::ControlScheme controlScheme() { return currentScreen->controlScheme(); }
 } // namespace screen_manager

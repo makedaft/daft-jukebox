@@ -23,5 +23,5 @@ bool setup() {
   return true;
 }
 
-void loop() { screen_manager::render(); }
+void loop() { screen_manager::loop(); }
 } // namespace display

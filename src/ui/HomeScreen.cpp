@@ -24,7 +24,7 @@ HomeScreen::HomeScreen() {
   this->control.action1 = std::bind(&HomeScreen::playPause, this);
 }
 
-void HomeScreen::renderScreen() {
+void HomeScreen::render() {
   int16_t w = display::tft.width();
   int16_t h = display::tft.height();
 
@@ -36,6 +36,7 @@ void HomeScreen::renderScreen() {
   auto lastSlashI = songPath->lastIndexOf('/');
   auto dirName = songPath->substring(0, lastSlashI) + "/";
   auto songName = songPath->substring(lastSlashI + 1);
+  songName.replace(".mp3", "");
   // Dir name
   display::tft.setTextColor(0x49d4);
   display::tft.setCursor(4, FONT_HEIGHT + 8);

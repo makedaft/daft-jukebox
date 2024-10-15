@@ -12,7 +12,7 @@
 #include "ui/SongListScreen.h"
 
 namespace ui {
-void SongListScreen::renderScreen() { this->optionsMenu->render(); }
+void SongListScreen::render() { this->optionsMenu->render(); }
 
 long SongListScreen::dependencies() {
   return this->optionsMenu->dependencies();

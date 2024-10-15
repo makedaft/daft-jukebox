@@ -8,7 +8,7 @@ namespace ui {
 class SongListScreen : public ui::Screen {
   ui::component::SongList *optionsMenu;
 
-  void renderScreen();
+  void render();
   long dependencies();
 
 public:

@@ -1,7 +1,7 @@
 #include <esp32-hal-gpio.h>
 #include <esp32-hal.h>
 
-#include "lib/Button.cpp"
+#include "lib/Button.h"
 #include "runners/screen_manager.h"
 
 #include "controls.h"

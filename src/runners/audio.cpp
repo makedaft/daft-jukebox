@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <AudioTools.h>
 #include <AudioTools/AudioCodecs/CodecMP3Helix.h>
+// #include <AudioTools/Concurrency/All.h>
 #include <FS.h>
 #include <SD.h>
 
@@ -13,9 +14,10 @@ namespace audio {
 namespace {
 static I2SStream i2s;
 static VolumeStream volume(i2s);
-// static LogarithmicVolumeControl lvc(0.1);
+static LogarithmicVolumeControl logVolumeControl(0.1);
 static EncodedAudioStream mp3AudioStream(&volume, new MP3DecoderHelix());
 static StreamCopy copier;
+// static Task task("copierTask", 10000, 1, 0);
 
 I2SConfig config = i2s.defaultConfig(TX_MODE);
 } // namespace
@@ -33,7 +35,7 @@ bool setup(void) {
     return false;
 
   volume.setVolume(1.0);
-  // volume.setVolumeControl(lvc);
+  volume.setVolumeControl(logVolumeControl);
 
   return true;
 }
@@ -50,7 +52,7 @@ void loop() {
   }
 }
 
-void playMp3(const char *filePath) {
+void playSongFile(const char *filePath) {
   logger::printf("Playing %s\n", filePath);
 
   copier.end();
@@ -60,7 +62,9 @@ void playMp3(const char *filePath) {
   copier.setActive(true);
 }
 
-void startPlaying() { audio::playMp3(music_loader::getSongPath().c_str()); }
+void startPlaying() {
+  audio::playSongFile(music_loader::getSongPath().c_str());
+}
 
 void pauseToggle() {
   logger::debug(copier.isActive() ? "Pausing" : "Resuming");

@@ -3,6 +3,7 @@
 #include <climits>
 #include <functional>
 
+#include "lib/Renderable.h"
 #include "lib/utils.h"
 
 namespace ui {
@@ -14,20 +15,11 @@ struct ControlScheme {
   std::function<void()> action1 = &utils::noop;
 };
 
-class Screen {
+class Screen : public Renderable {
 private:
   Adafruit_SPITFT *ctx;
-  long previousDependency = LONG_MIN;
-
-  virtual void renderScreen() = 0;
-  virtual long dependencies() = 0;
-
-protected:
-  bool firstRender = true;
 
 public:
   virtual ControlScheme controlScheme() = 0;
-
-  void render();
 };
 } // namespace ui
