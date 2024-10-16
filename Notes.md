@@ -10,11 +10,15 @@
 - pin 34, 35, 36, 39 are input only so they don't have internal pullup/down resistors
 
 ## MAX98357A digital-to-analog converter notes
-For stereo, the SD (shutdown mode) pin on MAX98357A needs to be:
-- greater than 1.4V for **left channel**
-- between 0.77V to 1.4V for **right channel**
-- (not important) less than 0.77V but >0 for `(R+L)/2` mono
-- (not important) grounded for shutdown
+- Use 5v Vin
+- For stereo, the SD (shutdown mode) pin on MAX98357A needs to be:
+  - greater than 1.4V for **left channel**
+  - between 0.77V to 1.4V for **right channel**
+  - (not important) less than 0.77V but >0 for `(R+L)/2` mono
+  - (not important) grounded for shutdown
+- Left channel dac: SD connected to 3.3V
+- Right channel dac: SD voltage divider (3.3V) with R1=110K, R2=100K worked for me (may need to adjust)
+
 
 ## MOD100717 microsd card module notes
 - Requires 5V on Vcc (was a bit sensitive to voltage changes)
