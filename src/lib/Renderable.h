@@ -4,12 +4,12 @@
 class Renderable {
   long previousDependency = LONG_MIN;
 
-  virtual long dependencies() = 0;
   virtual void render() = 0;
 
 protected:
   bool firstRender = true;
 
 public:
+  virtual long dependencies() = 0;
   void run();
 };

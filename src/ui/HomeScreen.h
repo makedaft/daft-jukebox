@@ -4,9 +4,12 @@
 #include <Arduino.h>
 
 #include "ui/_screen.h"
+#include "ui/components/ProgressBar.h"
 
 namespace ui {
 class HomeScreen : public ui::Screen {
+  ::ui::component::ProgressBar *progressBar;
+
   void render();
   long dependencies();
 

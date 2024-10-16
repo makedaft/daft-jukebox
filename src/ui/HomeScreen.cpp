@@ -14,6 +14,7 @@
 
 #include "ui/HomeScreen.h"
 #include "ui/SongListScreen.h"
+#include "ui/components/ProgressBar.h"
 
 namespace ui {
 HomeScreen::HomeScreen() {
@@ -22,6 +23,12 @@ HomeScreen::HomeScreen() {
   this->control.left = std::bind(&HomeScreen::previousSong, this);
   this->control.right = std::bind(&HomeScreen::nextSong, this);
   this->control.action1 = std::bind(&HomeScreen::playPause, this);
+
+  auto w = display::tft.width();
+  auto h = display::tft.height();
+  int padx = 3;
+  this->progressBar =
+      new ui::component::ProgressBar(padx, h / 2, w - 2 * padx, 6);
 }
 
 void HomeScreen::render() {
@@ -64,18 +71,14 @@ void HomeScreen::render() {
   // display::tft.drawLine(w * 3 / 4 + st / 2, yt, w * 3 / 4, yt + st /
   // 4, 0x0000);
 
-  int bar_y = h / 2;
-  int bar_lines = 4;
-  int padx = 2;
-  display::tft.fillRect(padx + 1, bar_y + 1, (w * 6 / 10) - 2 * padx - 1,
-                        bar_lines, 0x49d4);
-  display::tft.drawRect(padx, bar_y, w - 2 * padx, bar_lines + 2, 0x2947);
+  this->progressBar->setPercentage(60);
+  this->progressBar->run();
 }
 
 long HomeScreen::dependencies() {
   // TODO: Memoize hashed value
-  return utils::stringHash(music_loader::getSongPath().c_str()) * 10 +
-         this->firstRender;
+  return utils::stringHash(music_loader::getSongPath().c_str()) * 100 +
+         this->progressBar->dependencies();
 }
 
 void HomeScreen::listFiles() {
