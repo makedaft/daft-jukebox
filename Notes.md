@@ -18,7 +18,7 @@
   - (not important) grounded for shutdown
 - Left channel dac: SD connected to 3.3V
 - Right channel dac: SD voltage divider (3.3V) with R1=110K, R2=100K worked for me (may need to adjust)
-
+- Audio jack: omtp (Ground-Mic-R-L) vs ctia (Mic-Ground-R-L)
 
 ## MOD100717 microsd card module notes
 - Requires 5V on Vcc (was a bit sensitive to voltage changes)

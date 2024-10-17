@@ -14,6 +14,7 @@
 
 #include "ui/HomeScreen.h"
 #include "ui/SongListScreen.h"
+#include "ui/components/PlayState.h"
 #include "ui/components/ProgressBar.h"
 
 namespace ui {
@@ -27,58 +28,39 @@ HomeScreen::HomeScreen() {
   auto w = display::tft.width();
   auto h = display::tft.height();
   int padx = 3;
-  this->progressBar =
-      new ui::component::ProgressBar(padx, h / 2, w - 2 * padx, 6);
+  this->progressBar = new ui::component::ProgressBar(&display::tft, padx, h / 2,
+                                                     w - 2 * padx, 6);
+
+  this->playState = new ui::component::PlayState(&display::tft, w / 2, 53);
 }
 
 void HomeScreen::render() {
-  int16_t w = display::tft.width();
-  int16_t h = display::tft.height();
-
-  display::tft.fillScreen(0x0000);
-  display::tft.setTextSize(1);
+  display::tft.fillRect(0, 0, display::tft.width(),
+                        FONT_HEIGHT + 8 + FONT_HEIGHT + 4, 0x0000);
+  auto songInfo = music_loader::currentSong();
   display::tft.setTextWrap(false);
-
-  auto songPath = new String(music_loader::getSongPath());
-  auto lastSlashI = songPath->lastIndexOf('/');
-  auto dirName = songPath->substring(0, lastSlashI) + "/";
-  auto songName = songPath->substring(lastSlashI + 1);
-  songName.replace(".mp3", "");
+  display::tft.setTextSize(1);
   // Dir name
   display::tft.setTextColor(0x49d4);
   display::tft.setCursor(4, FONT_HEIGHT + 8);
-  display::tft.print(dirName);
+  display::tft.print(songInfo.dirPath);
   // Name
   display::tft.setTextColor(0xFFFF);
   display::tft.setCursor(4, FONT_HEIGHT + 8 + FONT_HEIGHT + 4);
-  display::tft.print(songName);
+  display::tft.print(songInfo.name);
 
-  int sc = 18;
-  int st = sc * 95 / 100;
-  int xc = w / 2;
-  int yc = 53;
-  int xt = xc - st / 3 - 2;
-  int yt = yc;
-  display::tft.fillCircle(xc, yc, sc, 0xFFFF);
-  display::tft.fillTriangle(xt + st, yt, xt, yt - st / 2, xt, yt + st / 2,
-                            0x0000);
-  // display::tft.fillCircle(w / 4, yc, sc / 2, 0xDDDD);
-  // display::tft.drawLine(w / 4 + st / 2, yt, w / 4, yt - st / 4, 0x0000);
-  // display::tft.drawLine(w / 4 + st / 2, yt, w / 4, yt + st / 4, 0x0000);
-  // display::tft.fillCircle(w * 3 / 4, yc, sc / 2, 0xDDDD);
-  // display::tft.drawLine(w * 3 / 4 + st / 2, yt, w * 3 / 4, yt - st / 4,
-  // 0x0000);
-  // display::tft.drawLine(w * 3 / 4 + st / 2, yt, w * 3 / 4, yt + st /
-  // 4, 0x0000);
+  this->playState->setPlayState(!audio::isPaused());
+  this->playState->run();
 
   this->progressBar->setPercentage(60);
   this->progressBar->run();
 }
 
 long HomeScreen::dependencies() {
-  // TODO: Memoize hashed value
-  return utils::stringHash(music_loader::getSongPath().c_str()) * 100 +
-         this->progressBar->dependencies();
+  return (utils::stringHash(music_loader::getSongPath().c_str()) * 100 +
+          this->progressBar->dependencies()) *
+             10 +
+         this->playState->dependencies() + audio::isPaused();
 }
 
 void HomeScreen::listFiles() {

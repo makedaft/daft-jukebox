@@ -3,11 +3,9 @@
 
 class Renderable {
   long previousDependency = LONG_MIN;
+  bool firstRender = true;
 
   virtual void render() = 0;
-
-protected:
-  bool firstRender = true;
 
 public:
   virtual long dependencies() = 0;

@@ -3,10 +3,13 @@
 #include "Renderable.h"
 
 void Renderable::run() {
-  if (this->firstRender || this->dependencies() == this->previousDependency)
+  auto dep = this->dependencies();
+  if (!this->firstRender && dep == this->previousDependency)
     return;
   if (this->firstRender)
     this->firstRender = false;
+
+  this->previousDependency = dep;
 
   this->render();
 }

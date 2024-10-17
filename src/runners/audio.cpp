@@ -15,7 +15,8 @@ namespace {
 static I2SStream i2s;
 static VolumeStream volume(i2s);
 static LogarithmicVolumeControl logVolumeControl(0.1);
-static EncodedAudioStream mp3AudioStream(&volume, new MP3DecoderHelix());
+static MP3DecoderHelix decoder;
+static EncodedAudioStream mp3AudioStream(&volume, &decoder);
 static StreamCopy copier;
 // static Task task("copierTask", 10000, 1, 0);
 
@@ -41,7 +42,7 @@ bool setup(void) {
 }
 
 void loop() {
-  if (copier.isActive()) {
+  if (!isPaused()) {
     if (copier.available() > 0) {
       copier.copy();
     } else {
@@ -70,6 +71,8 @@ void pauseToggle() {
   logger::debug(copier.isActive() ? "Pausing" : "Resuming");
   copier.setActive(!copier.isActive());
 }
+
+bool isPaused() { return !copier.isActive(); }
 
 float getVolume() { return volume.volume(); }
 

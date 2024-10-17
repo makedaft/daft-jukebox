@@ -29,7 +29,7 @@
             '';
           };
         in pkgs.buildFHSUserEnv {
-          name = "owyn-jukebox-env";
+          name = "jukebox-env";
           targetPkgs = pkgs: with pkgs; [
             (hiPrio gcc)
             platformio-core

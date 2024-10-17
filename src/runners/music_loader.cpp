@@ -43,9 +43,17 @@ bool setup() {
 void loadSong(const char *filePath) {
   if (currentSongInfo.isAvailable) {
     currentSongInfo.isAvailable = false;
+    currentSongInfo.name = "-";
     currentSongInfo.file.close();
   }
 
+  auto songPath = new String(filePath);
+  auto lastSlashI = songPath->lastIndexOf('/');
+  auto dirPath = songPath->substring(0, lastSlashI) + "/";
+  auto songName = songPath->substring(lastSlashI + 1);
+  songName.replace(".mp3", "");
+  currentSongInfo.name = songName;
+  currentSongInfo.dirPath = dirPath;
   currentSongInfo.file = SD.open(filePath, FILE_READ, false);
   currentSongInfo.isAvailable = true;
 }

@@ -3,6 +3,7 @@
 #include "Adafruit_SPITFT.h"
 
 #include "ProgressBar.h"
+#include "lib/logger.cpp"
 
 namespace ui {
 namespace component {
@@ -10,7 +11,9 @@ void ProgressBar::setPercentage(int percentage) {
   this->percentage = percentage;
 }
 
-ProgressBar::ProgressBar(int x, int y, int width, int height) {
+ProgressBar::ProgressBar(Adafruit_SPITFT *ctx, int x, int y, int width,
+                         int height) {
+  this->ctx = ctx;
   this->x = x;
   this->y = y;
   this->width = width;

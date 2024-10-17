@@ -5,19 +5,21 @@
 
 namespace ui {
 namespace component {
-class ProgressBar : public Renderable {
+class PlayState : public Renderable {
   Adafruit_SPITFT *ctx;
-  int percentage = 0;
-  int width, height;
+  bool playing = false;
   int x, y;
 
 public:
-  void setPercentage(int percentage);
-  ProgressBar(Adafruit_SPITFT *ctx, int x, int y, int width, int height);
+  void setPlayState(bool playing);
+  PlayState(Adafruit_SPITFT *ctx, int x, int y);
   long dependencies();
 
 private:
   void render();
+  void renderPlay();
+  void renderNext();
+  void renderPrev();
 };
 } // namespace component
 } // namespace ui

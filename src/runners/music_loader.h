@@ -14,6 +14,8 @@
 struct CurrentSongInfo {
   bool isAvailable;
   File file;
+  String name;
+  String dirPath;
 };
 
 struct FileInfo {
