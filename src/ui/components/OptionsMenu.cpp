@@ -102,5 +102,11 @@ OptionType OptionsMenu<OptionType>::getHighlightedOption() {
   auto opts = this->currentOptions;
   return opts[this->highlightedIndex];
 }
+template <typename OptionType>
+uint16_t OptionsMenu<OptionType>::getOptionColor(OptionType option,
+                                                 bool highlighted) {
+  return highlighted ? 0x0000 : 0xFFFF;
+}
+
 } // namespace component
 } // namespace ui

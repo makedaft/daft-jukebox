@@ -10,6 +10,7 @@
 #include "runners/audio.h"
 #include "runners/music_loader.h"
 #include "runners/screen_manager.h"
+#include "ui/QueueScreen.h"
 #include "ui/_screen.h"
 
 #include "ui/HomeScreen.h"
@@ -19,8 +20,8 @@
 
 namespace ui {
 HomeScreen::HomeScreen() {
-  this->control.up = std::bind(&HomeScreen::playPause, this);
-  this->control.down = std::bind(&HomeScreen::listFiles, this);
+  this->control.up = std::bind(&HomeScreen::listFiles, this);
+  this->control.down = std::bind(&HomeScreen::openQueue, this);
   this->control.left = std::bind(&HomeScreen::previousSong, this);
   this->control.right = std::bind(&HomeScreen::nextSong, this);
   this->control.action1 = std::bind(&HomeScreen::playPause, this);
@@ -66,6 +67,7 @@ long HomeScreen::dependencies() {
 void HomeScreen::listFiles() {
   screen_manager::openScreen(new SongListScreen("/"));
 }
+void HomeScreen::openQueue() { screen_manager::openScreen(new QueueScreen()); }
 
 void HomeScreen::nextSong() {
   music_loader::nextSong();

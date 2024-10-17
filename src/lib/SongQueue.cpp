@@ -12,10 +12,11 @@ struct QueueItem {
 };
 
 class SongQueue {
-  std::vector<struct QueueItem> queue;
   int currentIndex = 0;
 
 public:
+  std::vector<struct QueueItem> queue;
+
   // void append(const char *path) { this->queue.push_back({.path = path}); }
   // void remove(int index) { this->queue.erase(this->queue.begin() + index); }
 

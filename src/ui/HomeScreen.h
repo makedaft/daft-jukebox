@@ -16,6 +16,7 @@ class HomeScreen : public ui::Screen {
   long dependencies();
 
   void listFiles();
+  void openQueue();
   void nextSong();
   void previousSong();
   void playPause();
