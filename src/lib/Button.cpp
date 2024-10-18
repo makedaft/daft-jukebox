@@ -15,7 +15,7 @@ bool Button::isPressed() {
 
   this->lastCheckTime = millis();
 
-  bool active = digitalRead(this->pin) == 0;
+  bool active = this->active();
   bool pressed = active && !this->prevActive;
 
   this->prevActive = active;

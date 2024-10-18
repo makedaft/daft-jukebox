@@ -5,8 +5,6 @@
 
 #include "lib/display.h"
 #include "runners/screen_manager.h"
-#include "ui/HomeScreen.h"
-#include "ui/SongListScreen.h"
 
 #include "runners/display.h"
 
@@ -18,7 +16,7 @@ bool setup() {
   display::tft.setTextColor(0xFFFF);
   display::tft.setTextSize(1);
 
-  screen_manager::openScreen(new ui::HomeScreen());
+  screen_manager::setup();
 
   return true;
 }

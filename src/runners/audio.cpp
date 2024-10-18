@@ -5,7 +5,7 @@
 #include <FS.h>
 #include <SD.h>
 
-#include "lib/logger.cpp"
+#include "lib/logger.h"
 #include "runners/music_loader.h"
 
 #include "audio.h"

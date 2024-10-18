@@ -4,7 +4,7 @@
 #include <SPI.h>
 
 #include "lib/display.h"
-#include "lib/logger.cpp"
+#include "lib/logger.h"
 #include "runners/music_loader.h"
 #include "ui/_screen.h"
 #include "ui/components/SongList.h"

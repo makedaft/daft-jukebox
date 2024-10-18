@@ -1,6 +1,9 @@
 build:
   pio run;
 
+check:
+  pio check --skip-packages
+
 upload:
   pio run -t upload
 

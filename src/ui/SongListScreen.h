@@ -8,12 +8,12 @@ namespace ui {
 class SongListScreen : public ui::Screen {
   ui::component::SongList *optionsMenu;
 
-  void render();
-  long dependencies();
+  void render() override;
+  long dependencies() override;
 
 public:
   SongListScreen(const char *dir);
 
-  ui::ControlScheme controlScheme();
+  ui::ControlScheme controlScheme() override;
 };
 } // namespace ui

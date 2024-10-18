@@ -5,11 +5,12 @@
 #include <Arduino.h>
 #include <cstdint>
 
+#include "lib/Renderable.h"
 #include "ui/_screen.h"
 
 namespace ui {
 namespace component {
-template <typename OptionType> class OptionsMenu {
+template <typename OptionType> class OptionsMenu : Renderable {
   Adafruit_SPITFT *drawCtx;
 
 public:
@@ -25,8 +26,8 @@ public:
 
   OptionsMenu(Adafruit_SPITFT &drawCtx);
 
-  long dependencies();
-  void render();
+  virtual long dependencies() override;
+  void render() override;
   void selectHighlightedOption();
   void goBack();
   void highlightNext();

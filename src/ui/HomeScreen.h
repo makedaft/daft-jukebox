@@ -12,8 +12,8 @@ class HomeScreen : public ui::Screen {
   ::ui::component::ProgressBar *progressBar;
   ::ui::component::PlayState *playState;
 
-  void render();
-  long dependencies();
+  void render() override;
+  long dependencies() override;
 
   void listFiles();
   void openQueue();
@@ -23,7 +23,7 @@ class HomeScreen : public ui::Screen {
 
 public:
   ControlScheme control;
-  ui::ControlScheme controlScheme();
+  ui::ControlScheme controlScheme() override;
 
   HomeScreen();
 };

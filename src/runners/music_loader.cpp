@@ -3,8 +3,8 @@
 #include <SD.h>
 #include <vector>
 
-#include "lib/SongQueue.cpp"
-#include "lib/logger.cpp"
+#include "lib/SongQueue.h"
+#include "lib/logger.h"
 #include "lib/utils.h"
 
 #include "runners/music_loader.h"

@@ -4,7 +4,7 @@
 #include <SPI.h>
 
 #include "lib/display.h"
-#include "lib/logger.cpp"
+#include "lib/logger.h"
 #include "runners/music_loader.h"
 #include "ui/_screen.h"
 #include "ui/components/QueueList.h"
@@ -19,7 +19,7 @@ long QueueScreen::dependencies() { return this->optionsMenu->dependencies(); }
 QueueScreen::QueueScreen() {
   this->optionsMenu = new ui::component::QueueList(display::tft);
 
-  for (auto &item : music_loader::currentQueue.queue) {
+  for (const auto &item : music_loader::currentQueue.queue) {
     this->optionsMenu->currentOptions.push_back({.path = item.path});
   }
 }

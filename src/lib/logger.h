@@ -2,7 +2,7 @@
 #include <HardwareSerial.h>
 
 namespace logger {
-static void setup() { Serial.begin(BAUD_RATE); }
+static inline void setup() { Serial.begin(BAUD_RATE); }
 
 static inline void msg(const char *msg) { Serial.println(msg); }
 

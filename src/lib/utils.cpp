@@ -5,7 +5,7 @@
 #include <functional>
 #include <string>
 
-#include "lib/logger.cpp"
+#include "lib/logger.h"
 
 #include "lib/utils.h"
 

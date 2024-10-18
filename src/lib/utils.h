@@ -4,7 +4,7 @@
 #include <SD.h>
 #include <SPI.h>
 
-#include "lib/logger.cpp"
+#include "lib/logger.h"
 
 #define GUARD(expr)                                                            \
   if (!expr) {                                                                 \

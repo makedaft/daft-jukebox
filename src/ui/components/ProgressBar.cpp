@@ -3,7 +3,7 @@
 #include "Adafruit_SPITFT.h"
 
 #include "ProgressBar.h"
-#include "lib/logger.cpp"
+#include "lib/logger.h"
 
 namespace ui {
 namespace component {

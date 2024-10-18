@@ -6,6 +6,7 @@
 namespace screen_manager {
 void openScreen(ui::Screen *t);
 
+extern void setup();
 extern void loop();
 
 extern ui::ControlScheme controlScheme();

@@ -4,7 +4,7 @@
 #include <SD.h>
 #include <vector>
 
-#include "lib/SongQueue.cpp"
+#include "lib/SongQueue.h"
 
 #define PIN_SD_CS 5 // chip select
 #define PIN_SD_MOSI 23

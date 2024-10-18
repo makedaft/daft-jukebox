@@ -18,11 +18,11 @@ public:
   SongList(Adafruit_SPITFT &drawCtx);
 
   void openOptions();
-  void onSelectOption(OptionType option);
-  void onGoBack();
-  String getOptionText(OptionType option);
-  String getHeaderText(OptionType option);
-  uint16_t getOptionColor(OptionType option, bool highlighted);
+  void onSelectOption(OptionType option) override;
+  void onGoBack() override;
+  String getOptionText(OptionType option) override;
+  String getHeaderText(OptionType option) override;
+  uint16_t getOptionColor(OptionType option, bool highlighted) override;
 };
 } // namespace component
 } // namespace ui

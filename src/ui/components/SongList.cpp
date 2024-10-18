@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include <functional>
 
-#include "lib/logger.cpp"
+#include "lib/logger.h"
 #include "runners/audio.h"
 #include "runners/music_loader.h"
 #include "runners/screen_manager.h"
@@ -15,8 +15,6 @@
 
 namespace ui {
 namespace component {
-typedef FileInfo OptionType;
-
 ui::component::SongList::SongList(Adafruit_SPITFT &drawCtx)
     : ui::component::OptionsMenu<OptionType>(drawCtx) {
   this->controlScheme.action1 = std::bind(&SongList::openOptions, this);

@@ -13,13 +13,13 @@ class PlayState : public Renderable {
 public:
   void setPlayState(bool playing);
   PlayState(Adafruit_SPITFT *ctx, int x, int y);
-  long dependencies();
+  long dependencies() override;
 
 private:
-  void render();
+  void render() override;
   void renderPlay();
-  void renderNext();
-  void renderPrev();
+  // void renderNext();
+  // void renderPrev();
 };
 } // namespace component
 } // namespace ui

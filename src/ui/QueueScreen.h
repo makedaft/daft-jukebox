@@ -8,12 +8,12 @@ namespace ui {
 class QueueScreen : public ui::Screen {
   ::ui::component::QueueList *optionsMenu;
 
-  void render();
-  long dependencies();
+  void render() override;
+  long dependencies() override;
 
 public:
   QueueScreen();
 
-  ui::ControlScheme controlScheme();
+  ui::ControlScheme controlScheme() override;
 };
 } // namespace ui

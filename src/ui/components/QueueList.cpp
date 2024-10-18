@@ -5,7 +5,7 @@
 #include <string>
 
 #include "WString.h"
-#include "lib/logger.cpp"
+#include "lib/logger.h"
 #include "lib/utils.h"
 #include "runners/audio.h"
 #include "runners/music_loader.h"

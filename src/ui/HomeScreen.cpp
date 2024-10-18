@@ -5,7 +5,7 @@
 #include <functional>
 
 #include "lib/display.h"
-#include "lib/logger.cpp"
+#include "lib/logger.h"
 #include "lib/utils.h"
 #include "runners/audio.h"
 #include "runners/music_loader.h"

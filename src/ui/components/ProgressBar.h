@@ -14,10 +14,10 @@ class ProgressBar : public Renderable {
 public:
   void setPercentage(int percentage);
   ProgressBar(Adafruit_SPITFT *ctx, int x, int y, int width, int height);
-  long dependencies();
+  long dependencies() override;
 
 private:
-  void render();
+  void render() override;
 };
 } // namespace component
 } // namespace ui
