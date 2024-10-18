@@ -12,7 +12,8 @@ struct ControlScheme {
   std::function<void()> down = &utils::noop;
   std::function<void()> left = &utils::noop;
   std::function<void()> right = &utils::noop;
-  std::function<void()> action1 = &utils::noop;
+  std::function<void()> action = &utils::noop;
+  std::function<void()> lock = &utils::noop;
 };
 
 class Screen : public Renderable {

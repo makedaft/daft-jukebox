@@ -17,7 +17,7 @@ namespace ui {
 namespace component {
 ui::component::SongList::SongList(Adafruit_SPITFT &drawCtx)
     : ui::component::OptionsMenu<OptionType>(drawCtx) {
-  this->controlScheme.action1 = std::bind(&SongList::openOptions, this);
+  this->controlScheme.action = std::bind(&SongList::openOptions, this);
 }
 
 void SongList::openOptions() { logger::debug("TODO: Opening options menu"); }

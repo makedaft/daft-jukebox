@@ -1,12 +1,12 @@
 #pragma once
 
-#define THROTTLE_INTERVAL 80
+#define DOUBLE_PRESS_INTERVAL 300
 
 class Button {
 private:
   int pin;
-  int lastCheckTime = 0;
   int prevActive = 0;
+  long lastPressTime = 0;
 
   bool active();
 
@@ -14,6 +14,8 @@ public:
   Button(int pin);
 
   void setup();
+  void loop();
 
   bool isPressed();
+  short doublePressCount();
 };
