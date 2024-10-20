@@ -10,4 +10,5 @@ class Renderable {
 public:
   virtual long dependencies() = 0;
   void run();
+  void rerender();
 };

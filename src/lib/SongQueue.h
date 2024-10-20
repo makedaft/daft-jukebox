@@ -14,8 +14,9 @@ class SongQueue {
 public:
   std::vector<struct QueueItem> queue;
 
-  // void append(const char *path);
-  // void remove(int index);
+  void append(const char *path);
+  void insertNext(const char *path);
+  void remove(int index);
 
   String current();
 

@@ -4,12 +4,20 @@
 #include <vector>
 
 #include "lib/SongQueue.h"
+#include "lib/logger.h"
 
-// void SongQueue::append(const char *path) { this->queue.push_back({.path =
-// path}); }
-//
-// void SongQueue::remove(int index) { this->queue.erase(this->queue.begin() +
-// index); }
+void SongQueue::append(const char *path) {
+  this->queue.push_back({.path = path});
+}
+
+void SongQueue::insertNext(const char *path) {
+  logger::printf("Inert nesxt: %s\n", path);
+  this->queue.insert(this->queue.begin() + currentIndex + 1, {.path = path});
+}
+
+void SongQueue::remove(int index) {
+  this->queue.erase(this->queue.begin() + index);
+}
 
 String SongQueue::current() { return this->queue[currentIndex].path; }
 

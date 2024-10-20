@@ -4,7 +4,8 @@
 #include "ui/_screen.h"
 
 namespace screen_manager {
-void openScreen(ui::Screen *t);
+extern void openScreen(ui::Screen *t);
+extern void goBack();
 
 extern void setup();
 extern void loop();

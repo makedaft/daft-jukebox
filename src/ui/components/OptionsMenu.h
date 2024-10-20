@@ -16,13 +16,13 @@ template <typename OptionType> class OptionsMenu : Renderable {
 public:
   unsigned int highlightedIndex = 0;
   std::vector<OptionType> currentOptions;
-  ControlScheme controlScheme;
+  ControlScheme controls;
 
   virtual void onSelectOption(OptionType option) = 0;
   virtual void onGoBack() = 0;
   virtual String getOptionText(OptionType option) = 0;
-  virtual uint16_t getOptionColor(OptionType option, bool isHighlighted) = 0;
   virtual String getHeaderText(OptionType option) = 0;
+  virtual uint16_t getOptionColor(OptionType option, bool isHighlighted);
 
   OptionsMenu(Adafruit_SPITFT &drawCtx);
 

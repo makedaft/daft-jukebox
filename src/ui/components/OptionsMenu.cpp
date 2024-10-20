@@ -8,6 +8,7 @@
 #include "lib/logger.h"
 #include "lib/utils.h"
 #include "runners/music_loader.h"
+#include "ui/OptionsMenuScreen.h"
 #include "ui/_screen.h"
 #include "ui/components/OptionsMenu.h"
 
@@ -15,15 +16,15 @@ namespace ui {
 namespace component {
 // Explicit template instantiation
 template class OptionsMenu<FileInfo>;
+template class OptionsMenu<ui::MenuOption>;
 
 template <typename OptionType>
 OptionsMenu<OptionType>::OptionsMenu(Adafruit_SPITFT &drawCtx) {
   this->drawCtx = &drawCtx;
-  this->controlScheme.up = std::bind(&OptionsMenu::highlightPrevious, this);
-  this->controlScheme.down = std::bind(&OptionsMenu::highlightNext, this);
-  this->controlScheme.left = std::bind(&OptionsMenu::goBack, this);
-  this->controlScheme.right =
-      std::bind(&OptionsMenu::selectHighlightedOption, this);
+  this->controls.up = std::bind(&OptionsMenu::highlightPrevious, this);
+  this->controls.down = std::bind(&OptionsMenu::highlightNext, this);
+  this->controls.left = std::bind(&OptionsMenu::goBack, this);
+  this->controls.right = std::bind(&OptionsMenu::selectHighlightedOption, this);
 }
 
 template <typename OptionType> long OptionsMenu<OptionType>::dependencies() {

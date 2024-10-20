@@ -4,7 +4,6 @@
 #include <SPI.h>
 
 #include "lib/display.h"
-#include "lib/logger.h"
 #include "runners/music_loader.h"
 #include "ui/_screen.h"
 #include "ui/components/SongList.h"
@@ -25,6 +24,6 @@ SongListScreen::SongListScreen(const char *dir) {
 }
 
 inline ui::ControlScheme SongListScreen::controlScheme() {
-  return this->optionsMenu->controlScheme;
+  return this->optionsMenu->controls;
 }
 } // namespace ui

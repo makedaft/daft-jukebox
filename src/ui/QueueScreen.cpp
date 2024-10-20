@@ -25,6 +25,6 @@ QueueScreen::QueueScreen() {
 }
 
 inline ui::ControlScheme QueueScreen::controlScheme() {
-  return this->optionsMenu->controlScheme;
+  return this->optionsMenu->controls;
 }
 } // namespace ui

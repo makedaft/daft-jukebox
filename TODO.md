@@ -6,8 +6,8 @@
 - [x] switch to 3.5mm jack
 - [x] Stereo with 2 MAX98357A
 - [x] Ability to lock controls on double press of action button
-- [ ] Options menus (song): Add song to queue, play next
-- [ ] Options menus (dir): Add dir to queue, Open dir, play dir (clear queue)
+- [x] Options menus (song): Add song to queue, play next
+- [x] Options menus (dir): Add dir to queue, Open dir, play dir (clear queue)
 - [ ] Symlink to files (for playlists)
 - [ ] Options menus (song): Add to playlist
 - [ ] Volume control pot
@@ -23,4 +23,5 @@
 
 # Strong maybe
 - [ ] Use freertos and move copier to its own task?
+- [ ] Save last queue, volume, etc to flash
 - [ ] Bluetooth for sending audio?

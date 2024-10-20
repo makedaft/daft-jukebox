@@ -20,7 +20,7 @@ namespace ui {
 namespace component {
 ui::component::QueueList::QueueList(Adafruit_SPITFT &drawCtx)
     : ui::component::OptionsMenu<OptionType>(drawCtx) {
-  this->controlScheme.action = std::bind(&QueueList::openOptions, this);
+  this->controls.action = std::bind(&QueueList::openOptions, this);
 }
 
 long QueueList::dependencies() {

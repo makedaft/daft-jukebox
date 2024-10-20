@@ -35,7 +35,7 @@ bool setup(void) {
   if (!mp3AudioStream.begin())
     return false;
 
-  volume.setVolume(1.0);
+  volume.setVolume(0.7);
   volume.setVolumeControl(logVolumeControl);
 
   return true;

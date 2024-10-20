@@ -8,6 +8,7 @@
 #include "runners/music_loader.h"
 #include "runners/screen_manager.h"
 #include "ui/HomeScreen.h"
+#include "ui/OptionsMenuScreen.h"
 #include "ui/SongListScreen.h"
 #include "ui/components/OptionsMenu.h"
 
@@ -17,10 +18,15 @@ namespace ui {
 namespace component {
 ui::component::SongList::SongList(Adafruit_SPITFT &drawCtx)
     : ui::component::OptionsMenu<OptionType>(drawCtx) {
-  this->controlScheme.action = std::bind(&SongList::openOptions, this);
+  this->controls.action = std::bind(&SongList::openOptions, this);
 }
 
-void SongList::openOptions() { logger::debug("TODO: Opening options menu"); }
+void SongList::openOptions() {
+  auto option = this->getHighlightedOption();
+  auto path = option.path.c_str();
+  logger::printf("Opening options menu for %s\n", path);
+  screen_manager::openScreen(new OptionsMenuScreen(path, option.isDir));
+}
 
 void SongList::onSelectOption(OptionType option) {
   if (option.isDir) {

@@ -13,3 +13,5 @@ void Renderable::run() {
 
   this->render();
 }
+
+void Renderable::rerender() { this->firstRender = true; }
