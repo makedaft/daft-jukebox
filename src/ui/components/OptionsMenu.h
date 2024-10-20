@@ -12,9 +12,9 @@ namespace ui {
 namespace component {
 template <typename OptionType> class OptionsMenu : Renderable {
   Adafruit_SPITFT *drawCtx;
+  unsigned int highlightedIndex = 0;
 
 public:
-  unsigned int highlightedIndex = 0;
   std::vector<OptionType> currentOptions;
   ControlScheme controls;
 
@@ -33,6 +33,7 @@ public:
   void highlightNext();
   void highlightPrevious();
   unsigned int getHighlightedIndex();
+  void setHighlightedIndex(unsigned int index);
   OptionType getHighlightedOption();
 };
 } // namespace component

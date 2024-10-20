@@ -9,7 +9,7 @@ struct QueueItem {
 };
 
 class SongQueue {
-  int currentIndex = 0;
+  unsigned int currentIndex = 0;
 
 public:
   std::vector<struct QueueItem> queue;
@@ -19,6 +19,7 @@ public:
   void remove(int index);
 
   String current();
+  unsigned int getCurrentIndex();
 
   void next();
 

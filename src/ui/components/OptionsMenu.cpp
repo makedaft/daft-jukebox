@@ -97,6 +97,10 @@ template <typename OptionType>
 unsigned int OptionsMenu<OptionType>::getHighlightedIndex() {
   return this->highlightedIndex;
 }
+template <typename OptionType>
+void OptionsMenu<OptionType>::setHighlightedIndex(unsigned int index) {
+  this->highlightedIndex = index;
+}
 
 template <typename OptionType>
 OptionType OptionsMenu<OptionType>::getHighlightedOption() {

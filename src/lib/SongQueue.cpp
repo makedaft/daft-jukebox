@@ -20,6 +20,7 @@ void SongQueue::remove(int index) {
 }
 
 String SongQueue::current() { return this->queue[currentIndex].path; }
+unsigned int SongQueue::getCurrentIndex() { return currentIndex; }
 
 void SongQueue::next() {
   currentIndex++;

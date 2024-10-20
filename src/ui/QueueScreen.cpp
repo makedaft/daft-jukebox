@@ -18,6 +18,8 @@ long QueueScreen::dependencies() { return this->optionsMenu->dependencies(); }
 
 QueueScreen::QueueScreen() {
   this->optionsMenu = new ui::component::QueueList(display::tft);
+  this->optionsMenu->setHighlightedIndex(
+      music_loader::currentQueue.getCurrentIndex());
 
   for (const auto &item : music_loader::currentQueue.queue) {
     this->optionsMenu->currentOptions.push_back({.path = item.path});
