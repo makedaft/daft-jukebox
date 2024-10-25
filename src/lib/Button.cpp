@@ -10,10 +10,10 @@ Button::Button(int pin) { this->pin = pin; }
 void Button::setup() { pinMode(this->pin, INPUT_PULLUP); }
 
 bool Button::isPressed() {
-  bool active = this->active();
-  bool pressed = active && !this->prevActive;
+  bool isActive = this->active();
+  bool pressed = isActive && !this->prevActive;
 
-  this->prevActive = active;
+  this->prevActive = isActive;
 
   return pressed;
 }
@@ -21,9 +21,9 @@ bool Button::isPressed() {
 void Button::loop() {}
 
 short Button::doublePressCount() {
-  bool active = this->active();
-  bool pressed = active && !this->prevActive;
-  this->prevActive = active;
+  bool isActive = this->active();
+  bool pressed = isActive && !this->prevActive;
+  this->prevActive = isActive;
 
   if (!pressed) {
     if (this->lastPressTime != 0 &&

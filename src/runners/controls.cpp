@@ -1,5 +1,10 @@
+#include "Arduino.h"
+#include "esp32-hal-adc.h"
+#include "esp32-hal-gpio.h"
 #include "lib/Button.h"
+#include "lib/display.h"
 #include "lib/logger.h"
+#include "runners/audio.h"
 #include "runners/screen_manager.h"
 
 #include "controls.h"
@@ -26,6 +31,10 @@ bool setup() {
   pinMode(PIN_CONTROL_VOLUME, INPUT);
   analogReadResolution(10);
 
+  // TODO: Temporary. Move display control somewhere else
+  pinMode(TFT_BACKLIGHT, OUTPUT);
+  display::setDisplayState(true);
+
   return true;
 }
 
@@ -34,6 +43,7 @@ void loop() {
   if (actionPressCount == 2) {
     isLocked = !isLocked; // Toggle lock
     logger::debug(isLocked ? "Locked" : "Unlocked");
+    display::setDisplayState(!isLocked);
     return screen_manager::controlScheme().lock();
   }
 

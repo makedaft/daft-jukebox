@@ -81,7 +81,6 @@ void pause() { copier.setActive(false); }
 float getVolume() { return volume.volume(); }
 
 void setVolume(float v) {
-  bool updated = false;
   v = constrain(v, 0.1, 1.);
 
   if (!volume.setVolume(v)) {

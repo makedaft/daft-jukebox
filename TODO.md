@@ -11,7 +11,7 @@
 - [x] Battery + charging with overcharge/overvolt protection (+ booster?)
 - [x] Options menus (queue): Play, Remove from queue, Clear queue
 - [x] Volume control pot
-- [ ] Lock: disable screen (backlight) and pause re-drawing
+- [x] Lock: disable screen (backlight) and pause re-drawing
 - [ ] Playlist files (.playlist -> list of absolute paths)
 - [ ] Options menus (song): Add to playlist
 
@@ -20,7 +20,7 @@
 - [ ] Empty queue crash
 - [ ] Invalid song crash (error handling: empty file, no file, etc)
 - [ ] Audio distortion when pressing button
-- [ ] Noise (need filter)
+- [ ] Minor noise issues (might need filter)
 
 # Next
 - [ ] Remove from playlist

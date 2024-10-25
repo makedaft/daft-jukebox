@@ -4,6 +4,7 @@
 #include <SPI.h>
 
 #include "lib/display.h"
+#include "runners/controls.h"
 #include "runners/screen_manager.h"
 
 #include "runners/display.h"
@@ -21,5 +22,10 @@ bool setup() {
   return true;
 }
 
-void loop() { screen_manager::loop(); }
+void loop() {
+  if (controls::isLocked)
+    return;
+
+  screen_manager::loop();
+}
 } // namespace display

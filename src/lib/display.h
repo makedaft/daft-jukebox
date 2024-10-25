@@ -10,10 +10,13 @@
 #define TFT_RST 13  // RESET
 #define TFT_MOSI 23 // SDA
 #define TFT_SCLK 18 // SCK
+#define TFT_BACKLIGHT 25
 
 #define FONT muMatrix8ptRegular
 #define FONT_HEIGHT 8
 
 namespace display {
 extern Adafruit_ST7735 tft;
+
+extern void setDisplayState(bool isOn);
 } // namespace display
