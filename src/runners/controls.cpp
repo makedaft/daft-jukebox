@@ -21,6 +21,11 @@ bool setup() {
   btnLeft.setup();
   btnRight.setup();
   btnAction.setup();
+
+  // Volume control setup
+  pinMode(PIN_CONTROL_VOLUME, INPUT);
+  analogReadResolution(10);
+
   return true;
 }
 
@@ -31,6 +36,9 @@ void loop() {
     logger::debug(isLocked ? "Locked" : "Unlocked");
     return screen_manager::controlScheme().lock();
   }
+
+  // Volume control
+  audio::setVolume(analogRead(PIN_CONTROL_VOLUME) / 1024.);
 
   // If controls are locked, don't do anything
   // until the lock is released by double press

@@ -5,6 +5,7 @@
 #define PIN_CONTROL_LEFT 32
 #define PIN_CONTROL_RIGHT 33
 #define PIN_CONTROL_ACTION 35
+#define PIN_CONTROL_VOLUME 34
 
 namespace controls {
 extern bool isLocked;

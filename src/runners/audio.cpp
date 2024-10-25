@@ -81,14 +81,14 @@ void pause() { copier.setActive(false); }
 float getVolume() { return volume.volume(); }
 
 void setVolume(float v) {
-  bool done = false;
-  if (v > 0 && v <= 1.0)
-    done = volume.setVolume(v);
+  bool updated = false;
+  v = constrain(v, 0.1, 1.);
 
-  if (done)
-    logger::printf("volume = %f\n", v);
-  else
-    logger::printf("unable to update volume. volume = %f\n", volume.volume());
+  if (!volume.setVolume(v)) {
+    logger::printf(
+        "Error: unable to update volume to %f. Current volume = %f\n", v,
+        volume.volume());
+  }
 }
 
 } // namespace audio

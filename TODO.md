@@ -10,7 +10,7 @@
 - [x] Options menus (dir): Add dir to queue, Open dir, play dir (clear queue)
 - [x] Battery + charging with overcharge/overvolt protection (+ booster?)
 - [x] Options menus (queue): Play, Remove from queue, Clear queue
-- [ ] Volume control pot
+- [x] Volume control pot
 - [ ] Lock: disable screen (backlight) and pause re-drawing
 - [ ] Playlist files (.playlist -> list of absolute paths)
 - [ ] Options menus (song): Add to playlist
