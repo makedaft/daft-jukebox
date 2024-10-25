@@ -10,7 +10,6 @@
 #include "runners/audio.h"
 #include "runners/music_loader.h"
 #include "runners/screen_manager.h"
-#include "ui/HomeScreen.h"
 #include "ui/SongListScreen.h"
 #include "ui/_screen.h"
 #include "ui/components/OptionsMenu.h"
@@ -19,10 +18,11 @@
 
 namespace ui {
 const std::vector<MenuOption> songOptions = {
-    {.label = "Add song to queue", .id = OPT_ADD_TO_QUEUE},
+    {.label = "Add to queue", .id = OPT_ADD_TO_QUEUE},
     {.label = "Play next", .id = OPT_PLAY_NEXT},
+    {.label = "Remove from queue", .id = OPT_REMOVE_FROM_QUEUE},
     {.label = "Play", .id = OPT_PLAY},
-    {.label = "Add to playlist", .id = OPT_PLAYLIST_ADD},
+    // {.label = "Add to playlist", .id = OPT_PLAYLIST_ADD},
 };
 
 const std::vector<MenuOption> directoryOptions = {
@@ -31,15 +31,24 @@ const std::vector<MenuOption> directoryOptions = {
     {.label = "Play dir", .id = OPT_PLAY},
 };
 
-OptionsMenuList::OptionsMenuList(const char *file, bool isDir)
+const std::vector<MenuOption> queueOptions = {
+    {.label = "Play", .id = OPT_PLAY},
+    {.label = "Remove from queue", .id = OPT_REMOVE_FROM_QUEUE},
+    {.label = "Clear queue", .id = OPT_CLEAR_QUEUE},
+};
+
+// :::::::::::::: OptionsMenuList ::::::::::::::
+OptionsMenuList::OptionsMenuList(const char *file, OptionMenuType type)
     : ui::component::OptionsMenu<MenuOption>(display::tft) {
-
-  this->currentOptions = isDir ? directoryOptions : songOptions;
+  this->currentOptions = type == OPTS_TYPE_DIR     ? directoryOptions
+                         : type == OPTS_TYPE_QUEUE ? queueOptions
+                                                   : songOptions;
   this->controls.action = std::bind(&OptionsMenuList::onAction, this);
-
-  this->isDir = isDir;
   this->file = String(file);
 }
+
+bool OptionsMenuList::isDir() const { return this->type == OPTS_TYPE_DIR; }
+bool OptionsMenuList::isQueue() const { return this->type == OPTS_TYPE_QUEUE; }
 
 void OptionsMenuList::onGoBack() { screen_manager::goBack(); }
 
@@ -57,7 +66,7 @@ void OptionsMenuList::onAction() {
 void OptionsMenuList::onSelectOption(MenuOption option) {
   switch (option.id) {
   case OPT_ADD_TO_QUEUE:
-    if (this->isDir)
+    if (this->isDir())
       music_loader::loadDirIntoQueue(this->file, true);
     else
       music_loader::currentQueue.append(this->file.c_str());
@@ -65,8 +74,10 @@ void OptionsMenuList::onSelectOption(MenuOption option) {
     break;
 
   case OPT_PLAY:
-    if (this->isDir)
+    if (this->isDir())
       music_loader::loadDirIntoQueue(this->file, false);
+    if (this->isQueue())
+      music_loader::currentQueue.setCurrentAs(this->file.c_str());
     else
       music_loader::loadSongDirIntoQueue(this->file, false);
     audio::startPlaying();
@@ -74,7 +85,7 @@ void OptionsMenuList::onSelectOption(MenuOption option) {
     break;
 
   case OPT_PLAY_NEXT:
-    if (!this->isDir) {
+    if (!this->isDir()) {
       logger::debug((String("Play next: ") + this->file).c_str());
       music_loader::currentQueue.insertNext(this->file.c_str());
     }
@@ -87,10 +98,25 @@ void OptionsMenuList::onSelectOption(MenuOption option) {
     break;
 
   case OPT_OPEN_DIR:
-    if (this->isDir)
+    if (this->isDir())
       screen_manager::openScreen(new ui::SongListScreen(this->file.c_str()));
     else
       screen_manager::goBack();
+    break;
+
+  case OPT_REMOVE_FROM_QUEUE:
+    music_loader::currentQueue.remove(this->file.c_str());
+    if (music_loader::currentQueue.getCurrentIndex() ==
+        this->getHighlightedIndex()) {
+      audio::startPlaying();
+    }
+    screen_manager::goBack();
+    break;
+
+  case OPT_CLEAR_QUEUE:
+    music_loader::currentQueue.clear();
+    audio::pause();
+    screen_manager::goBack();
     break;
 
   default:
@@ -98,8 +124,9 @@ void OptionsMenuList::onSelectOption(MenuOption option) {
   }
 }
 
-OptionsMenuScreen::OptionsMenuScreen(const char *file, bool isDir) {
-  this->optionsMenu = new OptionsMenuList(file, isDir);
+// :::::::::::::: OptionsMenuScreen ::::::::::::::
+OptionsMenuScreen::OptionsMenuScreen(const char *file, OptionMenuType type) {
+  this->optionsMenu = new OptionsMenuList(file, type);
 }
 
 long OptionsMenuScreen::dependencies() {

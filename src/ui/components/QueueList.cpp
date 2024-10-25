@@ -11,6 +11,7 @@
 #include "runners/music_loader.h"
 #include "runners/screen_manager.h"
 #include "ui/HomeScreen.h"
+#include "ui/OptionsMenuScreen.h"
 #include "ui/SongListScreen.h"
 #include "ui/components/OptionsMenu.h"
 
@@ -28,7 +29,11 @@ long QueueList::dependencies() {
          utils::stringHash(music_loader::currentQueue.current().c_str());
 }
 
-void QueueList::openOptions() { logger::debug("TODO: Opening options menu"); }
+void QueueList::openOptions() {
+  auto option = this->getHighlightedOption();
+  auto path = option.path.c_str();
+  screen_manager::openScreen(new OptionsMenuScreen(path, OPTS_TYPE_QUEUE));
+}
 
 void QueueList::onSelectOption(OptionType option) {
   music_loader::currentQueue.setCurrentAs(option.path.c_str());

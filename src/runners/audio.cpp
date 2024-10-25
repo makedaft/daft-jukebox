@@ -42,14 +42,17 @@ bool setup(void) {
 }
 
 void loop() {
-  if (!isPaused()) {
-    if (copier.available() > 0) {
-      copier.copy();
-    } else {
-      logger::debug("end of song");
-      music_loader::nextSong();
-      startPlaying();
-    }
+  if (isPaused())
+    return;
+  if (music_loader::currentQueue.empty())
+    return;
+
+  if (copier.available() > 0) {
+    copier.copy();
+  } else {
+    logger::debug("end of song");
+    music_loader::nextSong();
+    startPlaying();
   }
 }
 
@@ -73,6 +76,7 @@ void pauseToggle() {
 }
 
 bool isPaused() { return !copier.isActive(); }
+void pause() { copier.setActive(false); }
 
 float getVolume() { return volume.volume(); }
 

@@ -10,8 +10,12 @@ enum OptionsMenuOptionID {
   OPT_PLAY_NEXT,
   OPT_PLAYLIST_ADD,
   OPT_PLAY,
-  OPT_OPEN_DIR
+  OPT_OPEN_DIR,
+  OPT_REMOVE_FROM_QUEUE,
+  OPT_CLEAR_QUEUE
 };
+
+enum OptionMenuType { OPTS_TYPE_FILE, OPTS_TYPE_DIR, OPTS_TYPE_QUEUE };
 
 namespace ui {
 struct MenuOption {
@@ -21,7 +25,7 @@ struct MenuOption {
 
 class OptionsMenuList : public ui::component::OptionsMenu<MenuOption> {
   String file;
-  bool isDir;
+  OptionMenuType type;
 
   void onSelectOption(MenuOption option) override;
   void onGoBack() override;
@@ -31,7 +35,10 @@ class OptionsMenuList : public ui::component::OptionsMenu<MenuOption> {
   void onAction();
 
 public:
-  OptionsMenuList(const char *file, bool isDir);
+  OptionsMenuList(const char *file, OptionMenuType type);
+
+  bool isDir() const;
+  bool isQueue() const;
 };
 
 class OptionsMenuScreen : public ui::Screen {
@@ -41,7 +48,7 @@ class OptionsMenuScreen : public ui::Screen {
   void render() override;
 
 public:
-  OptionsMenuScreen(const char *file, bool isDir);
+  OptionsMenuScreen(const char *file, OptionMenuType type);
 
   ControlScheme controlScheme() override;
 };

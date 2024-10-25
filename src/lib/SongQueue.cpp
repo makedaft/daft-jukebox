@@ -11,25 +11,52 @@ void SongQueue::append(const char *path) {
 }
 
 void SongQueue::insertNext(const char *path) {
-  logger::printf("Inert nesxt: %s\n", path);
+  logger::printf("Insert next: %s\n", path);
   this->queue.insert(this->queue.begin() + currentIndex + 1, {.path = path});
 }
 
-void SongQueue::remove(int index) {
-  this->queue.erase(this->queue.begin() + index);
+void SongQueue::remove(const char *path) {
+  if (this->empty())
+    return;
+
+  unsigned int index = 0;
+  for (const QueueItem &item : this->queue) {
+    if (item.path == path) {
+      this->queue.erase(this->queue.begin() + index);
+      this->queue.push_back({.path = "/Tool/Aenema.mp3"});
+      if (this->currentIndex == index && this->currentIndex > 0)
+        this->currentIndex--;
+      return;
+    }
+    index++;
+  }
 }
 
-String SongQueue::current() { return this->queue[currentIndex].path; }
+void SongQueue::clear() {
+  this->queue.clear();
+  this->currentIndex = 0;
+}
+
+bool SongQueue::empty() { return this->queue.empty(); }
+String SongQueue::current() {
+  if (this->empty())
+    return String();
+
+  return this->queue[currentIndex].path;
+}
 unsigned int SongQueue::getCurrentIndex() { return currentIndex; }
 
 void SongQueue::next() {
+  if (this->empty())
+    return;
+
   currentIndex++;
   if (currentIndex >= this->queue.size())
     currentIndex = 0;
 }
 
 void SongQueue::previous() {
-  if (this->queue.size() == 0)
+  if (this->empty())
     return;
 
   if (currentIndex > 0)
@@ -58,7 +85,7 @@ void SongQueue::setCurrentAs(const char *path) {
 
 void SongQueue::loadFromDir(fs::SDFS &fs, const char *path, boolean append) {
   if (!append)
-    this->queue.clear();
+    this->clear();
 
   File root = fs.open(path, FILE_READ, false);
   if (!root.isDirectory())

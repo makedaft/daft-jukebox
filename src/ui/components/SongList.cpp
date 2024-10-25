@@ -25,7 +25,8 @@ void SongList::openOptions() {
   auto option = this->getHighlightedOption();
   auto path = option.path.c_str();
   logger::printf("Opening options menu for %s\n", path);
-  screen_manager::openScreen(new OptionsMenuScreen(path, option.isDir));
+  screen_manager::openScreen(new OptionsMenuScreen(
+      path, option.isDir ? OPTS_TYPE_DIR : OPTS_TYPE_FILE));
 }
 
 void SongList::onSelectOption(OptionType option) {

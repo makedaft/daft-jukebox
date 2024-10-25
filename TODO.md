@@ -8,20 +8,30 @@
 - [x] Ability to lock controls on double press of action button
 - [x] Options menus (song): Add song to queue, play next
 - [x] Options menus (dir): Add dir to queue, Open dir, play dir (clear queue)
-- [ ] Symlink to files (for playlists)
-- [ ] Options menus (song): Add to playlist
+- [x] Battery + charging with overcharge/overvolt protection (+ booster?)
+- [x] Options menus (queue): Play, Remove from queue, Clear queue
 - [ ] Volume control pot
-- [ ] Lock: disable screen (backlight) and pause drawing
+- [ ] Lock: disable screen (backlight) and pause re-drawing
+- [ ] Playlist files (.playlist -> list of absolute paths)
+- [ ] Options menus (song): Add to playlist
+
+# Issues
+- [ ] Remove from queue no re-render
+- [ ] Empty queue crash
+- [ ] Invalid song crash (error handling: empty file, no file, etc)
+- [ ] Audio distortion when pressing button
+- [ ] Noise (need filter)
 
 # Next
-- [ ] Battery + charging with overcharge/overvolt protection (+ booster?)
-- [ ] Transfer to prototype board
-- [ ] Wood cover
+- [ ] Remove from playlist
+- [ ] Re-order playlist?
+- [ ] Bluetooth for managing files
+- [ ] Battery percentage
+
+# Maybe
 - [ ] Show song progress bar in home screen (have to parse number of frames)
 - [ ] Exif parsing
-- [ ] Bluetooth for managing files
-
-# Strong maybe
-- [ ] Use freertos and move copier to its own task?
+- [ ] Go into sleep mode if locked and not playing music
+- [ ] Use freertos and move copier to its own task
 - [ ] Save last queue, volume, etc to flash
-- [ ] Bluetooth for sending audio?
+- [ ] Bluetooth for sending audio

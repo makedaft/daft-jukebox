@@ -28,7 +28,9 @@ OptionsMenu<OptionType>::OptionsMenu(Adafruit_SPITFT &drawCtx) {
 }
 
 template <typename OptionType> long OptionsMenu<OptionType>::dependencies() {
-  auto header = this->getHeaderText(this->getHighlightedOption());
+  auto header = String();
+  if (!this->currentOptions.empty())
+    header = this->getHeaderText(this->getHighlightedOption());
   return utils::stringHash(header.c_str()) * 100 + this->highlightedIndex;
 }
 
@@ -46,11 +48,19 @@ template <typename OptionType> void OptionsMenu<OptionType>::render() {
   // Header
   this->drawCtx->setTextColor(0x2947);
   this->drawCtx->setCursor(6, FONT_HEIGHT + 6);
-  this->drawCtx->print(this->getHeaderText(options[selectedIndex]));
+  logger::printf("::: %d/%d\n", size, selectedIndex);
+  if (!options.empty())
+    this->drawCtx->print(this->getHeaderText(options[selectedIndex]));
   this->drawCtx->drawFastHLine(0, y - 1, w, 0xb596);
 
   this->drawCtx->setTextSize(1);
   this->drawCtx->setTextWrap(false);
+
+  if (options.empty()) {
+    this->drawCtx->setCursor(6, 2 * FONT_HEIGHT + 12);
+    this->drawCtx->print("Empty");
+    return;
+  }
 
   for (int i = selectedIndex - 2; i < selectedIndex + 6; i++) {
     int index = i < 0 ? size + i : i % size;

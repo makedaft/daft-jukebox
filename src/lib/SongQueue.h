@@ -16,8 +16,10 @@ public:
 
   void append(const char *path);
   void insertNext(const char *path);
-  void remove(int index);
+  void remove(const char *path);
+  void clear();
 
+  bool empty();
   String current();
   unsigned int getCurrentIndex();
 
