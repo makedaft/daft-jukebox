@@ -1,0 +1,20 @@
+\newcommand{\createSDCardModule}[2] {
+  % Parameters:
+  % #1: SD card module node name
+  % #2: Position
+  \def\name{#1}
+  \def\pos{#2}
+
+  \node [draw, fill=white, text=black, minimum width=4cm, minimum height=6cm] (\name) at \pos {
+    \begin{tabular}{c}
+      \texttt{\textbf{MOD100717}} \\
+      \texttt{(\name)}
+    \end{tabular}
+  };
+
+  \def\pinLabelsLeft{{}}
+  \def\pinLabelsRight{{"CS", "SCK", "MOSI", "MISO", "Vcc", "GND"}}
+  \pgfmathsetmacro{\pinSetSize}{5}
+
+  \setupBoardPins{\name}{\pinSetSize}{\pinLabelsLeft}{\pinLabelsRight}
+}

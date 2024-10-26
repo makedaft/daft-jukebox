@@ -1,0 +1,62 @@
+\documentclass{article}
+\title{\textbf{daft-jukebox circuit}}
+\author{}
+\date{}
+\usepackage[b3j, margin=1cm, top=0cm]{geometry}
+\usepackage{tikz}
+\usepackage{ifthen}
+\usepackage{pgfmath}
+\usepackage{circuitikz}
+\begin{document}
+
+\maketitle
+
+\begin{circuitikz}[american]
+\input{./utilities.tex}
+\input{./esp32.tex}
+\input{./max98357a.tex}
+\input{./sdcard-module.tex}
+
+
+% ESP32
+\createESP{esp32}{(10, 0)}
+\draw (esp32pinGND2) -- ++(-1.4, 0) node[ground]{};
+
+
+% DAC Right
+\createDAC{dacRight}{(20, 6.5)}
+\draw (dacRightpinGND) -- ++(-0.4, 0) node[ground]{};
+\bendconnect{-1}{40}{(esp32pin15)}{(dacRightpinLRC)};
+\bendconnect{1}{-50}{(esp32pin14)}{(dacRightpinCLK)};
+\bendconnect{-1}{50}{(esp32pin22)}{(dacRightpinDin)};
+\bendconnect{-1}{60}{(esp32pinGND3)}{(dacRightpinGain)};
+\bendconnect{1}{-20}{(esp32pinVin)}{(dacRightpinVin)};
+% DAC Right channel control
+\bendconnect{-1}{70}{(esp32pin3v3)}{(dacRightpinSD)};
+
+
+% DAC Left
+\createDAC{dacLeft}{(20, -6.5)}
+\draw (dacLeftpinGND) to[short, -*] ++(0, 0) node[ground]{};
+\bendconnect{-1}{40}{(esp32pin15)}{(dacLeftpinLRC)}; \dotOnFirstBend;
+\bendconnect{1}{-50}{(esp32pin14)}{(dacLeftpinCLK)}; \dotOnFirstBend;
+\bendconnect{-1}{50}{(esp32pin22)}{(dacLeftpinDin)}; \dotOnFirstBend;
+\bendconnect{-1}{60}{(esp32pinGND3)}{(dacLeftpinGain)}; \dotOnFirstBend;
+\bendconnect{1}{-20}{(esp32pinVin)}{(dacLeftpinVin)}; \dotOnFirstBend;
+% DAC Left channel control
+\draw (dacLeftpinSD) -- ++(-5, 0) to[short, -*] ++(0, -0.83) to[R=100K] ++(3, 0) -- (dacLeftpinGND);
+\draw (dacLeftpinSD)++(-5, -0.83) to[R=110K] ++(-3, 0) -- ++(0, 1.5) -- ($(esp32pin3v3)+(0, -3.67)$) to[short, -*] (esp32pin3v3);
+
+
+% SD card module
+\createSDCardModule{sdcard}{(0, 6.5)}
+\node [ground](ground4) at (sdcardpinGND) {} -- (sdcardpinGND);
+\bendconnect{1}{40}{(esp32pin5)}{(sdcardpinCS)};
+\bendconnect{1}{30}{(esp32pin18)}{(sdcardpinSCK)};
+\bendconnect{1}{20}{(esp32pin23)}{(sdcardpinMOSI)};
+\bendconnect{1}{10}{(esp32pin19)}{(sdcardpinMISO)};
+\bendconnect{1}{-20}{(esp32pinVin)}{(sdcardpinVcc)};
+
+
+\end{circuitikz}
+\end{document}

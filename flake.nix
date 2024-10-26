@@ -28,6 +28,10 @@
               cp ./fontconvert $out/bin/fontconvert;
             '';
           };
+
+          tex = pkgs.texlive.combine {
+            inherit (pkgs.texlive) scheme-full latex-bin latexmk circuitikz;
+          };
         in pkgs.buildFHSUserEnv {
           name = "jukebox-env";
           targetPkgs = pkgs: with pkgs; [
@@ -35,12 +39,15 @@
             platformio-core
             avrdude
             openocd
-            clang-tools
-            just
             glibc
-            unixtools.xxd
 
+            # dev
+            clang-tools
+            unixtools.xxd
+            just
             gfx-fontconvert
+            tex
+            ghostscript
           ];
           multiPkgs = pkgs: (with pkgs; [ udev ]);
 

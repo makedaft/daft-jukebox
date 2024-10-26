@@ -1,0 +1,67 @@
+\newcommand{\setupBoardPins}[4] {
+  % Parameters:
+  % #1: Node name
+  % #2: Pin set spacing
+  % #3: Left pins
+  % #4: Right pins
+  \def\nodeName{#1}
+  \def\spacing{#2}
+  \def\pinsLeft{#3}
+  \def\pinsRight{#4}
+
+  \pgfmathsetmacro{\pinCountLeft}{dim(\pinsLeft)}
+  \ifthenelse{\pinCountLeft > 0}{
+    \pgfmathsetmacro{\pinGap}{\spacing / (\pinCountLeft - 1)}
+
+    % Define left-side pins with labels
+    \foreach \i in {1,...,\pinCountLeft} {
+      \pgfmathsetmacro{\y}{\spacing/2 - (\i-1)*\pinGap}
+      \pgfmathsetmacro{\label}{\pinsLeft[\i-1]}
+      \coordinate (#1pin\label) at ($(\nodeName.west) + (-0.5, \y)$);
+      \draw (#1pin\label) -- ++(0.5,0) node[right] {\pgfmathparse{\pinsLeft[\i-1]}\pgfmathresult};
+    }
+  }{}
+
+
+  \pgfmathsetmacro{\pinCountRight}{dim(\pinsRight)}
+  \ifthenelse{\pinCountRight > 0}{
+    \pgfmathsetmacro{\pinGap}{\spacing / (\pinCountRight - 1)}
+
+    % Define right-side pins with labels
+    \foreach \i in {1,...,\pinCountRight} {
+      \pgfmathsetmacro{\y}{\spacing/2 - (\i-1)*\pinGap}
+      \pgfmathsetmacro{\label}{\pinsRight[\i-1]}
+      \coordinate (#1pin\label) at ($(\nodeName.east) + (0.5, \y)$);
+      \draw (#1pin\label) -- ++(-0.5,0) node[left] {\pgfmathparse{\pinsRight[\i-1]}\pgfmathresult};
+    }
+  }{}
+}
+
+\newcommand{\bendconnect}[4] {
+  \def\benddirection{#1}
+  \def\bendoffset{#2}
+  \def\bendfrom{#3}
+  \def\bendto{#4}
+
+  \path \bendfrom;
+  \pgfgetlastxy{\bendfromX}{\bendfromY};
+
+  \path \bendto;
+  \pgfgetlastxy{\bendtoX}{\bendtoY};
+
+  \ifthenelse{\benddirection > 0}{
+    \def\bendSplitFirst{(\bendfromX + \bendoffset, \bendfromY)}
+    \def\bendSplitSecond{(\bendfromX + \bendoffset, \bendtoY)}
+  }{
+    \def\bendSplitFirst{(\bendtoX - \bendoffset, \bendfromY)}
+    \def\bendSplitSecond{(\bendtoX - \bendoffset, \bendtoY)}
+  }
+
+  \draw \bendfrom -- \bendSplitFirst -- \bendSplitSecond -- \bendto
+}
+\newcommand{\dotOnSecondBend}[0] {
+  \draw \bendSplitSecond to[short, -*] ++(0,0);
+}
+\newcommand{\dotOnFirstBend}[0] {
+  \draw \bendSplitFirst to[short, -*] ++(0,0);
+}
