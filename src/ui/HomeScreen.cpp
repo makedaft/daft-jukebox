@@ -38,17 +38,26 @@ HomeScreen::HomeScreen() {
 void HomeScreen::render() {
   display::tft.fillRect(0, 0, display::tft.width(),
                         FONT_HEIGHT + 8 + FONT_HEIGHT + 4, 0x0000);
+
   auto songInfo = music_loader::currentSong();
+  auto subtitle = songInfo.dirPath;
+  auto title = songInfo.name;
+  if (!songInfo.isAvailable) {
+    title = "";
+    subtitle = music_loader::currentQueue.empty() ? ":::: Queue is empty ::::"
+                                                  : ":::: Cant play song ::::";
+  }
+
   display::tft.setTextWrap(false);
   display::tft.setTextSize(1);
   // Dir name
   display::tft.setTextColor(0x49d4);
   display::tft.setCursor(4, FONT_HEIGHT + 8);
-  display::tft.print(songInfo.dirPath);
+  display::tft.print(subtitle);
   // Name
   display::tft.setTextColor(0xFFFF);
   display::tft.setCursor(4, FONT_HEIGHT + 8 + FONT_HEIGHT + 4);
-  display::tft.print(songInfo.name);
+  display::tft.print(title);
 
   this->playState->setPlayState(!audio::isPaused());
   this->playState->run();

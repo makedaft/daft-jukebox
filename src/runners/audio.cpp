@@ -44,7 +44,8 @@ bool setup(void) {
 void loop() {
   if (isPaused())
     return;
-  if (music_loader::currentQueue.empty())
+  if (!music_loader::currentSong().isAvailable ||
+      music_loader::currentQueue.empty())
     return;
 
   if (copier.available() > 0) {
@@ -62,8 +63,10 @@ void playSongFile(const char *filePath) {
   copier.end();
   music_loader::loadSong(filePath);
 
-  copier.begin(mp3AudioStream, music_loader::currentSong().file);
-  copier.setActive(true);
+  if (music_loader::currentSong().isAvailable) {
+    copier.begin(mp3AudioStream, music_loader::currentSong().file);
+    copier.setActive(true);
+  }
 }
 
 void startPlaying() {

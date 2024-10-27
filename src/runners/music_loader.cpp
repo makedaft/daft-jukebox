@@ -43,17 +43,22 @@ bool setup() {
 void loadSong(const char *filePath) {
   if (currentSongInfo.isAvailable) {
     currentSongInfo.isAvailable = false;
-    currentSongInfo.name = "-";
     currentSongInfo.file.close();
   }
 
   auto songPath = new String(filePath);
+  if (songPath->isEmpty()) {
+    currentSongInfo.isAvailable = false;
+    return;
+  }
+
   auto lastSlashI = songPath->lastIndexOf('/');
   auto dirPath = songPath->substring(0, lastSlashI) + "/";
   auto songName = songPath->substring(lastSlashI + 1);
   songName.replace(".mp3", "");
   currentSongInfo.name = songName;
   currentSongInfo.dirPath = dirPath;
+  currentSongInfo.path = *songPath;
   currentSongInfo.file = SD.open(filePath, FILE_READ, false);
   currentSongInfo.isAvailable = true;
 }
@@ -111,7 +116,7 @@ void clearQueue() {
   if (currentSongInfo.isAvailable)
     currentSongInfo.file.close();
   currentSongInfo.name = "";
-  currentSongInfo.dirPath = ":::: Queue is empty ::::";
+  currentSongInfo.dirPath = "";
   currentSongInfo.isAvailable = false;
 
   currentQueue.clear();
@@ -126,14 +131,16 @@ std::vector<struct FileInfo> listDirectory(const char *path) {
     return list;
   }
 
+  boolean isDir;
+  String filePath;
   while (true) {
-    boolean isDir;
-    String filePath = root.getNextFileName(&isDir);
-
-    if (filePath.isEmpty())
+    filePath = root.getNextFileName(&isDir);
+    if (filePath.isEmpty()) // If empty, no more files left
       break;
 
-    list.push_back({.name = filePath, .path = filePath, .isDir = isDir});
+    if (filePath.startsWith("/") && SD.exists(filePath.c_str())) {
+      list.push_back({.name = filePath, .path = filePath, .isDir = isDir});
+    }
   }
 
   return list;

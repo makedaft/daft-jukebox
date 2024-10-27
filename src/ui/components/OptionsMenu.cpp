@@ -2,6 +2,7 @@
 #include <Adafruit_SPITFT.h>
 #include <Adafruit_ST7735.h>
 #include <Arduino.h>
+#include <cstdint>
 #include <functional>
 
 #include "lib/display.h"
@@ -56,8 +57,14 @@ template <typename OptionType> void OptionsMenu<OptionType>::render() {
   this->drawCtx->setTextWrap(false);
 
   if (options.empty()) {
-    this->drawCtx->setCursor(6, 2 * FONT_HEIGHT + 12);
-    this->drawCtx->print("Empty");
+    this->drawCtx->setTextSize(2);
+    auto emptyMsg = "<empty>";
+    int16_t _x, _y;
+    uint16_t w, h;
+    this->drawCtx->getTextBounds(emptyMsg, 0, 0, &_x, &_y, &w, &h);
+    this->drawCtx->setCursor((this->drawCtx->width() - w) / 2,
+                             (this->drawCtx->height() - h) / 2);
+    this->drawCtx->print(emptyMsg);
     return;
   }
 
