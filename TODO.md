@@ -12,6 +12,7 @@
 - [x] Options menus (queue): Play, Remove from queue, Clear queue
 - [x] Volume control pot
 - [x] Lock: disable screen (backlight) and pause re-drawing
+- [x] Pin pio dependencies
 - [ ] Playlist files (.playlist -> list of absolute paths)
 - [ ] Options menus (song): Add to playlist
 
