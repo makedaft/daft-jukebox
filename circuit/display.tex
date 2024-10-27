@@ -1,0 +1,20 @@
+\newcommand{\createDisplay}[2] {
+  % Parameters:
+  % #1: SD card module node name
+  % #2: Position
+  \def\name{#1}
+  \def\pos{#2}
+
+  \node [draw, fill=white, text=black, minimum width=6cm, minimum height=9cm] (\name) at \pos {
+    \begin{tabular}{c}
+      \texttt{\textbf{ST7735}} \\
+      \texttt{(\name)}
+    \end{tabular}
+  };
+
+  \def\pinLabelsLeft{{}}
+  \def\pinLabelsRight{{"Vcc", "GND", "CS", "Reset", "A0", "SDA", "SCK", "LED"}}
+  \pgfmathsetmacro{\pinSetSize}{6}
+
+  \setupBoardPins{\name}{\pinSetSize}{\pinLabelsLeft}{\pinLabelsRight}
+}

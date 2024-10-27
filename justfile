@@ -28,7 +28,7 @@ devsetup:
 
 circuit:
   cd circuit && latexmk -f -auxdir=.cache/tex -outdir=../media -interaction=nonstopmode -lualatex ./_main.tex
-  magick -density 300x300 ./media/_main.pdf -background white -alpha remove -alpha off ./media/circuit.png
+  magick -density 200x200 ./media/_main.pdf -background white -alpha remove -alpha off ./media/circuit.png
 
 circuit-dev:
   npx nodemon --exec 'clear && just circuit' -e .tex

@@ -18,3 +18,24 @@
 
   \setupBoardPins{\name}{\pinSetSize}{\pinLabelsLeft}{\pinLabelsRight}
 }
+
+\newcommand{\createTRRSAudioJack}[2] {
+  % Parameters:
+  % #1: node name
+  % #2: Position
+  \def\name{#1}
+  \def\pos{#2}
+
+  \node [draw, fill=white, text=black, minimum width=3.5cm, minimum height=5cm] (\name) at \pos {
+    \begin{tabular}{c}
+      \texttt{\textbf{3.5mm Jack}} \\
+      \texttt{(\name)}
+    \end{tabular}
+  };
+
+  \def\pinLabelsLeft{{"T", "R1", "R2", "S"}}
+  \def\pinLabelsRight{{}}
+  \pgfmathsetmacro{\pinSetSize}{4}
+
+  \setupBoardPins{\name}{\pinSetSize}{\pinLabelsLeft}{\pinLabelsRight}
+}

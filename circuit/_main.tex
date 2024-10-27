@@ -2,7 +2,7 @@
 \title{\textbf{daft-jukebox circuit}}
 \author{}
 \date{}
-\usepackage[b3j, margin=1cm, top=0cm]{geometry}
+\usepackage[paperwidth=14.5in, paperheight=13in, margin=1cm, top=2cm]{geometry}
 \usepackage{tikz}
 \usepackage{ifthen}
 \usepackage{pgfmath}
@@ -13,50 +13,76 @@
 
 \begin{circuitikz}[american]
 \input{./utilities.tex}
-\input{./esp32.tex}
-\input{./max98357a.tex}
+\input{./mcu.tex}
+\input{./audio.tex}
 \input{./sdcard-module.tex}
+\input{./display.tex}
 
 
 % ESP32
-\createESP{esp32}{(10, 0)}
-\draw (esp32pinGND2) -- ++(-1.4, 0) node[ground]{};
+\createMCU{mcu}{(10, 0)}
+\draw (mcupinGND2) -- ++(-1.7, 0) node[ground]{};
 
 
 % DAC Right
 \createDAC{dacRight}{(20, 6.5)}
 \draw (dacRightpinGND) -- ++(-0.4, 0) node[ground]{};
-\bendconnect{-1}{40}{(esp32pin15)}{(dacRightpinLRC)};
-\bendconnect{1}{-50}{(esp32pin14)}{(dacRightpinCLK)};
-\bendconnect{-1}{50}{(esp32pin22)}{(dacRightpinDin)};
-\bendconnect{-1}{60}{(esp32pinGND3)}{(dacRightpinGain)};
-\bendconnect{1}{-20}{(esp32pinVin)}{(dacRightpinVin)};
+\bendconnect{-1}{40}{(mcupin15)}{(dacRightpinLRC)};
+\bendconnect{1}{-60}{(mcupin14)}{(dacRightpinCLK)};
+\bendconnect{-1}{50}{(mcupin22)}{(dacRightpinDin)};
+\bendconnect{-1}{60}{(mcupinGND3)}{(dacRightpinGain)};
+\draw (dacRightpinVin) -- ++(0, -1.1) -- ++(-0.4, 0) node[vcc]{5V};
 % DAC Right channel control
-\bendconnect{-1}{70}{(esp32pin3v3)}{(dacRightpinSD)};
+\bendconnect{-1}{70}{(mcupin3v3)}{(dacRightpinSD)};
 
 
 % DAC Left
-\createDAC{dacLeft}{(20, -6.5)}
+\createDAC{dacLeft}{(20, -10.5)}
 \draw (dacLeftpinGND) to[short, -*] ++(0, 0) node[ground]{};
-\bendconnect{-1}{40}{(esp32pin15)}{(dacLeftpinLRC)}; \dotOnFirstBend;
-\bendconnect{1}{-50}{(esp32pin14)}{(dacLeftpinCLK)}; \dotOnFirstBend;
-\bendconnect{-1}{50}{(esp32pin22)}{(dacLeftpinDin)}; \dotOnFirstBend;
-\bendconnect{-1}{60}{(esp32pinGND3)}{(dacLeftpinGain)}; \dotOnFirstBend;
-\bendconnect{1}{-20}{(esp32pinVin)}{(dacLeftpinVin)}; \dotOnFirstBend;
+\bendconnect{-1}{40}{(mcupin15)}{(dacLeftpinLRC)}; \dotOnFirstBend;
+\bendconnect{1}{-60}{(mcupin14)}{(dacLeftpinCLK)}; \dotOnFirstBend;
+\bendconnect{-1}{50}{(mcupin22)}{(dacLeftpinDin)}; \dotOnFirstBend;
+\bendconnect{-1}{60}{(mcupinGND3)}{(dacLeftpinGain)}; \dotOnFirstBend;
+% \bendconnect{1}{-20}{(mcupinVin)}{(dacLeftpinVin)}; \dotOnFirstBend;
+\draw (dacLeftpinVin) -- ++(0, -1) -- ++(-0.6, 0) node[vcc]{5V};
 % DAC Left channel control
 \draw (dacLeftpinSD) -- ++(-5, 0) to[short, -*] ++(0, -0.83) to[R=100K] ++(3, 0) -- (dacLeftpinGND);
-\draw (dacLeftpinSD)++(-5, -0.83) to[R=110K] ++(-3, 0) -- ++(0, 1.5) -- ($(esp32pin3v3)+(0, -3.67)$) to[short, -*] (esp32pin3v3);
+\draw (dacLeftpinSD)++(-5, -0.83) to[R=110K] ++(-3, 0) -- ++(0, 1.5);
+\pgfgetlastxy{\lastAnchorX}{\lastAnchorY};
+\bendconnect{-1}{0}{(\lastAnchorX, \lastAnchorY)}{(mcupin3v3)}; \dotOnSecondBend;
+
+
+% Audio jack
+\createTRRSAudioJack{audioJack}{(29, -3)}
+\node [ground] at (audioJackpinS) {} -- (audioJackpinS);
+\bendconnect{-1}{20}{(dacRightpinOut+)}{($(audioJackpinT)+(-1.7, 0)$)} to[R=$R_{out}$] (audioJackpinT);
+\bendconnect{-1}{20}{(dacLeftpinOut+)}{($(audioJackpinR1)+(-1.7, 0)$)} to[R=$R_{out}$] (audioJackpinR1);
 
 
 % SD card module
 \createSDCardModule{sdcard}{(0, 6.5)}
-\node [ground](ground4) at (sdcardpinGND) {} -- (sdcardpinGND);
-\bendconnect{1}{40}{(esp32pin5)}{(sdcardpinCS)};
-\bendconnect{1}{30}{(esp32pin18)}{(sdcardpinSCK)};
-\bendconnect{1}{20}{(esp32pin23)}{(sdcardpinMOSI)};
-\bendconnect{1}{10}{(esp32pin19)}{(sdcardpinMISO)};
-\bendconnect{1}{-20}{(esp32pinVin)}{(sdcardpinVcc)};
+\node [ground] at (sdcardpinGND) {} -- (sdcardpinGND);
+\bendconnect{1}{40}{(mcupin5)}{(sdcardpinCS)};
+\bendconnect{1}{30}{(mcupin18)}{(sdcardpinSCK)};
+\bendconnect{1}{20}{(mcupin23)}{(sdcardpinMOSI)};
+\bendconnect{1}{10}{(mcupin19)}{(sdcardpinMISO)};
+\draw (sdcardpinVcc) node[vcc]{5V};
 
+
+% LCD Screen
+\createDisplay{screen}{(0, -7)}
+\node [ground] at (screenpinGND) {} -- (screenpinGND);
+\draw (screenpinVcc) node[vcc]{3.3V};
+\bendconnect{1}{15}{(mcupin4)}{(screenpinCS)};
+\bendconnect{1}{-5}{(mcupin13)}{(screenpinReset)};
+\bendconnect{1}{-12}{(mcupin12)}{(screenpinA0)};
+\bendconnect{1}{20}{(mcupin23)}{(screenpinSDA)}; \dotOnFirstBend
+\bendconnect{1}{30}{(mcupin18)}{(screenpinSCK)}; \dotOnFirstBend
+\bendconnect{1}{-30}{(mcupin25)}{(screenpinLED)};
+
+% Control
+\draw (mcupinGND1) -- ++(-4, 0) to[potentiometer, l_=$Volume control$, name=volumeCtrl] ++(0, -3) -- ++(-2, 0) node[vcc]{3.3V};
+\bendconnect{1}{10}{(volumeCtrl.wiper)}{(mcupin34)};
 
 \end{circuitikz}
 \end{document}

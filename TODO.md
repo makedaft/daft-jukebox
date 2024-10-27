@@ -13,8 +13,8 @@
 - [x] Volume control pot
 - [x] Lock: disable screen (backlight) and pause re-drawing
 - [x] Pin pio dependencies
-- [ ] Playlist files (.playlist -> list of absolute paths)
-- [ ] Options menus (song): Add to playlist
+- [x] Playlist files (.playlist -> list of absolute paths)
+- [ ] Home screen UI
 
 # Issues
 - [x] Empty queue crash
@@ -25,15 +25,17 @@
 - [ ] Minor noise issues (might need filter)
 
 # Next
+- [ ] Battery indicator
+- [ ] Transfer to prototype board
+- [ ] Options menus (song): Add to playlist
 - [ ] Remove from playlist
 - [ ] Re-order playlist?
 - [ ] Bluetooth for managing files
-- [ ] Battery percentage
 
 # Maybe
 - [ ] Show song progress bar in home screen (have to parse number of frames)
 - [ ] Exif parsing
-- [ ] Go into sleep mode if locked and not playing music
+- [ ] Save queue, current song, volume, etc to flash
+- [ ] Go into sleep mode if locked and paused?
 - [ ] Use freertos and move copier to its own task
-- [ ] Save last queue, volume, etc to flash
 - [ ] Bluetooth for sending audio
