@@ -13,6 +13,7 @@ class SongListScreen : public ui::Screen {
 
 public:
   SongListScreen(const char *dir);
+  void initialize() override;
 
   ui::ControlScheme controlScheme() override;
 };

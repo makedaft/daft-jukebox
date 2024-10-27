@@ -76,6 +76,13 @@ void loadDirIntoQueue(String dirPath, boolean append = false) {
   currentQueue.loadFromDir(SD, dirPath.c_str(), append);
 }
 
+void removeFromQueue(String filePath) {
+  music_loader::currentQueue.remove(filePath.c_str());
+  if (currentSongInfo.isAvailable && currentSongInfo.path == filePath) {
+    currentSongInfo.file.close();
+  }
+}
+
 void addSongToEndOfQueue(String filePath) {
   if (isPlaylistFile(filePath)) {
     loadPlaylistIntoQueue(filePath, LOAD_APPEND);

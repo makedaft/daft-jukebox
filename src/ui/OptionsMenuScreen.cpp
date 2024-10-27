@@ -100,9 +100,8 @@ void OptionsMenuList::onSelectOption(MenuOption option) {
     break;
 
   case OPT_REMOVE_FROM_QUEUE:
-    music_loader::currentQueue.remove(this->file.c_str());
-    if (music_loader::currentQueue.getCurrentIndex() ==
-        this->getHighlightedIndex()) {
+    music_loader::removeFromQueue(this->file);
+    if (music_loader::currentSong().path == this->file) {
       audio::startPlaying();
     }
     screen_manager::goBack();

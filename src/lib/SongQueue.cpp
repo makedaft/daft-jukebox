@@ -21,9 +21,8 @@ void SongQueue::remove(const char *path) {
 
   unsigned int index = 0;
   for (const QueueItem &item : this->queue) {
-    if (item.path == path) {
+    if (item.path == String(path)) {
       this->queue.erase(this->queue.begin() + index);
-      this->queue.push_back({.path = "/Tool/Aenema.mp3"});
       if (this->currentIndex == index && this->currentIndex > 0)
         this->currentIndex--;
       return;

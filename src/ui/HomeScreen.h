@@ -26,5 +26,6 @@ public:
   ui::ControlScheme controlScheme() override;
 
   HomeScreen();
+  void initialize() override;
 };
 } // namespace ui

@@ -37,6 +37,7 @@ extern CurrentSongInfo &currentSong();
 extern void nextSong();
 extern void previousSong();
 
+extern void removeFromQueue(String filePath);
 extern void addSongToEndOfQueue(String filePath);
 extern void addSongToNextInQueue(String filePath);
 extern void loadSong(const char *filePath);

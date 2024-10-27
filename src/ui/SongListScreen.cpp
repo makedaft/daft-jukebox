@@ -19,8 +19,12 @@ long SongListScreen::dependencies() {
 
 SongListScreen::SongListScreen(const char *dir) {
   this->optionsMenu = new ui::component::SongList(display::tft);
-  this->optionsMenu->currentOptions = music_loader::listDirectory(dir);
-  this->optionsMenu->dir = dir;
+  this->optionsMenu->dir = String(dir);
+}
+
+void SongListScreen::initialize() {
+  this->optionsMenu->currentOptions =
+      music_loader::listDirectory(this->optionsMenu->dir.c_str());
 }
 
 inline ui::ControlScheme SongListScreen::controlScheme() {

@@ -4,7 +4,6 @@
 #include <SPI.h>
 
 #include "lib/display.h"
-#include "lib/logger.h"
 #include "runners/music_loader.h"
 #include "ui/_screen.h"
 #include "ui/components/QueueList.h"
@@ -20,7 +19,10 @@ QueueScreen::QueueScreen() {
   this->optionsMenu = new ui::component::QueueList(display::tft);
   this->optionsMenu->setHighlightedIndex(
       music_loader::currentQueue.getCurrentIndex());
+}
 
+void QueueScreen::initialize() {
+  this->optionsMenu->currentOptions.clear();
   for (const auto &item : music_loader::currentQueue.queue) {
     this->optionsMenu->currentOptions.push_back({.path = item.path});
   }

@@ -22,5 +22,7 @@ private:
 
 public:
   virtual ControlScheme controlScheme() = 0;
+
+  virtual void initialize() {}
 };
 } // namespace ui

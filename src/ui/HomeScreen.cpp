@@ -25,7 +25,9 @@ HomeScreen::HomeScreen() {
   this->control.left = std::bind(&HomeScreen::previousSong, this);
   this->control.right = std::bind(&HomeScreen::nextSong, this);
   this->control.action = std::bind(&HomeScreen::playPause, this);
+}
 
+void HomeScreen::initialize() {
   auto w = display::tft.width();
   auto h = display::tft.height();
   int padx = 3;

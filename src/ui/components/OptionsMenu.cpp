@@ -2,6 +2,7 @@
 #include <Adafruit_SPITFT.h>
 #include <Adafruit_ST7735.h>
 #include <Arduino.h>
+#include <algorithm>
 #include <cstdint>
 #include <functional>
 
@@ -69,9 +70,9 @@ template <typename OptionType> void OptionsMenu<OptionType>::render() {
   }
 
   for (int i = selectedIndex - 2; i < selectedIndex + 6; i++) {
-    int index = i < 0 ? size + i : i % size;
+    int index = i < 0 ? (size <= 1 ? 0 : size + i) : i % size;
     auto option = options[index];
-    auto highlighted = selectedIndex == i;
+    bool highlighted = selectedIndex == i;
 
     this->drawCtx->fillRect(0, y, w, y + option_height,
                             highlighted ? 0xFFFF : 0x0000);

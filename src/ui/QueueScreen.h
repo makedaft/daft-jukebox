@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Adafruit_SPITFT.h"
 #include "ui/_screen.h"
 #include "ui/components/QueueList.h"
 
@@ -13,6 +12,7 @@ class QueueScreen : public ui::Screen {
 
 public:
   QueueScreen();
+  void initialize() override;
 
   ui::ControlScheme controlScheme() override;
 };

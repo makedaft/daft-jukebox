@@ -18,8 +18,8 @@
 
 # Issues
 - [x] Empty queue crash
+- [x] Remove from queue no re-render
 - [ ] Issue with lock/double press action
-- [ ] Remove from queue no re-render
 - [ ] Invalid song crash (error handling: empty file, no file, etc)
 - [ ] Audio distortion when pressing button
 - [ ] Minor noise issues (might need filter)
