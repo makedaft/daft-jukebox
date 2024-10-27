@@ -17,8 +17,9 @@
 - [ ] Options menus (song): Add to playlist
 
 # Issues
+- [x] Empty queue crash
+- [ ] Issue with lock/double press action
 - [ ] Remove from queue no re-render
-- [ ] Empty queue crash
 - [ ] Invalid song crash (error handling: empty file, no file, etc)
 - [ ] Audio distortion when pressing button
 - [ ] Minor noise issues (might need filter)

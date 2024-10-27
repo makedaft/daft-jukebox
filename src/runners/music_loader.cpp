@@ -77,7 +77,7 @@ void addSongToEndOfQueue(String filePath) {
     return;
   }
 
-  music_loader::currentQueue.append(filePath.c_str());
+  currentQueue.append(filePath.c_str());
 }
 
 void addSongToNextInQueue(String filePath) {
@@ -86,7 +86,7 @@ void addSongToNextInQueue(String filePath) {
     return;
   }
 
-  music_loader::currentQueue.insertNext(filePath.c_str());
+  currentQueue.insertNext(filePath.c_str());
 }
 
 void loadSongDirIntoQueue(String filePath, boolean append = false) {
@@ -106,6 +106,16 @@ void loadPlaylistIntoQueue(String filePath, LoadType type) {
 }
 
 bool isPlaylistFile(String filePath) { return filePath.endsWith(".playlist"); }
+
+void clearQueue() {
+  if (currentSongInfo.isAvailable)
+    currentSongInfo.file.close();
+  currentSongInfo.name = "";
+  currentSongInfo.dirPath = ":::: Queue is empty ::::";
+  currentSongInfo.isAvailable = false;
+
+  currentQueue.clear();
+}
 
 std::vector<struct FileInfo> listDirectory(const char *path) {
   std::vector<struct FileInfo> list;

@@ -43,6 +43,7 @@ extern void loadDirIntoQueue(String dirPath, boolean append);
 extern void loadSongDirIntoQueue(String filePath, boolean append);
 extern void loadPlaylistIntoQueue(String filePath, LoadType type);
 extern bool isPlaylistFile(String filePath);
+extern void clearQueue();
 
 extern std::vector<struct FileInfo> listDirectory(const char *path);
 

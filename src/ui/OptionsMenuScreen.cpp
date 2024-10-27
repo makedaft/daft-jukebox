@@ -5,6 +5,7 @@
 #include <functional>
 #include <vector>
 
+#include "esp32-hal.h"
 #include "lib/display.h"
 #include "lib/logger.h"
 #include "runners/audio.h"
@@ -108,7 +109,7 @@ void OptionsMenuList::onSelectOption(MenuOption option) {
     break;
 
   case OPT_CLEAR_QUEUE:
-    music_loader::currentQueue.clear();
+    music_loader::clearQueue();
     audio::pause();
     screen_manager::goBack();
     break;

@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <FS.h>
 #include <SD.h>
+#include <cstring>
 
 #include "lib/SongQueue.h"
 #include "lib/logger.h"
@@ -82,11 +83,17 @@ void SongQueue::setCurrentAs(const char *path) {
   }
 }
 
-void SongQueue::loadFile(const char *filePath, LoadType type) {
+void SongQueue::addMp3File(fs::SDFS &fs, String filePath, LoadType type) {
+  auto pathC = filePath.c_str();
+  if (filePath.isEmpty() || !filePath.startsWith("/") || !fs.exists(pathC)) {
+    logger::printf("[err] Invalid file path: %s\n", pathC);
+    return;
+  }
+
   if (type == LOAD_NEXT)
-    this->insertNext(filePath);
+    this->insertNext(pathC);
   else
-    this->append(filePath);
+    this->append(pathC);
 }
 
 void SongQueue::loadFromDir(fs::SDFS &fs, const char *path, boolean append) {
@@ -97,14 +104,15 @@ void SongQueue::loadFromDir(fs::SDFS &fs, const char *path, boolean append) {
   if (!root.isDirectory())
     return;
 
+  boolean isDir;
+  String filePath;
   while (true) {
-    boolean isDir;
-    String filePath = root.getNextFileName(&isDir);
+    filePath = root.getNextFileName(&isDir);
+    if (filePath.isEmpty()) // If empty, no more files left
+      return;
 
-    if (filePath.isEmpty() || isDir)
-      break;
-
-    loadFile(filePath.c_str(), LOAD_APPEND);
+    if (!isDir)
+      addMp3File(fs, filePath, LOAD_APPEND);
   }
 }
 
@@ -117,13 +125,11 @@ void SongQueue::loadFromPlaylistFile(fs::SDFS &fs, const char *path,
   if (playlistF.isDirectory())
     return;
 
+  String filePath;
   while (playlistF.available() > 0) {
-    String filePath = playlistF.readStringUntil('\n');
+    filePath = playlistF.readStringUntil('\n');
     logger::printf("Playlist: %s\n", filePath.c_str());
 
-    if (filePath.isEmpty() || !filePath.startsWith("/") || !fs.exists(filePath))
-      break;
-
-    loadFile(filePath.c_str(), type);
+    addMp3File(fs, filePath, type);
   }
 }

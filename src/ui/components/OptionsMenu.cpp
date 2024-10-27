@@ -48,7 +48,6 @@ template <typename OptionType> void OptionsMenu<OptionType>::render() {
   // Header
   this->drawCtx->setTextColor(0x2947);
   this->drawCtx->setCursor(6, FONT_HEIGHT + 6);
-  logger::printf("::: %d/%d\n", size, selectedIndex);
   if (!options.empty())
     this->drawCtx->print(this->getHeaderText(options[selectedIndex]));
   this->drawCtx->drawFastHLine(0, y - 1, w, 0xb596);
