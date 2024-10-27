@@ -1,18 +1,17 @@
 #include <Arduino.h>
 #include <FS.h>
 #include <SD.h>
-#include <vector>
 
 #include "lib/SongQueue.h"
 #include "lib/logger.h"
 
 void SongQueue::append(const char *path) {
-  this->queue.push_back({.path = path});
+  this->queue.push_back({.path = String(path)});
 }
 
 void SongQueue::insertNext(const char *path) {
-  logger::printf("Insert next: %s\n", path);
-  this->queue.insert(this->queue.begin() + currentIndex + 1, {.path = path});
+  this->queue.insert(this->queue.begin() + currentIndex + 1,
+                     {.path = String(path)});
 }
 
 void SongQueue::remove(const char *path) {
@@ -70,7 +69,7 @@ void SongQueue::setCurrentAs(const char *path) {
   int index = 0;
   for (const QueueItem &item : this->queue) {
     if (item.path == path) {
-      currentIndex = index;
+      this->currentIndex = index;
       found = true;
       return;
     }
@@ -78,9 +77,16 @@ void SongQueue::setCurrentAs(const char *path) {
   }
 
   if (!found) {
-    this->queue.insert(this->queue.begin() + currentIndex + 1, {.path = path});
-    currentIndex++;
+    this->insertNext(path);
+    this->currentIndex++;
   }
+}
+
+void SongQueue::loadFile(const char *filePath, LoadType type) {
+  if (type == LOAD_NEXT)
+    this->insertNext(filePath);
+  else
+    this->append(filePath);
 }
 
 void SongQueue::loadFromDir(fs::SDFS &fs, const char *path, boolean append) {
@@ -95,10 +101,29 @@ void SongQueue::loadFromDir(fs::SDFS &fs, const char *path, boolean append) {
     boolean isDir;
     String filePath = root.getNextFileName(&isDir);
 
-    if (filePath.isEmpty())
+    if (filePath.isEmpty() || isDir)
       break;
 
-    if (!isDir)
-      this->queue.push_back({.path = filePath});
+    loadFile(filePath.c_str(), LOAD_APPEND);
+  }
+}
+
+void SongQueue::loadFromPlaylistFile(fs::SDFS &fs, const char *path,
+                                     LoadType type) {
+  if (type == LOAD_CLEAR)
+    this->clear();
+
+  File playlistF = fs.open(path, FILE_READ, false);
+  if (playlistF.isDirectory())
+    return;
+
+  while (playlistF.available() > 0) {
+    String filePath = playlistF.readStringUntil('\n');
+    logger::printf("Playlist: %s\n", filePath.c_str());
+
+    if (filePath.isEmpty() || !filePath.startsWith("/") || !fs.exists(filePath))
+      break;
+
+    loadFile(filePath.c_str(), type);
   }
 }

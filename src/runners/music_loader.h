@@ -30,19 +30,19 @@ extern SongQueue currentQueue;
 
 extern bool setup();
 
-extern void loadSong(const char *filePath);
-
 extern String getSongPath();
-
-extern void nextSong();
-
-extern void previousSong();
-
 extern CurrentSongInfo &currentSong();
 
-extern void loadDirIntoQueue(String dirPath, boolean append);
+extern void nextSong();
+extern void previousSong();
 
+extern void addSongToEndOfQueue(String filePath);
+extern void addSongToNextInQueue(String filePath);
+extern void loadSong(const char *filePath);
+extern void loadDirIntoQueue(String dirPath, boolean append);
 extern void loadSongDirIntoQueue(String filePath, boolean append);
+extern void loadPlaylistIntoQueue(String filePath, LoadType type);
+extern bool isPlaylistFile(String filePath);
 
 extern std::vector<struct FileInfo> listDirectory(const char *path);
 

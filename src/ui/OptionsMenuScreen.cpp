@@ -22,7 +22,6 @@ const std::vector<MenuOption> songOptions = {
     {.label = "Play next", .id = OPT_PLAY_NEXT},
     {.label = "Remove from queue", .id = OPT_REMOVE_FROM_QUEUE},
     {.label = "Play", .id = OPT_PLAY},
-    // {.label = "Add to playlist", .id = OPT_PLAYLIST_ADD},
 };
 
 const std::vector<MenuOption> directoryOptions = {
@@ -69,7 +68,7 @@ void OptionsMenuList::onSelectOption(MenuOption option) {
     if (this->isDir())
       music_loader::loadDirIntoQueue(this->file, true);
     else
-      music_loader::currentQueue.append(this->file.c_str());
+      music_loader::addSongToEndOfQueue(this->file);
     screen_manager::goBack();
     break;
 
@@ -87,13 +86,8 @@ void OptionsMenuList::onSelectOption(MenuOption option) {
   case OPT_PLAY_NEXT:
     if (!this->isDir()) {
       logger::debug((String("Play next: ") + this->file).c_str());
-      music_loader::currentQueue.insertNext(this->file.c_str());
+      music_loader::addSongToNextInQueue(this->file.c_str());
     }
-    screen_manager::goBack();
-    break;
-
-  case OPT_PLAYLIST_ADD:
-    logger::debug("TODO: Add to playlist");
     screen_manager::goBack();
     break;
 

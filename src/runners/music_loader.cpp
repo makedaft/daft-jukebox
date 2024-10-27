@@ -71,12 +71,41 @@ void loadDirIntoQueue(String dirPath, boolean append = false) {
   currentQueue.loadFromDir(SD, dirPath.c_str(), append);
 }
 
+void addSongToEndOfQueue(String filePath) {
+  if (isPlaylistFile(filePath)) {
+    loadPlaylistIntoQueue(filePath, LOAD_APPEND);
+    return;
+  }
+
+  music_loader::currentQueue.append(filePath.c_str());
+}
+
+void addSongToNextInQueue(String filePath) {
+  if (isPlaylistFile(filePath)) {
+    loadPlaylistIntoQueue(filePath, LOAD_NEXT);
+    return;
+  }
+
+  music_loader::currentQueue.insertNext(filePath.c_str());
+}
+
 void loadSongDirIntoQueue(String filePath, boolean append = false) {
+  if (isPlaylistFile(filePath)) {
+    loadPlaylistIntoQueue(filePath, append ? LOAD_APPEND : LOAD_CLEAR);
+    return;
+  }
+
   auto parentIndex = filePath.lastIndexOf('/');
   auto dirPath = filePath.substring(0, parentIndex);
   loadDirIntoQueue(dirPath, append);
   currentQueue.setCurrentAs(filePath.c_str());
 }
+
+void loadPlaylistIntoQueue(String filePath, LoadType type) {
+  currentQueue.loadFromPlaylistFile(SD, filePath.c_str(), type);
+}
+
+bool isPlaylistFile(String filePath) { return filePath.endsWith(".playlist"); }
 
 std::vector<struct FileInfo> listDirectory(const char *path) {
   std::vector<struct FileInfo> list;

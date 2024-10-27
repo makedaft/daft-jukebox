@@ -8,6 +8,12 @@ struct QueueItem {
   String path;
 };
 
+enum LoadType {
+  LOAD_CLEAR,
+  LOAD_APPEND,
+  LOAD_NEXT,
+};
+
 class SongQueue {
   unsigned int currentIndex = 0;
 
@@ -29,5 +35,8 @@ public:
 
   void setCurrentAs(const char *path);
 
+  void loadFile(const char *filePath, LoadType type);
   void loadFromDir(fs::SDFS &fs, const char *path, boolean append = false);
+  void loadFromPlaylistFile(fs::SDFS &fs, const char *path,
+                            LoadType append = LOAD_CLEAR);
 };
