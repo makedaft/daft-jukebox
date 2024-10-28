@@ -14,7 +14,7 @@
 - [x] Lock: disable screen (backlight) and pause re-drawing
 - [x] Pin pio dependencies
 - [x] Playlist files (.playlist -> list of absolute paths)
-- [ ] Home screen UI
+- [x] Home screen UI
 
 # Issues
 - [x] Empty queue crash

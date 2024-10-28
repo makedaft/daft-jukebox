@@ -29,7 +29,7 @@ HomeScreen::HomeScreen() {
 void HomeScreen::initialize() {
   auto w = display::tft.width();
   auto h = display::tft.height();
-  this->playState = new ui::component::PlayState(&display::tft, w / 2, h - 40);
+  this->playState = new ui::component::PlayState(&display::tft, w / 2, h - 45);
 }
 
 void HomeScreen::render() {
@@ -45,18 +45,19 @@ void HomeScreen::render() {
   auto w = display::tft.width();
   auto h = display::tft.height();
 
+  int padX = 6, padY = 5;
   // Header
-  display::tft.fillRect(0, 0, w, FONT_HEIGHT + 8 + FONT_HEIGHT + 6,
+  display::tft.fillRect(0, padY, w, FONT_HEIGHT + 8 + FONT_HEIGHT + 6,
                         0x0000); // Clear
   display::tft.setTextWrap(false);
   display::tft.setTextSize(1);
   // Dir name
   display::tft.setTextColor(0x49d4);
-  display::tft.setCursor(4, FONT_HEIGHT + 8);
+  display::tft.setCursor(padX, padY + FONT_HEIGHT + 8);
   display::tft.print(subtitle);
   // Name
   display::tft.setTextColor(0xFFFF);
-  display::tft.setCursor(4, FONT_HEIGHT + 8 + FONT_HEIGHT + 4);
+  display::tft.setCursor(padX, padY + FONT_HEIGHT + 8 + FONT_HEIGHT + 4);
   display::tft.print(title);
 
   this->playState->setPlayState(!audio::isPaused());

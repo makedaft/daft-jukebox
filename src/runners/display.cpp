@@ -16,6 +16,7 @@ bool setup() {
   display::tft.setFont(&FONT);
   display::tft.setTextColor(0xFFFF);
   display::tft.setTextSize(1);
+  display::tft.setRotation(1);
 
   screen_manager::setup();
 

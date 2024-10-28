@@ -69,7 +69,7 @@ template <typename OptionType> void OptionsMenu<OptionType>::render() {
     return;
   }
 
-  for (int i = selectedIndex - 2; i < selectedIndex + 6; i++) {
+  for (int i = selectedIndex - 2; i < selectedIndex + 3; i++) {
     int index = i < 0 ? (size <= 1 ? 0 : size + i) : i % size;
     auto option = options[index];
     bool highlighted = selectedIndex == i;
