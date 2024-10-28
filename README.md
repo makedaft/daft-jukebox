@@ -18,7 +18,7 @@ Daft (_dumb as fuck tech_) jukebox is an mp3 player powered by esp32
 ---
 
 ### Wiring
-[tex](./wiring/_main.tex) | [pdf](./media/wiring.pdf)
+[tex](./wiring/wiring.tex) | [pdf](./media/wiring.pdf)
 
 > [My notes](./Notes.md)
 

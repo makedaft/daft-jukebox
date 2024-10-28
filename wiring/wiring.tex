@@ -43,18 +43,15 @@
 \bendconnect{1}{-60}{(mcupin14)}{(dacLeftpinCLK)}; \dotOnFirstBend;
 \bendconnect{-1}{50}{(mcupin22)}{(dacLeftpinDin)}; \dotOnFirstBend;
 \bendconnect{-1}{60}{(mcupinGND3)}{(dacLeftpinGain)}; \dotOnFirstBend;
-% \bendconnect{1}{-20}{(mcupinVin)}{(dacLeftpinVin)}; \dotOnFirstBend;
 \draw (dacLeftpinVin) -- ++(0, -1) -- ++(-0.6, 0) node[vcc]{5V};
 % DAC Left channel control
-\draw (dacLeftpinSD) -- ++(-5, 0) to[short, -*] ++(0, -0.83) to[R=100K] ++(3, 0) -- (dacLeftpinGND);
-\draw (dacLeftpinSD)++(-5, -0.83) to[R=110K] ++(-3, 0) -- ++(0, 1.5);
-\pgfgetlastxy{\lastAnchorX}{\lastAnchorY};
-\bendconnect{-1}{0}{(\lastAnchorX, \lastAnchorY)}{(mcupin3v3)}; \dotOnSecondBend;
+\draw (dacLeftpinSD) -- ++(-5, 0) to[short, -*] ++(0, -0.83) to[R, l_=100K] ++(3, 0) -- (dacLeftpinGND);
+\draw (dacLeftpinSD)++(-5, -0.83) to[R, l=110K] ++(-3, 0) node[vcc]{3.3V};
 
 
 % Audio jack
 \createTRRSAudioJack{audioJack}{(29, -3)}
-\node [ground] at (audioJackpinS) {} -- (audioJackpinS);
+\node [ground] at (audioJackpinR2) {} -- (audioJackpinR2);
 \bendconnect{-1}{20}{(dacRightpinOut+)}{($(audioJackpinT)+(-1.7, 0)$)} to[R=$R_{out}$] (audioJackpinT);
 \bendconnect{-1}{20}{(dacLeftpinOut+)}{($(audioJackpinR1)+(-1.7, 0)$)} to[R=$R_{out}$] (audioJackpinR1);
 
@@ -80,9 +77,11 @@
 \bendconnect{1}{30}{(mcupin18)}{(screenpinSCK)}; \dotOnFirstBend
 \bendconnect{1}{-30}{(mcupin25)}{(screenpinLED)};
 
+
 % Control
 \draw (mcupinGND1) -- ++(-4, 0) to[potentiometer, l_=$Volume control$, name=volumeCtrl] ++(0, -3) -- ++(-2, 0) node[vcc]{3.3V};
 \bendconnect{1}{10}{(volumeCtrl.wiper)}{(mcupin34)};
+
 
 \end{circuitikz}
 \end{document}
