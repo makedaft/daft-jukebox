@@ -27,8 +27,8 @@ devsetup:
   ./setup_compiledb.sh
 
 circuit:
-  cd circuit && latexmk -f -auxdir=.cache/tex -outdir=../media -interaction=nonstopmode -lualatex ./_main.tex
-  magick -density 200x200 ./media/_main.pdf -background white -alpha remove -alpha off ./media/circuit.png
+  cd wiring && latexmk -f -auxdir=.cache/tex -outdir=../media -interaction=nonstopmode -lualatex ./wiring.tex
+  magick -density 200x200 ./media/wiring.pdf -background white -alpha remove -alpha off ./media/wiring.png
 
 circuit-dev:
   npx nodemon --exec 'clear && just circuit' -e .tex

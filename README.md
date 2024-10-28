@@ -1,8 +1,6 @@
 # Daft jukebox
 Daft (_dumb as fuck tech_) jukebox is an mp3 player powered by esp32
 
-> [My notes](./Notes.md)
-
 ### Ingredients
 - ESP32 board
 - 2 MAX98357A digital-to-analog converter (any i2s DAC)
@@ -20,7 +18,9 @@ Daft (_dumb as fuck tech_) jukebox is an mp3 player powered by esp32
 ---
 
 ### Wiring
-[tex](./circuit/_main.tex)
+[tex](./wiring/_main.tex) | [pdf](./media/wiring.pdf)
 
-![circuit](./media/circuit.png)
+> [My notes](./Notes.md)
+
+![wiring](./media/wiring.png)
 
