@@ -23,8 +23,16 @@ void SongQueue::remove(const char *path) {
   for (const QueueItem &item : this->queue) {
     if (item.path == String(path)) {
       this->queue.erase(this->queue.begin() + index);
-      if (this->currentIndex == index && this->currentIndex > 0)
+
+      if (index < this->currentIndex)
         this->currentIndex--;
+
+      if (this->currentIndex >= this->queue.size())
+        this->currentIndex = this->queue.size() - 1;
+
+      if (this->currentIndex < 0)
+        this->currentIndex = 0;
+
       return;
     }
     index++;
