@@ -15,7 +15,11 @@ PlayState::PlayState(Adafruit_SPITFT *ctx, int x, int y) {
 
 long PlayState::dependencies() { return playing; }
 
-void PlayState::render() { this->renderPlay(); }
+void PlayState::render() {
+  this->renderPlay();
+  this->renderNext();
+  this->renderPrev();
+}
 
 void PlayState::renderPlay() {
   int sc = 18;
@@ -38,16 +42,31 @@ void PlayState::renderPlay() {
   }
 }
 
-// void PlayState::renderNext() {}
-// void PlayState::renderPrev() {}
+void PlayState::renderNext() {
+  int sc = 9;
+  int xc = this->x + 2 * sc + 20;
+  int yc = this->y;
+  int st = 6;
+  int xt = xc;
+  int yt = yc;
+  this->ctx->fillCircle(xc, yc, sc, 0x0000);
+  this->ctx->drawCircle(xc, yc, sc, 0xFFFF);
+  this->ctx->drawLine(xt + st / 3, yt, xt - st / 3, yt - st / 2, 0xFFFF);
+  this->ctx->drawLine(xt + st / 3, yt, xt - st / 3, yt + st / 2, 0xFFFF);
+}
 
-// display::tft.fillCircle(w / 4, yc, sc / 2, 0xDDDD);
-// display::tft.drawLine(w / 4 + st / 2, yt, w / 4, yt - st / 4, 0x0000);
-// display::tft.drawLine(w / 4 + st / 2, yt, w / 4, yt + st / 4, 0x0000);
-// display::tft.fillCircle(w * 3 / 4, yc, sc / 2, 0xDDDD);
-// display::tft.drawLine(w * 3 / 4 + st / 2, yt, w * 3 / 4, yt - st / 4,
-// 0x0000);
-// display::tft.drawLine(w * 3 / 4 + st / 2, yt, w * 3 / 4, yt + st /
-// 4, 0x0000);
+void PlayState::renderPrev() {
+  int sc = 9;
+  int xc = this->x - 2 * sc - 20;
+  int yc = this->y;
+  int st = 6;
+  int xt = xc;
+  int yt = yc;
+  this->ctx->fillCircle(xc, yc, sc, 0x0000);
+  this->ctx->drawCircle(xc, yc, sc, 0xFFFF);
+  this->ctx->drawLine(xt - st / 3, yt, xt + st / 3, yt - st / 2, 0xFFFF);
+  this->ctx->drawLine(xt - st / 3, yt, xt + st / 3, yt + st / 2, 0xFFFF);
+}
+
 } // namespace component
 } // namespace ui

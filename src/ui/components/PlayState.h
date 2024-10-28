@@ -18,8 +18,8 @@ public:
 private:
   void render() override;
   void renderPlay();
-  // void renderNext();
-  // void renderPrev();
+  void renderNext();
+  void renderPrev();
 };
 } // namespace component
 } // namespace ui

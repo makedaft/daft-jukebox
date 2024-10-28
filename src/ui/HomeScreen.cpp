@@ -16,7 +16,6 @@
 #include "ui/HomeScreen.h"
 #include "ui/SongListScreen.h"
 #include "ui/components/PlayState.h"
-#include "ui/components/ProgressBar.h"
 
 namespace ui {
 HomeScreen::HomeScreen() {
@@ -30,17 +29,10 @@ HomeScreen::HomeScreen() {
 void HomeScreen::initialize() {
   auto w = display::tft.width();
   auto h = display::tft.height();
-  int padx = 3;
-  this->progressBar = new ui::component::ProgressBar(&display::tft, padx, h / 2,
-                                                     w - 2 * padx, 6);
-
-  this->playState = new ui::component::PlayState(&display::tft, w / 2, 53);
+  this->playState = new ui::component::PlayState(&display::tft, w / 2, h - 40);
 }
 
 void HomeScreen::render() {
-  display::tft.fillRect(0, 0, display::tft.width(),
-                        FONT_HEIGHT + 8 + FONT_HEIGHT + 4, 0x0000);
-
   auto songInfo = music_loader::currentSong();
   auto subtitle = songInfo.dirPath;
   auto title = songInfo.name;
@@ -50,6 +42,12 @@ void HomeScreen::render() {
                                                   : ":::: Cant play song ::::";
   }
 
+  auto w = display::tft.width();
+  auto h = display::tft.height();
+
+  // Header
+  display::tft.fillRect(0, 0, w, FONT_HEIGHT + 8 + FONT_HEIGHT + 6,
+                        0x0000); // Clear
   display::tft.setTextWrap(false);
   display::tft.setTextSize(1);
   // Dir name
@@ -64,14 +62,15 @@ void HomeScreen::render() {
   this->playState->setPlayState(!audio::isPaused());
   this->playState->run();
 
-  this->progressBar->setPercentage(60);
-  this->progressBar->run();
+  int xt = w / 2;
+  int yt = h - 5;
+  int st = 6;
+  display::tft.drawLine(xt - st, yt - st / 2, xt, yt, 0x5aab);
+  display::tft.drawLine(xt + st, yt - st / 2, xt, yt, 0x5aab);
 }
 
 long HomeScreen::dependencies() {
-  return (utils::stringHash(music_loader::getSongPath().c_str()) * 100 +
-          this->progressBar->dependencies()) *
-             10 +
+  return utils::stringHash(music_loader::getSongPath().c_str()) * 10 +
          this->playState->dependencies() + audio::isPaused();
 }
 
