@@ -2,7 +2,7 @@
 \title{\textbf{daft-jukebox wiring}}
 \author{}
 \date{}
-\usepackage[paperwidth=14.5in, paperheight=13in, margin=1cm, top=2cm]{geometry}
+\usepackage[paperwidth=14.5in, paperheight=15in, margin=1cm, top=2cm]{geometry}
 \usepackage{tikz}
 \usepackage{ifthen}
 \usepackage{pgfmath}
@@ -78,8 +78,18 @@
 \bendconnect{1}{-30}{(mcupin25)}{(screenpinLED)};
 
 
-% Control
-\draw (mcupinGND1) -- ++(-4, 0) to[potentiometer, l_=$Volume control$, name=volumeCtrl] ++(0, -3) -- ++(-2, 0) node[vcc]{3.3V};
+% Controls
+% Direction buttons
+\coordinate (btns) at (10, -14.5);
+\draw (btns) to[short, *-, l=mcu pin 21] ++(-2, 0) to[push button, mirror, l_=\textcolor{gray}{up}] ++(-1, 0) node[ground]{};
+\draw ($(btns)+(2,-2)$) to[short, *-, l=mcu pin 33] ++(-2, 0) to[push button, mirror, l_=\textcolor{gray}{right}] ++(-1, 0) node[ground]{};
+\draw ($(btns)+(-7,-2)$) to[short, *-, l=mcu pin 32] ++(2, 0) to[push button, l=\textcolor{gray}{left}] ++(1, 0) node[ground]{};
+\draw ($(btns)+(0,-4)$) to[short, *-, l=mcu pin 27] ++(-2, 0) to[push button, mirror, l_=\textcolor{gray}{down}] ++(-1, 0) node[ground]{};
+% Action button
+\draw ($(btns)+(-7,1)$) node[vcc]{3.3V} ++(0,0) to[R, l_=$R_{pullup}$] ++(-3, 0) to[push button, mirror, l_=\textcolor{gray}{action}] ++(-2, 0) node[ground]{};
+\draw ($(btns)+(-10,1)$) to[short, *-] ++(0, -1) to[short, *-, l_=mcu pin 35] ++(0,0);
+% Volume
+\draw (mcupinGND1) -- ++(-4, 0) to[potentiometer, l_=$Volume control$, name=volumeCtrl] ++(0, -3.5) -- ++(-1, 0) node[vcc]{3.3V};
 \bendconnect{1}{10}{(volumeCtrl.wiper)}{(mcupin34)};
 
 

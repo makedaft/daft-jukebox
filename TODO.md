@@ -15,27 +15,25 @@
 - [x] Pin pio dependencies
 - [x] Playlist files (.playlist -> list of absolute paths)
 - [x] Home screen UI
-
-# Issues
-- [x] Empty queue crash
-- [x] Remove from queue no re-render
-- [ ] Issue with lock/double press action
-- [ ] Invalid song crash (error handling: empty file, no file, etc)
-- [ ] Audio distortion when pressing button
-- [ ] Minor noise issues (might need filter)
+- [x] issue: Empty queue crash
+- [x] issue: Remove from queue no re-render
+- [ ] issue: Issue with lock/double press action
+- [ ] issue: Audio distortion when pressing button
 
 # Next
+- [ ] issue: Minor noise issues (might need filter)
+- [ ] issue: Invalid song crash (error handling: empty file, no file, etc)
+- [ ] Bluetooth for managing files
 - [ ] Battery indicator
 - [ ] Transfer to prototype board
+
+# Maybe
+- [ ] Go into sleep mode if locked and paused?
+- [ ] Show song progress bar in home screen (have to parse number of frames)
 - [ ] Options menus (song): Add to playlist
 - [ ] Remove from playlist
 - [ ] Re-order playlist?
-- [ ] Bluetooth for managing files
-
-# Maybe
-- [ ] Show song progress bar in home screen (have to parse number of frames)
 - [ ] Exif parsing
 - [ ] Save queue, current song, volume, etc to flash
-- [ ] Go into sleep mode if locked and paused?
 - [ ] Use freertos and move copier to its own task
 - [ ] Bluetooth for sending audio
