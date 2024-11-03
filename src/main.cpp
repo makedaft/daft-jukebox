@@ -20,24 +20,25 @@ void setup(void) {
   GUARD(audio::setup());
   logger::debug("init.audio");
 
+  // TODO: Remove. Autoplay just for testing
   music_loader::loadDirIntoQueue("/tool", true);
   music_loader::loadSongDirIntoQueue("/ladedadedadeda.mp3", true);
   audio::startPlaying();
 
-  GUARD(controls::setup());
-  logger::debug("init.controls");
-
   GUARD(display::setup());
   logger::debug("init.display");
+
+  GUARD(controls::setup());
+  logger::debug("init.controls");
 
   logger::debug("init.end");
 }
 
 void loop() {
-  if (utils::skipLoop())
+  if (utils::shouldSkipLoop())
     return;
 
   audio::loop();
-  controls::loop();
   display::loop();
+  controls::loop();
 }

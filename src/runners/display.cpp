@@ -20,6 +20,8 @@ bool setup() {
 
   screen_manager::setup();
 
+  pinMode(TFT_BACKLIGHT, OUTPUT);
+
   return true;
 }
 

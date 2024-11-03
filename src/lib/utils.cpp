@@ -12,7 +12,7 @@
 namespace utils {
 bool preventLooping = false;
 
-bool skipLoop() { return preventLooping; }
+bool shouldSkipLoop() { return preventLooping; }
 
 void noop() {}
 

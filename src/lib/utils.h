@@ -15,7 +15,7 @@
 namespace utils {
 extern bool preventLooping;
 
-extern bool skipLoop();
+extern bool shouldSkipLoop();
 
 extern void noop();
 

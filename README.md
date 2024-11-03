@@ -13,7 +13,7 @@ Daft (_dumb as fuck tech_) jukebox is an mp3 player powered by esp32
 - Boost converter for battery from 3.7v to 5v
 - LiPo battery 3.7v
 - Overcharge+Overdischarge protection board for the battery (if battery doesn't include it)
-- Resistors: 110K, 100K, ...
+- Resistors: 110K + 100K (left channel voltage divider), ...
 
 ---
 

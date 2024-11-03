@@ -23,11 +23,12 @@ void Button::loop() {}
 short Button::doublePressCount() {
   bool isActive = this->active();
   bool pressed = isActive && !this->prevActive;
+  unsigned long currentTime = millis();
   this->prevActive = isActive;
 
   if (!pressed) {
     if (this->lastPressTime != 0 &&
-        millis() - this->lastPressTime > DOUBLE_PRESS_INTERVAL) {
+        currentTime - this->lastPressTime > DOUBLE_PRESS_INTERVAL) {
       this->lastPressTime = 0;
       return 1;
     }
@@ -35,8 +36,8 @@ short Button::doublePressCount() {
     return 0;
   }
 
-  if (millis() - this->lastPressTime > DOUBLE_PRESS_INTERVAL) {
-    this->lastPressTime = millis();
+  if (currentTime - this->lastPressTime > DOUBLE_PRESS_INTERVAL) {
+    this->lastPressTime = currentTime;
     return 0;
   }
 

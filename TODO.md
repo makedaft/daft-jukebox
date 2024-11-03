@@ -18,22 +18,22 @@
 - [x] issue: Empty queue crash
 - [x] issue: Remove from queue no re-render
 - [ ] issue: Issue with lock/double press action
-- [ ] issue: Audio distortion when pressing button
+- [ ] issue: Audio distortion when pressing button (use second core for audio processing?)
 
 # Next
+- [ ] Build case
+- [ ] Bluetooth for managing files
 - [ ] issue: Minor noise issues (might need filter)
 - [ ] issue: Invalid song crash (error handling: empty file, no file, etc)
-- [ ] Bluetooth for managing files
 - [ ] Battery indicator
-- [ ] Transfer to prototype board
+- [ ] Save queue, current song, volume, etc to flash
 
 # Maybe
+- [ ] Use freertos and move copier to its own task
 - [ ] Go into sleep mode if locked and paused?
 - [ ] Show song progress bar in home screen (have to parse number of frames)
 - [ ] Options menus (song): Add to playlist
 - [ ] Remove from playlist
-- [ ] Re-order playlist?
+- [ ] Re-order playlist
 - [ ] Exif parsing
-- [ ] Save queue, current song, volume, etc to flash
-- [ ] Use freertos and move copier to its own task
-- [ ] Bluetooth for sending audio
+- [ ] Support bluetooth headsets for audio?

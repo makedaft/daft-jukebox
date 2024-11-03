@@ -32,7 +32,6 @@ bool setup() {
   analogReadResolution(10);
 
   // TODO: Temporary. Move display control somewhere else
-  pinMode(TFT_BACKLIGHT, OUTPUT);
   display::setDisplayState(true);
 
   return true;
