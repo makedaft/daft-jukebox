@@ -18,7 +18,7 @@
 - [x] issue: Empty queue crash
 - [x] issue: Remove from queue no re-render
 - [ ] issue: Issue with lock/double press action
-- [ ] issue: Audio distortion when pressing button (use second core for audio processing?)
+- [x] issue: Audio distortion when pressing button (use second core for audio processing?)
 
 # Next
 - [ ] Build case

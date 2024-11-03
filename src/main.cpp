@@ -38,7 +38,7 @@ void loop() {
   if (utils::shouldSkipLoop())
     return;
 
-  audio::loop();
+  // audio::loop();
   display::loop();
   controls::loop();
 }

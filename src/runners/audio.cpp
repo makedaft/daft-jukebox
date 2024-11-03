@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <AudioTools.h>
 #include <AudioTools/AudioCodecs/CodecMP3Helix.h>
-// #include <AudioTools/Concurrency/All.h>
+#include <AudioTools/Concurrency/All.h>
 #include <FS.h>
 #include <SD.h>
 
@@ -12,13 +12,13 @@
 
 namespace audio {
 namespace {
-static I2SStream i2s;
-static VolumeStream volume(i2s);
-static LogarithmicVolumeControl logVolumeControl(0.1);
-static MP3DecoderHelix decoder;
-static EncodedAudioStream mp3AudioStream(&volume, &decoder);
-static StreamCopy copier;
-// static Task task("copierTask", 10000, 1, 0);
+I2SStream i2s;
+VolumeStream volume(i2s);
+LogarithmicVolumeControl logVolumeControl(0.1);
+MP3DecoderHelix decoder;
+EncodedAudioStream mp3AudioStream(&volume, &decoder);
+StreamCopy copier;
+Task task("copierTask", 10000, 1, 0);
 
 I2SConfig config = i2s.defaultConfig(TX_MODE);
 } // namespace
@@ -38,10 +38,13 @@ bool setup(void) {
   volume.setVolume(0.7);
   volume.setVolumeControl(logVolumeControl);
 
+  // Start audio task
+  task.begin([]() { loopTask(); });
+
   return true;
 }
 
-void loop() {
+void loopTask() {
   if (isPaused())
     return;
   if (!music_loader::currentSong().isAvailable ||
@@ -56,6 +59,8 @@ void loop() {
     startPlaying();
   }
 }
+
+void loop() {}
 
 void playSongFile(const char *filePath) {
   logger::printf("Playing %s\n", filePath);

@@ -7,6 +7,7 @@
 namespace audio {
 extern bool setup(void);
 extern void loop();
+extern void loopTask();
 
 extern void playMp3(const char *filePath);
 extern void startPlaying();
