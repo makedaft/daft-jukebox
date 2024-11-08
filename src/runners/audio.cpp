@@ -18,7 +18,12 @@ LogarithmicVolumeControl logVolumeControl(0.1);
 MP3DecoderHelix decoder;
 EncodedAudioStream mp3AudioStream(&volume, &decoder);
 StreamCopy copier;
+
+enum AudioTaskEvent {
+  TASK_PLAY_NEXT = 1,
+};
 Task task("copierTask", 10000, 1, 0);
+QueueHandle_t eventQueue;
 
 I2SConfig config = i2s.defaultConfig(TX_MODE);
 } // namespace
@@ -39,6 +44,7 @@ bool setup(void) {
   volume.setVolumeControl(logVolumeControl);
 
   // Start audio task
+  eventQueue = xQueueCreate(10, sizeof(int));
   task.begin([]() { loopTask(); });
 
   return true;
@@ -55,12 +61,20 @@ void loopTask() {
     copier.copy();
   } else {
     logger::debug("end of song");
+    int eventId = AudioTaskEvent::TASK_PLAY_NEXT;
+    xQueueSend(eventQueue, &eventId, portMAX_DELAY);
+  }
+}
+
+void loop() {
+  int receivedEvent;
+  xQueueReceive(eventQueue, &receivedEvent, portMAX_DELAY);
+
+  if (receivedEvent == AudioTaskEvent::TASK_PLAY_NEXT) {
     music_loader::nextSong();
     startPlaying();
   }
 }
-
-void loop() {}
 
 void playSongFile(const char *filePath) {
   logger::printf("Playing %s\n", filePath);
