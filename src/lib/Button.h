@@ -1,53 +1,72 @@
 #pragma once
 #include <Arduino.h>
+#include <functional>
 
-#define DOUBLE_PRESS_INTERVAL 300
+#include "lib/logger.h"
+#include "lib/utils.h"
+
+#define DEBOUNCE_DELAY 50
+
+void call(std::function<void()> fn) { fn(); }
 
 class Button {
   int pin;
-  int prevActive = 0;
-  long lastPressTime = 0;
+  int prevPressed = 0;
+  long lastActiveTime = 0;
 
-  bool active() { return digitalRead(this->pin) == 0; }
+  long lastDebouncedCheckTime = 0;
 
-public:
-  Button(int pin) { this->pin = pin; }
+  utils::Optional<std::function<void()>> pressCallback;
+  utils::Optional<std::function<void()>> doublePressCallback;
 
-  void setup() { pinMode(this->pin, INPUT_PULLUP); }
-  void loop() {}
+  inline bool isPressed() { return digitalRead(pin) == LOW; }
 
-  bool isPressed() {
-    bool isActive = this->active();
-    bool pressed = isActive && !this->prevActive;
+  inline bool checkIsActive() {
+    unsigned long currentTime = millis();
+    if (currentTime - lastDebouncedCheckTime <= DEBOUNCE_DELAY)
+      return false;
+    lastDebouncedCheckTime = currentTime;
 
-    this->prevActive = isActive;
-
-    return pressed;
+    bool pressed = isPressed();
+    bool active = !pressed && this->prevPressed;
+    this->prevPressed = pressed;
+    return active;
   }
 
-  short doublePressCount() {
-    bool isActive = this->active();
-    bool pressed = isActive && !this->prevActive;
+public:
+  unsigned int debounce = 100;
+  Button(int pin) { this->pin = pin; }
+
+  void setup() { pinMode(pin, INPUT_PULLUP); }
+
+  void onPress(std::function<void()> callback) {
+    pressCallback.update(callback);
+  }
+
+  void onDoublePress(std::function<void()> callback) {
+    doublePressCallback.update(callback);
+  }
+
+  void loop() {
+    bool pressed = isPressed();
+    bool active = checkIsActive();
     unsigned long currentTime = millis();
-    this->prevActive = isActive;
 
-    if (!pressed) {
-      if (this->lastPressTime != 0 &&
-          currentTime - this->lastPressTime > DOUBLE_PRESS_INTERVAL) {
-        this->lastPressTime = 0;
-        return 1;
+    bool isWaitingForSecondPress = currentTime - lastActiveTime <= debounce;
+
+    if (active) {
+      if (lastActiveTime != 0 && isWaitingForSecondPress) {
+        lastActiveTime = 0;
+        doublePressCallback.withValue(&call);
+      } else {
+        lastActiveTime = currentTime;
       }
-
-      return 0;
+      return;
     }
 
-    if (currentTime - this->lastPressTime > DOUBLE_PRESS_INTERVAL) {
-      this->lastPressTime = currentTime;
-      return 0;
+    if (lastActiveTime != 0 && !isWaitingForSecondPress) {
+      lastActiveTime = 0;
+      pressCallback.withValue(&call);
     }
-
-    this->lastPressTime = 0;
-
-    return 2;
   }
 };

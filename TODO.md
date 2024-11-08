@@ -17,8 +17,9 @@
 - [x] Home screen UI
 - [x] issue: Empty queue crash
 - [x] issue: Remove from queue no re-render
-- [ ] issue: Issue with lock/double press action
 - [x] issue: Audio distortion when pressing button (use second core for audio processing?)
+- [ ] issue: Issue with lock/double press action
+- [ ] issue: Song changes from task dont reflect in main core (semaphore or move parts to main core)
 
 # Next
 - [ ] Build case

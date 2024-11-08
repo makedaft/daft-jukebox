@@ -1,6 +1,5 @@
-#include "Arduino.h"
-#include "esp32-hal-adc.h"
-#include "esp32-hal-gpio.h"
+#include <Arduino.h>
+
 #include "lib/Button.h"
 #include "lib/display.h"
 #include "lib/logger.h"
@@ -21,52 +20,56 @@ static Button btnAction(PIN_CONTROL_ACTION);
 bool isLocked = false;
 
 bool setup() {
-  btnUp.setup();
-  btnDown.setup();
-  btnLeft.setup();
-  btnRight.setup();
-  btnAction.setup();
-
   // Volume control setup
+  analogReadResolution(ADC_RESOLUTION);
   pinMode(PIN_CONTROL_VOLUME, INPUT);
-  analogReadResolution(10);
 
   // TODO: Temporary. Move display control somewhere else
   display::setDisplayState(true);
+
+  btnAction.setup();
+  btnAction.debounce = 300;
+  btnAction.onDoublePress([]() {
+    isLocked = !isLocked; // Toggle lock
+    logger::debug(isLocked ? "Locked" : "Unlocked");
+    display::setDisplayState(!isLocked);
+    screen_manager::controlScheme().lock();
+  });
+  btnAction.onPress([]() {
+    if (!isLocked)
+      screen_manager::controlScheme().action();
+  });
+
+  btnUp.setup();
+  btnUp.onPress([]() { screen_manager::controlScheme().up(); });
+
+  btnDown.setup();
+  btnDown.onPress([]() { screen_manager::controlScheme().down(); });
+
+  btnLeft.setup();
+  btnLeft.onPress([]() { screen_manager::controlScheme().left(); });
+
+  btnRight.setup();
+  btnRight.onPress([]() { screen_manager::controlScheme().right(); });
 
   return true;
 }
 
 void loop() {
-  auto actionPressCount = btnAction.doublePressCount();
-  if (actionPressCount == 2) {
-    isLocked = !isLocked; // Toggle lock
-    logger::debug(isLocked ? "Locked" : "Unlocked");
-    display::setDisplayState(!isLocked);
-    return screen_manager::controlScheme().lock();
-  }
+  btnAction.loop();
 
   // Volume control
-  audio::setVolume(analogRead(PIN_CONTROL_VOLUME) / 1024.);
+  audio::setVolume(analogRead(PIN_CONTROL_VOLUME) /
+                   (1. * (1 << ADC_RESOLUTION)));
 
   // If controls are locked, don't do anything
   // until the lock is released by double press
   if (isLocked)
     return;
 
-  if (actionPressCount == 1)
-    return screen_manager::controlScheme().action();
-
-  if (btnUp.isPressed())
-    return screen_manager::controlScheme().up();
-
-  if (btnDown.isPressed())
-    return screen_manager::controlScheme().down();
-
-  if (btnLeft.isPressed())
-    return screen_manager::controlScheme().left();
-
-  if (btnRight.isPressed())
-    return screen_manager::controlScheme().right();
+  btnUp.loop();
+  btnDown.loop();
+  btnLeft.loop();
+  btnRight.loop();
 }
 } // namespace controls

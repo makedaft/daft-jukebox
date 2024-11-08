@@ -6,6 +6,7 @@
 #define PIN_CONTROL_RIGHT 33
 #define PIN_CONTROL_ACTION 35
 #define PIN_CONTROL_VOLUME 34
+#define ADC_RESOLUTION 10
 
 namespace controls {
 extern bool isLocked;
