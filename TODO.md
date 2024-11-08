@@ -18,23 +18,24 @@
 - [x] issue: Empty queue crash
 - [x] issue: Remove from queue no re-render
 - [x] issue: Audio distortion when pressing button (use second core for audio processing?)
-- [ ] issue: Issue with lock/double press action
-- [ ] issue: Song changes from task dont reflect in main core (semaphore or move parts to main core)
+- [x] issue: Issue with lock/double press action
+- [x] issue: Song changes from task dont reflect in main core (semaphore or move parts to main core)
+- [x] issue: Invalid song crash (error handling: empty file, no file, etc)
+- [x] Use freertos and move copier to its own task
+- [ ] Build case
+- [ ] issue: noise issues (might need filter)
+- [ ] Battery indicator
+- [ ] Solder and stick into case
 
 # Next
-- [ ] Build case
-- [ ] Bluetooth for managing files
-- [ ] issue: Minor noise issues (might need filter)
-- [ ] issue: Invalid song crash (error handling: empty file, no file, etc)
-- [ ] Battery indicator
 - [ ] Save queue, current song, volume, etc to flash
+- [ ] Bluetooth for managing files
 
 # Maybe
-- [ ] Use freertos and move copier to its own task
 - [ ] Go into sleep mode if locked and paused?
 - [ ] Show song progress bar in home screen (have to parse number of frames)
+- [ ] Support bluetooth headsets for audio?
 - [ ] Options menus (song): Add to playlist
 - [ ] Remove from playlist
 - [ ] Re-order playlist
 - [ ] Exif parsing
-- [ ] Support bluetooth headsets for audio?

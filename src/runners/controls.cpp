@@ -19,10 +19,17 @@ static Button btnAction(PIN_CONTROL_ACTION);
 
 bool isLocked = false;
 
+void updateVolume() {
+  // Volume control
+  audio::setVolume(analogRead(PIN_CONTROL_VOLUME) /
+                   (1. * (1 << ADC_RESOLUTION)));
+}
+
 bool setup() {
   // Volume control setup
   analogReadResolution(ADC_RESOLUTION);
   pinMode(PIN_CONTROL_VOLUME, INPUT);
+  // updateVolume();
 
   // TODO: Temporary. Move display control somewhere else
   display::setDisplayState(true);
@@ -59,8 +66,7 @@ void loop() {
   btnAction.loop();
 
   // Volume control
-  audio::setVolume(analogRead(PIN_CONTROL_VOLUME) /
-                   (1. * (1 << ADC_RESOLUTION)));
+  updateVolume();
 
   // If controls are locked, don't do anything
   // until the lock is released by double press

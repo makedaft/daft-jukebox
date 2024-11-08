@@ -5,6 +5,7 @@
 #include <FS.h>
 #include <SD.h>
 
+#include "esp32-hal.h"
 #include "lib/logger.h"
 #include "runners/music_loader.h"
 
@@ -51,24 +52,25 @@ bool setup(void) {
 }
 
 void loopTask() {
-  if (isPaused())
+  if (isPaused() || !music_loader::currentSong().isAvailable ||
+      music_loader::currentQueue.empty()) {
+    delay(100);
     return;
-  if (!music_loader::currentSong().isAvailable ||
-      music_loader::currentQueue.empty())
-    return;
+  }
 
   if (copier.available() > 0) {
     copier.copy();
   } else {
     logger::debug("end of song");
+    copier.setActive(false);
     int eventId = AudioTaskEvent::TASK_PLAY_NEXT;
     xQueueSend(eventQueue, &eventId, portMAX_DELAY);
   }
 }
 
 void loop() {
-  int receivedEvent;
-  xQueueReceive(eventQueue, &receivedEvent, portMAX_DELAY);
+  int receivedEvent = 0;
+  xQueueReceive(eventQueue, &receivedEvent, 0);
 
   if (receivedEvent == AudioTaskEvent::TASK_PLAY_NEXT) {
     music_loader::nextSong();
